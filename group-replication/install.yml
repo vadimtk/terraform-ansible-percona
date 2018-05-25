@@ -1,0 +1,74 @@
+---
+- hosts: mysql-node
+  remote_user: vadim
+  become: yes
+  become_user: root
+  vars_files:
+    - mysql_nodes.yml
+  tasks:
+    - name: Create a ext4 filesystem on /dev/sdb1 and check disk blocks
+      filesystem:
+        fstype: ext4
+        dev: /dev/sdb
+        force: no
+
+    - name: Mount FS
+      mount:
+        path: "{{ mountdir }}"
+        src: /dev/sdb
+        fstype: ext4
+        state: mounted
+
+    - name: Stop and disable firewalld.
+      service:
+        name: firewalld
+        state: stopped
+        enabled: False
+
+    - name: Stop selinux
+      selinux:
+        state: disabled
+
+    - name: Add repository
+      yum_repository:
+        name: MySQL
+        description: MySQL YUM repo
+        baseurl: http://repo.mysql.com/yum/mysql-5.7-community/el/7/$basearch/
+
+    - name: Install MySQL
+      yum:
+        name: mysql-community-server
+        disable_gpg_check: yes
+        state: present
+    - name: Install MySQL-Python
+      yum:
+        name: MySQL-python
+        disable_gpg_check: yes
+        state: present
+
+    - name: Stop MySQL
+      systemd:
+        name: mysqld
+        state: stopped
+
+    - name: Remove datadir
+      file:
+        path: "{{ mysqldir }}"
+        state: "{{ item }}"
+        owner: mysql
+        group: mysql
+      with_items:
+        - absent
+        - directory
+
+    - name: Init datadir
+      shell: >
+        mysqld --no-defaults --initialize-insecure --datadir="{{ mysqldir }}" --user=mysql
+
+    - name: Start MySQL
+      systemd:
+        name: mysqld
+        state: started
+
+    - import_tasks: group_replication.yml
+

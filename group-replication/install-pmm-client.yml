@@ -1,0 +1,33 @@
+---
+- hosts: pmm-server
+  remote_user: vadim
+  become: yes
+
+- hosts: mysql-node
+  remote_user: vadim
+  become: yes
+  become_user: root
+  vars_files:
+    - mysql_nodes.yml
+  tasks:
+    - name: Install Percona Repo
+      yum:
+        name: http://www.percona.com/downloads/percona-release/redhat/0.1-4/percona-release-0.1-4.noarch.rpm
+        state: present
+
+    - name: Install PMM Client
+      yum:
+        name: pmm-client
+        state: present
+
+    - name: Init client
+      shell: >
+        pmm-admin config --server "{{ groups['pmm-server'] | map('extract', hostvars, ['ansible_eth0', 'ipv4', 'address'])|list|join(',') }}"
+
+    - name: Metics system
+      shell: >
+        pmm-admin add linux:metrics
+
+    - name: Metics mysql
+      shell: >
+        pmm-admin add mysql:metrics

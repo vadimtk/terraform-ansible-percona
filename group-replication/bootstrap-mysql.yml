@@ -1,0 +1,33 @@
+
+---
+- hosts: mysql-node
+  remote_user: vadim
+  become: yes
+  become_user: root
+  vars_files:
+    - mysql_nodes.yml
+  tasks:
+        - name: Check if group replication is already enabled
+          shell: >
+             mysql -Nnrse "SELECT service_state
+             FROM performance_schema.replication_connection_status
+             WHERE channel_name = 'group_replication_applier'"
+          failed_when: false
+          changed_when: false
+          register: group_replication_running
+
+        - name: Bootstrap group replication on first node
+          command: 'mysql -ne "{{ item }}"'
+          with_items:
+            - "SET GLOBAL group_replication_bootstrap_group=ON"
+            - "START GROUP_REPLICATION"
+            - "SET GLOBAL group_replication_bootstrap_group=OFF"
+          when:
+            - "'ON' not in group_replication_running.stdout"
+            - inventory_hostname == ansible_play_hosts[0]
+
+        - name: Begin group replication on remaining nodes
+          command: mysql -ne "START GROUP_REPLICATION"
+          when:
+            - "'ON' not in group_replication_running.stdout"
+            - inventory_hostname != ansible_play_hosts[0]
