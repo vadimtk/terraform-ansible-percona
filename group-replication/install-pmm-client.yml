@@ -22,12 +22,12 @@
 
     - name: Init client
       shell: >
-        pmm-admin config --server "{{ groups['pmm-server'] | map('extract', hostvars, ['ansible_eth0', 'ipv4', 'address'])|list|join(',') }}"
+        pmm-admin config --server "{{ groups['pmm-server'] | map('extract', hostvars, ['ansible_eth0', 'ipv4', 'address'])|list|join(',') }}" --force
 
     - name: Metics system
       shell: >
-        pmm-admin add linux:metrics
+        pmm-admin add linux:metrics --force
 
     - name: Metics mysql
       shell: >
-        pmm-admin add mysql:metrics
+        pmm-admin add mysql:metrics --force

@@ -9,14 +9,16 @@
     - name: Create a ext4 filesystem on /dev/sdb1 and check disk blocks
       filesystem:
         fstype: ext4
-        dev: /dev/sdb
+        dev: /dev/nvme0n1
         force: no
+        opts: -E lazy_itable_init=0,lazy_journal_init=0,discard
 
     - name: Mount FS
       mount:
         path: "{{ mountdir }}"
-        src: /dev/sdb
+        src: /dev/nvme0n1
         fstype: ext4
+        opts: discard
         state: mounted
 
     - name: Stop and disable firewalld.

@@ -1,0 +1,7 @@
+- hosts: all
+  gather_facts: yes
+  remote_user: vadim
+  tasks:
+  - name: show 
+    debug:
+      msg: "{{ hostvars[groups['pxc-node'][0]]['ansible_eth0']['ipv4']['address'] if inventory_hostname != groups['pxc-node'][0] else '' }}"
