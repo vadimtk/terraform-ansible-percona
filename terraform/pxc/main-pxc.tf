@@ -6,11 +6,18 @@ provider "google" {
 }
 
 
+variable "azs" {
+  description = "Run the Instances in these Availability Zones"
+  type = "list"
+  default = ["us-west1-a", "us-west1-b", "us-west1-c"]
+}
+
+
 resource "google_compute_instance" "pxc" {
   count              = "3"
   name               = "pxc-node-${count.index + 1}"
   machine_type = "n1-highmem-16"
-  zone         = "us-west1-b"
+  zone         = "${element(var.azs, count.index)}"
 
   tags = ["pxc-node"]
 
