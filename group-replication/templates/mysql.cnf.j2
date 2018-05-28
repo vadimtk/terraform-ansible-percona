@@ -25,6 +25,10 @@ plugin-load=group_replication=group_replication.so
   innodb_log_buffer_size=64M
 innodb_flush_log_at_trx_commit  = 0
 innodb_flush_method             = O_DIRECT
+innodb_io_capacity=2000
+innodb_io_capacity_max=4000
+innodb_purge_threads=4
+innodb_monitor_enable=all
 
 # General replication settings
 gtid_mode = ON

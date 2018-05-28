@@ -9,14 +9,14 @@
     - name: Create a ext4 filesystem on /dev/sdb1 and check disk blocks
       filesystem:
         fstype: ext4
-        dev: /dev/nvme0n1
+        dev: "{{ disk }}"
         force: no
         opts: -E lazy_itable_init=0,lazy_journal_init=0,discard
 
     - name: Mount FS
       mount:
         path: "{{ mountdir }}"
-        src: /dev/nvme0n1
+        src: "{{ disk }}"
         fstype: ext4
         opts: discard
         state: mounted

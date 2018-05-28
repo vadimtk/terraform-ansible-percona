@@ -7,4 +7,4 @@ mysql_repl_pass: replpassword
 
 mountdir: /mnt/data
 mysqldir: /mnt/data/mysql
-
+disk: /dev/sdb

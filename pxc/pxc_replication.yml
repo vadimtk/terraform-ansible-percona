@@ -1,5 +1,5 @@
 ---
-- name: Generate global mysql.cnf file for group replication
+- name: Generate global mysql.cnf file for PXC
   template:
     src: mysql.cnf.j2
     dest: /etc/my.cnf
@@ -8,8 +8,10 @@
     mode: "0644"
     backup: true
   become: true
+  tags: apply-config
 
 - name: Restart MySQL
   systemd:
     name: mysqld
     state: restarted
+  tags: apply-config

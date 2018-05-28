@@ -6,12 +6,14 @@
   run_once: true
   changed_when: false
   register: existing_cluster_uuid
+  tags: apply-config
 
 - name: Generate UUID incase no previous value was present
   command: uuidgen
   run_once: true
   changed_when: false
   register: new_cluster_uuid
+  tags: apply-config
 
 - name: Generate global mysql.cnf file for group replication
   template:
@@ -22,11 +24,13 @@
     mode: "0644"
     backup: true
   become: true
+  tags: apply-config
 
 - name: Restart MySQL
   systemd:
     name: mysqld
     state: restarted
+  tags: apply-config
 
 - name: Check if group replication is already enabled
   shell: >
@@ -36,6 +40,7 @@
   failed_when: false
   changed_when: false
   register: group_replication_running
+  tags: apply-config
 
 - name: Generate MySQL replication user script
   template:
@@ -60,9 +65,11 @@
   when:
     - "'ON' not in group_replication_running.stdout"
     - inventory_hostname == ansible_play_hosts[0]
+  tags: apply-config
 
 - name: Begin group replication on remaining nodes
   command: mysql -ne "START GROUP_REPLICATION"
   when:
     - "'ON' not in group_replication_running.stdout"
     - inventory_hostname != ansible_play_hosts[0]
+  tags: apply-config
