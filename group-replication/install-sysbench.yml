@@ -1,5 +1,5 @@
 ---
-- hosts: sysbench-node
+- hosts: tag_sysbench-node
   remote_user: vadim
   become: yes
   become_user: root

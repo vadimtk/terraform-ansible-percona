@@ -1,12 +1,12 @@
 ---
-- hosts: mysql-node
+- hosts: tag_mysql-node
   remote_user: vadim
   become: yes
   become_user: root
   vars_files:
     - mysql_nodes.yml
   tasks:
-    - name: Create a ext4 filesystem on /dev/sdb1 and check disk blocks
+    - name: Create a ext4 filesystem 
       filesystem:
         fstype: ext4
         dev: "{{ disk }}"
@@ -17,6 +17,21 @@
       mount:
         path: "{{ mountdir }}"
         src: "{{ disk }}"
+        fstype: ext4
+        opts: discard
+        state: mounted
+
+    - name: Create a ext4 filesystem
+      filesystem:
+        fstype: ext4
+        dev: "/dev/nvme0n1"
+        force: no
+        opts: -E lazy_itable_init=0,lazy_journal_init=0,discard
+
+    - name: Mount FS
+      mount:
+        path: "/mnt/logs"
+        src: "/dev/nvme0n1"
         fstype: ext4
         opts: discard
         state: mounted
@@ -61,6 +76,15 @@
         group: mysql
       with_items:
         - absent
+        - directory
+
+    - name: Remove datadir
+      file:
+        path: "/mnt/logs"
+        state: "{{ item }}"
+        owner: mysql
+        group: mysql
+      with_items:
         - directory
 
     - name: Init datadir

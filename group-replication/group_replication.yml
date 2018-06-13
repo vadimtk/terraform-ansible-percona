@@ -27,9 +27,13 @@
   tags: apply-config
 
 - name: Restart MySQL
-  systemd:
-    name: mysqld
-    state: restarted
+  shell: mysqladmin shutdown
+  tags: apply-config
+
+- name: Start MySQL
+  shell: "nohup mysqld </dev/null >/dev/null 2>&1 &"
+  async: 10
+  poll: 0
   tags: apply-config
 
 - name: Check if group replication is already enabled
@@ -40,7 +44,7 @@
   failed_when: false
   changed_when: false
   register: group_replication_running
-  tags: apply-config
+  tags: apply-config, bootstrap
 
 - name: Generate MySQL replication user script
   template:
@@ -65,11 +69,11 @@
   when:
     - "'ON' not in group_replication_running.stdout"
     - inventory_hostname == ansible_play_hosts[0]
-  tags: apply-config
+  tags: apply-config, bootstrap
 
 - name: Begin group replication on remaining nodes
   command: mysql -ne "START GROUP_REPLICATION"
   when:
     - "'ON' not in group_replication_running.stdout"
     - inventory_hostname != ansible_play_hosts[0]
-  tags: apply-config
+  tags: apply-config, bootstrap

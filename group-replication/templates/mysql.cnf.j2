@@ -4,8 +4,12 @@
 
 [mysqld]
 datadir= {{ mysqldir }}
-
+user=mysql
 plugin-load=group_replication=group_replication.so
+performance-schema-instrument='wait/%=ON'
+performance-schema-consumer-events-waits-current=ON
+performance-schema-consumer-events-waits-history=ON
+performance-schema-consumer-events-waits-history-long=ON
 
 # general
   table_open_cache = 200000
@@ -37,8 +41,10 @@ master_info_repository = TABLE
 relay_log_info_repository = TABLE
 binlog_checksum = NONE
 log_slave_updates = ON
-log_bin = binlog
-sync_binlog=0
+
+log_bin = /mnt/logs/binlog
+relay_log=/mnt/logs/relay
+sync_binlog=1
 binlog_format = ROW
 binlog_row_image=MINIMAL
 
