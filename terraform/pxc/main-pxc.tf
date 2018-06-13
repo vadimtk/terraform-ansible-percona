@@ -16,7 +16,7 @@ variable "azs" {
 resource "google_compute_instance" "pxc" {
   count              = "3"
   name               = "pxc-node-${count.index + 1}"
-  machine_type = "n1-highmem-16"
+  machine_type = "${var.instancesize}"
   zone         = "${element(var.azs, count.index)}"
 
   tags = ["pxc-node"]
@@ -40,23 +40,19 @@ resource "google_compute_instance" "pxc" {
     }
   }
 
-  metadata {
-    foo = "bar"
-  }
-
   service_account {
     scopes = ["userinfo-email", "compute-ro", "storage-ro"]
   }
   allow_stopping_for_update=true
 }
 
-resource "google_compute_instance" "sysbench" {
+resource "google_compute_instance" "proxy" {
   count              = "1"
-  name               = "sysbench-pxc-node-${count.index + 1}"
-  machine_type = "n1-highmem-8"
-  zone         = "us-west1-b"
+  name               = "proxy-node-${count.index + 1}"
+  machine_type = "${var.instancesize}"
+  zone         = "${element(var.azs, count.index)}"
 
-  tags = ["sysbench-node", "test"]
+  tags = ["proxysql-node"]
 
   boot_disk {
     initialize_params {
@@ -74,10 +70,6 @@ resource "google_compute_instance" "sysbench" {
     access_config {
       // Ephemeral IP
     }
-  }
-
-  metadata {
-    foo = "bar"
   }
 
   service_account {
