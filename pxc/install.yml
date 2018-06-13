@@ -1,5 +1,5 @@
 ---
-- hosts: pxc-node
+- hosts: tag_pxc-node
   remote_user: vadim
   become: yes
   become_user: root

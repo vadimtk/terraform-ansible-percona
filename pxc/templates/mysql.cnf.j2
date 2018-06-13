@@ -1,5 +1,5 @@
 {%- set public_host_ips = ansible_play_hosts | map('extract', hostvars, ['ansible_eth0', 'ipv4', 'address']) | list -%}
-{%- set clusteraddr = hostvars[groups['pxc-node'][0]]['ansible_eth0']['ipv4']['address'] if inventory_hostname != groups['pxc-node'][0] else '' -%}
+{%- set clusteraddr = hostvars[groups['all'][0]]['ansible_eth0']['ipv4']['address'] if inventory_hostname != groups['all'][0] else '' -%}
 [mysqld]
 
 datadir={{ mysqldir }}
