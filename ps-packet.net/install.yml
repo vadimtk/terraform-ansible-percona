@@ -1,6 +1,7 @@
 ---
 - hosts: ps-node
   remote_user: root
+  gather_facts: yes
   vars_files:
     - vars.yml
 
@@ -29,7 +30,7 @@
         mysqlservice: "mysql"
         mysqlconf: "/etc/mysql/my.cnf"
       when:                                                                                                                         
-        - "'Ubuntu' in distro" 
+        - "'Ubuntu' in distro or 'Debian' in distro" 
 
     - name: set service mysql facts
       set_fact:
@@ -41,14 +42,14 @@
     - name: Create  ext4 filesystem 
       filesystem:
         fstype: ext4
-        dev: /dev/sdb
+        dev: "{{ device }}"
         force: no
         opts: -E lazy_itable_init=0,lazy_journal_init=0,discard
 
     - name: Mount FS
       mount:
         path: "{{ mountdir }}"
-        src: /dev/sdb
+        src: "{{ device }}"
         fstype: ext4
         opts: discard
         state: mounted
@@ -71,13 +72,13 @@
         deb: https://repo.percona.com/apt/percona-release_0.1-6.{{ releasename }}_all.deb
         state: present
       when:                                                                                                                         
-        - "'Ubuntu' in distro" 
+        - "'Ubuntu' in distro or 'Debian' in distro" 
 
     - name: Update and upgrade apt packages
       apt:
         update_cache: yes
       when:                                                                                                                         
-        - "'Ubuntu' in distro" 
+        - "'Ubuntu' in distro or 'Debian' in distro" 
 
     - name: Install PS for CentOS
       yum:
@@ -92,12 +93,14 @@
         name: percona-server-server-5.7
         state: present
       when:
-        - "'Ubuntu' in distro" 
+        - "'Ubuntu' in distro or 'Debian' in distro" 
 
     - name: Stop MySQL
       systemd:
         name: "{{ mysqlservice }}"
         state: stopped
+
+    - import_tasks: root_tasks.yml
 
     - name: Remove datadir
       file:
@@ -113,7 +116,6 @@
       shell: >
         mysqld --no-defaults --initialize-insecure --datadir="{{ mysqldir }}" --user=mysql
 
-    - import_tasks: root_tasks.yml
     - import_tasks: ps_config.yml
 
     - name: Generate MySQL replication user script
@@ -156,7 +158,7 @@
       apt:
         update_cache: yes
       when:
-        - "'Ubuntu' in distro" 
+        - "'Ubuntu' in distro or 'Debian' in distro" 
 
     - name: Install sysbench
       yum:
@@ -171,7 +173,7 @@
         name: sysbench
         state: present
       when:
-        - "'Ubuntu' in distro" 
+        - "'Ubuntu' in distro or 'Debian' in distro" 
 
     - name: Install sysbench
       yum:
