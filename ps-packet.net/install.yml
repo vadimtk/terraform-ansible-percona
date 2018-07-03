@@ -1,0 +1,197 @@
+---
+- hosts: ps-node
+  remote_user: root
+  vars_files:
+    - vars.yml
+
+  handlers:
+     - name: Reload systemctl
+       shell: systemctl daemon-reload
+
+  tasks:
+
+    - name: Get distro name from /etc/os-release
+      raw: "([ -f /etc/os-release ] && grep '^NAME=' /etc/os-release | sed s'/NAME=//' | tr -d \\\") || ([ -f /etc/redhat-release ] && cat /etc/redhat-release | cut '-d ' -f1)"
+      register: distro_st
+      failed_when: false
+      changed_when: false
+
+    - name: set distro facts
+      set_fact:
+        distro: "{{ distro_st.stdout | trim }}"
+
+    - name: set release facts
+      set_fact:
+        releasename: "{{ ansible_distribution_release }}"
+
+    - name: set service mysql facts
+      set_fact:
+        mysqlservice: "mysql"
+        mysqlconf: "/etc/mysql/my.cnf"
+      when:                                                                                                                         
+        - "'Ubuntu' in distro" 
+
+    - name: set service mysql facts
+      set_fact:
+        mysqlservice: "mysqld"
+        mysqlconf: "/etc/my.cnf"
+      when:                                                                                                                         
+        - "'CentOS' in distro" 
+
+    - name: Create  ext4 filesystem 
+      filesystem:
+        fstype: ext4
+        dev: /dev/sdb
+        force: no
+        opts: -E lazy_itable_init=0,lazy_journal_init=0,discard
+
+    - name: Mount FS
+      mount:
+        path: "{{ mountdir }}"
+        src: /dev/sdb
+        fstype: ext4
+        opts: discard
+        state: mounted
+
+    - name: Stop selinux
+      selinux:
+        state: disabled
+      when:
+        - "'CentOS' in distro" 
+
+    - name: Add repository for CentOS
+      yum:
+        name: http://www.percona.com/downloads/percona-release/redhat/0.1-6/percona-release-0.1-6.noarch.rpm
+        state: present
+      when:
+        - "'CentOS' in distro" 
+
+    - name: Add repository for Ubuntu
+      apt:
+        deb: https://repo.percona.com/apt/percona-release_0.1-6.{{ releasename }}_all.deb
+        state: present
+      when:                                                                                                                         
+        - "'Ubuntu' in distro" 
+
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+      when:                                                                                                                         
+        - "'Ubuntu' in distro" 
+
+    - name: Install PS for CentOS
+      yum:
+        name: Percona-Server-server-57
+        disable_gpg_check: yes
+        state: present
+      when:
+        - "'CentOS' in distro" 
+
+    - name: Install PS for Ubuntu
+      apt:
+        name: percona-server-server-5.7
+        state: present
+      when:
+        - "'Ubuntu' in distro" 
+
+    - name: Stop MySQL
+      systemd:
+        name: "{{ mysqlservice }}"
+        state: stopped
+
+    - name: Remove datadir
+      file:
+        path: "{{ mysqldir }}"
+        state: "{{ item }}"
+        owner: mysql
+        group: mysql
+      with_items:
+        - absent
+        - directory
+
+    - name: Init datadir
+      shell: >
+        mysqld --no-defaults --initialize-insecure --datadir="{{ mysqldir }}" --user=mysql
+
+    - import_tasks: root_tasks.yml
+    - import_tasks: ps_config.yml
+
+    - name: Generate MySQL replication user script
+      template:
+        src: user.sql.j2
+        dest: "/tmp/user.sql"
+      when:
+        - inventory_hostname == ansible_play_hosts[0]
+
+    - name: Set up replication user
+      shell: >
+        cat /tmp/user.sql | mysql
+      when:
+        - inventory_hostname == ansible_play_hosts[0]
+
+- hosts: sysbench-node
+  remote_user: root
+  vars_files:
+    - vars.yml
+
+  tasks:
+
+    - name: Get distro name from /etc/os-release
+      raw: "([ -f /etc/os-release ] && grep '^NAME=' /etc/os-release | sed s'/NAME=//' | tr -d \\\") || ([ -f /etc/redhat-release ] && cat /etc/redhat-release | cut '-d ' -f1)"
+      register: distro_st
+      failed_when: false
+      changed_when: false
+
+    - name: set distro facts
+      set_fact:
+        distro: "{{ distro_st.stdout | trim }}"
+
+    - name: Add repository
+      shell: >
+        curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.rpm.sh | sudo bash
+      when:
+        - "'CentOS' in distro" 
+
+    - name: Add repository
+      apt:
+        update_cache: yes
+      when:
+        - "'Ubuntu' in distro" 
+
+    - name: Install sysbench
+      yum:
+        name: sysbench
+        disable_gpg_check: yes
+        state: present
+      when:
+        - "'CentOS' in distro" 
+
+    - name: Install sysbench
+      apt:
+        name: sysbench
+        state: present
+      when:
+        - "'Ubuntu' in distro" 
+
+    - name: Install sysbench
+      yum:
+        name: sysbench
+        disable_gpg_check: yes
+        state: present
+      when:
+        - "'CentOS' in distro" 
+
+    - name: Install git
+      yum:
+        name: git
+        state: present
+      when:
+        - "'CentOS' in distro" 
+
+    - name: Install sysbench-tpcc
+      git:
+        repo: https://github.com/Percona-Lab/sysbench-tpcc.git
+        dest: /root/sysench-tpcc
+      when:
+        - "'CentOS' in distro" 
+

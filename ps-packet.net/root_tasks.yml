@@ -1,0 +1,58 @@
+---
+
+- name: setting absent kernel params
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    sysctl_set: yes
+    ignoreerrors: yes
+    state: absent
+  with_items:
+    - { name: 'net.ipv4.tcp_tw_recycle', value: 0 }
+  when: tuning_kernel_parameters
+
+- name: setting present kernel params
+  sysctl: name="{{ item.name }}" value="{{ item.value }}" ignoreerrors=yes state=present
+  with_items:
+    - { name: 'net.core.somaxconn', value: 32768 }
+    - { name: 'vm.swappiness', value: 0 }
+    - { name: 'net.ipv4.tcp_syncookies', value: 0 }
+    - { name: 'fs.file-max', value: 1000000 }
+  when: tuning_kernel_parameters
+
+- name: update /etc/security/limits.conf
+  blockinfile:
+    dest: /etc/security/limits.conf
+    insertbefore: '# End of file'
+    block: |
+      {{ deploy_user }}        soft        nofile        1000000
+      {{ deploy_user }}        hard        nofile        1000000
+      {{ deploy_user }}        soft        core          unlimited
+      {{ deploy_user }}        soft        stack         10240
+  when: tuning_kernel_parameters
+
+- name: Set MySQL Filehandle Limits
+  notify: Reload systemctl
+  copy:
+    src: limits.conf
+    dest: /lib/systemd/system/{{ mysqlservice }}.service.d/
+
+# modify irqbalance configuration file
+- name: check centos configuration file exists
+  stat: path=/etc/sysconfig/irqbalance
+  register: centos_irq_config_file
+
+- name: modify centos irqbalance configuration file
+  lineinfile:
+    dest=/etc/sysconfig/irqbalance
+    regexp='(?<!_)ONESHOT='
+    line='ONESHOT=yes'
+  when:
+    - tuning_irqbalance_value
+    - centos_irq_config_file.stat.exists
+
+# start irqbalance value
+- name: start irqbalance service
+  service: name=irqbalance state=started
+  ignore_errors: true
+  when: tuning_irqbalance_value
