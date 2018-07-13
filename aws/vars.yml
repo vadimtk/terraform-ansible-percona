@@ -1,0 +1,15 @@
+---
+# Credentials
+mysql_root_pass: sammytheshark
+
+mysql_repl_user: repl
+mysql_repl_pass: replpassword
+
+mountdir: /mnt/data
+mysqldir: /mnt/data/mysql
+cluster_name: cluster1
+
+tuning_kernel_parameters: True
+tuning_irqbalance_value: True
+deploy_user: mysql
+device: /dev/nvme1n1

@@ -1,0 +1,12 @@
+---
+- name: Generate global mysql.cnf file for PS
+  template:
+    src: mysql.cnf.j2
+    dest:  /etc/my.cnf
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+  become: true
+  tags: apply-config
+

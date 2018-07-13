@@ -1,0 +1,90 @@
+---
+- hosts: ps-node
+  remote_user: ec2-user
+  gather_facts: yes
+  become: true
+  vars_files:
+    - vars.yml
+
+  tasks:
+
+    - name: Create  ext4 filesystem
+      filesystem:
+        fstype: ext4
+        dev: "{{ device }}"
+        force: no
+        opts: -E lazy_itable_init=0,lazy_journal_init=0,discard
+
+    - name: Mount FS
+      mount:
+        path: "{{ mountdir }}"
+        src: "{{ device }}"
+        fstype: ext4
+        opts: discard
+        state: mounted
+
+    - name: Install packges
+      yum:
+        name: libselinux-python
+        state: present
+
+    - name: Stop selinux
+      selinux:
+        state: disabled
+
+    - name: Download Percona TAR
+      yum:
+        name: http://www.percona.com/downloads/percona-release/redhat/0.1-6/percona-release-0.1-6.noarch.rpm
+        state: present
+
+    - name: Install packages
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+       - Percona-Server-server-57
+
+    - name: Stop MySQL
+      systemd:
+        name: mysqld
+        state: stopped
+
+    - import_tasks: root_tasks.yml
+
+    - name: Remove datadir
+      file:
+        path: "{{ mysqldir }}"
+        state: "{{ item }}"
+        owner: mysql
+        group: mysql
+      with_items:
+        - absent
+        - directory
+
+    - name: Init datadir
+      shell: >
+        mysqld --no-defaults --initialize-insecure --datadir="{{ mysqldir }}" --user=mysql
+
+    - import_tasks: ps_config.yml
+
+    - name: Generate MySQL replication user script
+      template:
+        src: user.sql.j2
+        dest: "/tmp/user.sql"
+      when:
+        - inventory_hostname == ansible_play_hosts[0]
+
+    - name: Reload systemctl
+      shell: systemctl daemon-reload
+
+    - name: Restart mysqld
+      systemd:
+        name: mysqld
+        state: started
+    
+    - name: Set up replication user
+      shell: >
+        cat /tmp/user.sql | mysql
+      when:
+        - inventory_hostname == ansible_play_hosts[0]
+

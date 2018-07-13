@@ -1,0 +1,1 @@
+sysbench oltp_read_only --tables=16 --table_size=10000000 --threads=100 --mysql-socket=/tmp/mysql.sock --mysql-user=root --time=600 --max-requests=0 --report-interval=1 --rand-type=uniform --mysql-db=sbtest --mysql-ssl=off prepare
