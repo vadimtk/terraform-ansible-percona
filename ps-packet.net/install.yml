@@ -5,10 +5,6 @@
   vars_files:
     - vars.yml
 
-  handlers:
-     - name: Reload systemctl
-       shell: systemctl daemon-reload
-
   tasks:
 
     - name: Get distro name from /etc/os-release
@@ -124,6 +120,14 @@
         dest: "/tmp/user.sql"
       when:
         - inventory_hostname == ansible_play_hosts[0]
+
+    - name: Reload systemctl
+      shell: systemctl daemon-reload
+
+    - name: Restart mysqld
+      systemd:
+        name: "{{ mysqlservice }}"
+        state: started
 
     - name: Set up replication user
       shell: >

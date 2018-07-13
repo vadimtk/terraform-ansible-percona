@@ -1,6 +1,6 @@
 # Configure the Packet Provider
 provider "packet" {
-  auth_token = "XXXXXXXXXXXXX"
+  auth_token = "${chomp(file("/home/vadim/packet-key"))}"
 }
 
 resource "packet_ssh_key" "key1" {
@@ -68,7 +68,7 @@ resource "packet_device" "nodesubu" {
 resource "packet_device" "client" {
   count            = "1"
   hostname         = "client-${count.index + 1}"
-  plan             = "c2.medium.x86"
+  plan             = "t1.small.x86"
   facility         = "ewr1"
   operating_system = "ubuntu_18_04"
   billing_cycle    = "hourly"
