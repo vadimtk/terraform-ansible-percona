@@ -1,0 +1,11 @@
+[dbservers]
+
+[sysbench-server]
+
+[iotest]
+35.170.55.77
+
+[all:vars]
+user=ec2-user
+device=/dev/nvme1n1
+mountdir=/mnt/data

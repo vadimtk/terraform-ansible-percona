@@ -1,0 +1,41 @@
+---
+- name: Generate global mysql.cnf file for PS
+  template:
+    src: mysql.cnf.j2
+    dest:  "{{ mysqlconf }}"
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+  become: true
+  tags: apply-config
+
+- name: Generate keyring file
+  copy:
+    src: keyring_vault.conf
+    dest:  /var/lib/mysql-keyring/keyring_vault.conf
+    owner: mysql
+    group: mysql
+    mode: "0644"
+    backup: true
+  become: true
+  tags: apply-config
+
+- file: path=/etc/mysql state=directory
+
+- name: Generate cert file
+  copy:
+    src: cert.crt
+    dest:  /etc/mysql/cert.crt
+    owner: mysql
+    group: mysql
+    mode: "0600"
+    backup: true
+  become: true
+  tags: apply-config
+
+- name: Restart MySQL
+  systemd:
+    name: "{{ mysqlservice }}"
+    state: restarted
+  tags: apply-config

@@ -1,0 +1,31 @@
+---
+    - name: Install sysbench
+      yum:
+        name: https://packagecloud.io/akopytov/sysbench/packages/el/7/sysbench-1.0.15-1.el7.centos.x86_64.rpm/download.rpm
+        state: present
+
+    - name: Install prepare file
+      copy:
+        src: "{{ item }}"
+        dest: "/root/{{ item }}"
+      with_items:
+        - prepare.sh
+        - run.sh
+
+    - name: Unmount FS
+      mount:
+        path: "{{ mountdir }}"
+        state: unmounted
+
+    - name: Create  ext4 filesystem
+      filesystem:
+        fstype: ext4
+        dev: "{{ device }}"
+        force: no
+
+    - name: Mount FS
+      mount:
+        path: "{{ mountdir }}"
+        src: "{{ device }}"
+        fstype: ext4
+        state: mounted

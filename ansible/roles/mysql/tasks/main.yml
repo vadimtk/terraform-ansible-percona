@@ -1,0 +1,120 @@
+---
+    - name: Create  ext4 filesystem
+      filesystem:
+        fstype: ext4
+        dev: "{{ device }}"
+        force: no
+        opts: -E lazy_itable_init=0,lazy_journal_init=0,discard
+
+    - name: Mount FS
+      mount:
+        path: "{{ mountdir }}"
+        src: "{{ device }}"
+        fstype: ext4
+        opts: discard
+        state: mounted
+
+    - name: Install packages
+      package:
+        name: libselinux-python
+        state: present
+      when:
+        - ansible_distribution=='CentOS' or ansible_distribution=='Amazon'
+
+    - name: Stop selinux
+      selinux:
+        state: disabled
+      when:
+        - ansible_distribution=='CentOS' or ansible_distribution=='Amazon'
+
+    - name: set distro facts
+      set_fact:
+        mysqlservice: "mysql"
+        mysqlconf: "/etc/mysql/my.cnf"
+        packagename: "percona-server-server-5.7"
+        releasename: "{{ ansible_distribution_release }}"
+        reponame: "https://repo.percona.com/apt/percona-release_0.1-6.{{ ansible_distribution_release }}_all.deb"
+      when:
+        - ansible_distribution=='Ubuntu'
+
+    - name: set distro facts
+      set_fact:
+        mysqlservice: "mysqld"
+        mysqlconf: "/etc/my.cnf"
+        packagename: "Percona-Server-server-57"
+        releasename: "{{ ansible_distribution_release }}"
+        reponame: "http://www.percona.com/downloads/percona-release/redhat/0.1-6/percona-release-0.1-6.noarch.rpm"
+      when:
+        - ansible_distribution=='CentOS' or ansible_distribution=='Amazon'
+
+    - name: Install Percona Repo
+      apt:
+        deb: "{{ reponame }}"
+        state: present
+      when:
+        - ansible_distribution=='Ubuntu'
+
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+      when:
+        - ansible_distribution=='Ubuntu' or ansible_distribution=='Debian'
+
+    - name: Download Percona Repo
+      package:
+        name: http://www.percona.com/downloads/percona-release/redhat/0.1-6/percona-release-0.1-6.noarch.rpm
+        state: present
+      when:
+        - ansible_distribution=='CentOS' or ansible_distribution=='Amazon'
+
+    - name: Install packages
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - "{{ packagename }}"
+
+    - name: Stop MySQL
+      systemd:
+        name: "{{ mysqlservice }}"
+        state: stopped
+
+    - import_tasks: root_tasks.yml
+
+    - name: Remove datadir
+      file:
+        path: "{{ mysqldir }}"
+        state: "{{ item }}"
+        owner: mysql
+        group: mysql
+      with_items:
+        - absent
+        - directory
+
+    - name: Init datadir
+      shell: >
+        mysqld --no-defaults --initialize-insecure --datadir="{{ mysqldir }}" --user=mysql
+
+    - import_tasks: ps_config.yml
+
+    - name: Generate MySQL replication user script
+      template:
+        src: user.sql.j2
+        dest: "/tmp/user.sql"
+      when:
+        - inventory_hostname == ansible_play_hosts[0]
+
+    - name: Reload systemctl
+      shell: systemctl daemon-reload
+
+    - name: Restart mysqld
+      systemd:
+        name: "{{ mysqlservice }}"
+        state: started
+    
+    - name: Set up replication user
+      shell: >
+        cat /tmp/user.sql | mysql
+      when:
+        - inventory_hostname == ansible_play_hosts[0]
+

@@ -1,0 +1,24 @@
+---
+    - name: Install sysbench
+      yum:
+        name: https://packagecloud.io/akopytov/sysbench/packages/el/7/sysbench-1.0.15-1.el7.centos.x86_64.rpm/download.rpm
+        state: present
+
+    - name: Install git
+      yum:
+        name: git
+        state: present
+
+    - name: Install sysbench-tpcc
+      git:
+        repo: https://github.com/Percona-Lab/sysbench-tpcc.git
+        dest: /home/vadim/sysench-tpcc
+
+    - name: Install prepare file
+      copy:
+        src: "{{ item }}"
+        dest: "/root/{{ item }}"
+      with_items:
+        - prepare.sh
+        - run.sh
+        - results.sh
