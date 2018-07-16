@@ -1,0 +1,6 @@
+- hosts: sysbench-server
+  remote_user: '{{ user }}'
+  become: true
+
+  roles:
+  - sysbench

@@ -1,0 +1,65 @@
+[mysqld]
+
+
+datadir={{ mysqldir }}
+socket=/tmp/mysql.sock
+log-error=error.log
+
+ssl=0
+log-bin=mysql-bin
+server-id=1721604
+binlog_format = 'ROW'
+binlog_row_image=minimal
+sync_binlog=1000
+
+
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+
+# Recommended in standard MySQL setup
+
+# general
+  table_open_cache = 200000
+  table_open_cache_instances=64
+  back_log=3500
+  query_cache_type=0
+  max_connections=4000
+
+# files
+skip-innodb
+
+max_prepared_stmt_count=1000000
+
+rocksdb_max_open_files=-1
+rocksdb_max_background_jobs=8
+rocksdb_max_total_wal_size=4G
+rocksdb_block_size=16384
+rocksdb_table_cache_numshardbits=6
+
+# rate limiter
+rocksdb_bytes_per_sync=16777216
+rocksdb_wal_bytes_per_sync=4194304
+#rocksdb_rate_limiter_bytes_per_sec=104857600 #100MB/s
+#
+# # triggering compaction if there are many sequential deletes
+rocksdb_compaction_sequential_deletes_count_sd=1
+rocksdb_compaction_sequential_deletes=199999
+rocksdb_compaction_sequential_deletes_window=200000
+
+rocksdb_default_cf_options="write_buffer_size=256m;target_file_size_base=32m;max_bytes_for_level_base=512m;max_write_buffer_number=4;level0_file_num_compaction_trigger=4;level0_slowdown_writes_trigger=20;level0_stop_writes_trigger=30;max_write_buffer_number=4;block_based_table_factory={cache_index_and_filter_blocks=1;filter_policy=bloomfilter:10:false;whole_key_filtering=0};level_compaction_dynamic_level_bytes=true;optimize_filters_for_hits=true;memtable_prefix_bloom_size_ratio=0.05;prefix_extractor=capped:12;compaction_pri=kMinOverlappingRatio;compression=kLZ4Compression;bottommost_compression=kLZ4Compression;compression_opts=-14:4:0"
+
+rocksdb_max_subcompactions=4
+rocksdb_compaction_readahead_size=16m
+
+rocksdb_use_direct_reads=ON
+rocksdb_use_direct_io_for_flush_and_compaction=ON
+
+default_storage_engine=RocksDB
+
+
+bind_address = 0.0.0.0
+
+
+[client]
+socket=/tmp/mysql.sock
+
