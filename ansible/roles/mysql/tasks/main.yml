@@ -42,6 +42,7 @@
         mysqlservice: "mysqld"
         mysqlconf: "/etc/my.cnf"
         packagename: "Percona-Server-server-57"
+        rockspackagename: "Percona-Server-rocksdb-57"
         releasename: "{{ ansible_distribution_release }}"
         reponame: "http://www.percona.com/downloads/percona-release/redhat/0.1-6/percona-release-0.1-6.noarch.rpm"
       when:
@@ -73,6 +74,16 @@
         state: present
       with_items:
         - "{{ packagename }}"
+
+    - name: Install MyRocks packages
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - "{{ rockspackagename }}"
+      when: 
+        - enable_myrocks is defined
+        - enable_myrocks
 
     - name: Stop MySQL
       systemd:

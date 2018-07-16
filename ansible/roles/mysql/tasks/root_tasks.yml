@@ -1,23 +1,15 @@
 ---
 
-- name: setting absent kernel params
-  sysctl:
-    name: "{{ item.name }}"
-    value: "{{ item.value }}"
-    sysctl_set: yes
-    ignoreerrors: yes
-    state: absent
-  with_items:
-    - { name: 'net.ipv4.tcp_tw_recycle', value: 0 }
+- name: Generate sysctl file
+  copy:
+    src: 11-percona.conf
+    dest:  /etc/sysctl.d/11-percona.conf
+  become: true
   when: tuning_kernel_parameters
 
 - name: setting present kernel params
-  sysctl: name="{{ item.name }}" value="{{ item.value }}" ignoreerrors=yes state=present
-  with_items:
-    - { name: 'net.core.somaxconn', value: 32768 }
-    - { name: 'vm.swappiness', value: 0 }
-    - { name: 'net.ipv4.tcp_syncookies', value: 0 }
-    - { name: 'fs.file-max', value: 1000000 }
+  shell: >
+    sysctl -p /etc/sysctl.d/11-percona.conf
   when: tuning_kernel_parameters
 
 - name: update /etc/security/limits.conf

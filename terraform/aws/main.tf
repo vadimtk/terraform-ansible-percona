@@ -4,9 +4,9 @@ provider "aws" {
   shared_credentials_file = "/home/vadim/cred"
 }
 
-resource "aws_instance" "c5d_9xlarge" {
+resource "aws_instance" "box" {
   ami = "ami-b70554c8"
-  instance_type = "c5d.9xlarge"
+  instance_type = "c5d.4xlarge"
   availability_zone = "us-east-1a"
   subnet_id = "${aws_subnet.public-subnet.id}"
   associate_public_ip_address=true
@@ -19,9 +19,10 @@ resource "aws_instance" "c5d_9xlarge" {
   }
 }
 
-resource "aws_instance" "c5d_18xlarge" {
+
+resource "aws_instance" "box_rocksdb" {
   ami = "ami-b70554c8"
-  instance_type = "c5d.18xlarge"
+  instance_type = "c5.4xlarge"
   availability_zone = "us-east-1a"
   subnet_id = "${aws_subnet.public-subnet.id}"
   associate_public_ip_address=true
@@ -32,6 +33,83 @@ resource "aws_instance" "c5d_18xlarge" {
     Name = "Vadim-test"
     iit-billing-tag = "vadim-perf"
   }
+}
+
+resource "aws_instance" "box_innodb" {
+  ami = "ami-b70554c8"
+  instance_type = "c5.9xlarge"
+  availability_zone = "us-east-1a"
+  subnet_id = "${aws_subnet.public-subnet.id}"
+  associate_public_ip_address=true
+  vpc_security_group_ids = ["${aws_security_group.sgdb.id}"]
+  key_name="VadimAmazonNorthV"
+  tags {
+    deparment = "CTOLab"
+    Name = "Vadim-test"
+    iit-billing-tag = "vadim-perf"
+  }
+}
+
+output "ip-rocksdb" {
+  value = "${aws_instance.box_rocksdb.public_ip}"
+}
+output "ip-innodb" {
+  value = "${aws_instance.box_innodb.public_ip}"
+}
+
+resource "aws_ebs_volume" "volume_rocksdb" {
+  availability_zone = "us-east-1a"
+  size = 1024
+  type = "gp2"
+  iops = 10000
+  tags {
+    deparment = "CTOLab"
+    Name = "Vadim-test"
+    iit-billing-tag = "vadim-perf"
+  }
+}
+
+resource "aws_ebs_volume" "volume_innodb" {
+  availability_zone = "us-east-1a"
+  size = 1024
+  type = "gp2"
+  iops = 10000
+  tags {
+    deparment = "CTOLab"
+    Name = "Vadim-test"
+    iit-billing-tag = "vadim-perf"
+  }
+}
+
+resource "aws_ebs_volume" "backup" {
+  availability_zone = "us-east-1a"
+  size = 512
+  type = "gp2"
+  iops = 10000
+  tags {
+    deparment = "CTOLab"
+    Name = "Vadim-test"
+    iit-billing-tag = "vadim-perf"
+  }
+}
+
+resource "aws_volume_attachment" "attach_rocksdb" {
+  device_name = "/dev/sdh"
+  volume_id   = "${aws_ebs_volume.volume_rocksdb.id}"
+  instance_id = "${aws_instance.box_rocksdb.id}"
+}
+
+resource "aws_volume_attachment" "backup_att" {
+  device_name = "/dev/sdj"
+  volume_id   = "${aws_ebs_volume.backup.id}"
+  instance_id = "${aws_instance.box_rocksdb.id}"
+  skip_destroy = true
+}
+
+resource "aws_volume_attachment" "attach_innodb" {
+  device_name = "/dev/sdh"
+  volume_id   = "${aws_ebs_volume.volume_innodb.id}"
+  instance_id = "${aws_instance.box_innodb.id}"
 }
 
 resource "aws_vpc" "default" {

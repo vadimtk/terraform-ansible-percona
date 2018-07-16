@@ -26,7 +26,8 @@
         mysqlservice: "mysql"
         mysqlconf: "/etc/mysql/my.cnf"
       when:                                                                                                                         
-        - "'Ubuntu' in distro or 'Debian' in distro" 
+        - ansible_distribution=='Ubuntu'
+      tags: apply-config
 
     - name: set service mysql facts
       set_fact:
@@ -41,6 +42,7 @@
         dev: "{{ device }}"
         force: no
         opts: -E lazy_itable_init=0,lazy_journal_init=0,discard
+      ignore_errors: yes
 
     - name: Mount FS
       mount:
@@ -49,6 +51,7 @@
         fstype: ext4
         opts: discard
         state: mounted
+      ignore_errors: yes
 
     - name: Stop selinux
       selinux:

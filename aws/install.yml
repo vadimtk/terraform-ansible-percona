@@ -24,7 +24,7 @@
         state: mounted
 
     - name: Install packges
-      yum:
+      package:
         name: libselinux-python
         state: present
 
@@ -33,12 +33,12 @@
         state: disabled
 
     - name: Download Percona TAR
-      yum:
+      package:
         name: http://www.percona.com/downloads/percona-release/redhat/0.1-6/percona-release-0.1-6.noarch.rpm
         state: present
 
     - name: Install packages
-      yum:
+      package:
         name: "{{ item }}"
         state: present
       with_items:

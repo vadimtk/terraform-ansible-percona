@@ -1,7 +1,9 @@
 [mysqld]
 
+{% if enable_vault_plugin %}
 early-plugin-load="keyring_vault=keyring_vault.so" 
 loose-keyring_vault_config="/var/lib/mysql-keyring/keyring_vault.conf"
+{% endif %}
 
 datadir={{ mysqldir }}
 socket=/tmp/mysql.sock

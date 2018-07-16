@@ -22,3 +22,10 @@
         - prepare.sh
         - run.sh
         - results.sh
+
+    - name: Install prepare file tpcc
+      copy:
+        src: "{{ item }}"
+        dest: "/home/vadim/sysench-tpcc/{{ item }}"
+      with_items:
+        - prepare_tpcc.sh

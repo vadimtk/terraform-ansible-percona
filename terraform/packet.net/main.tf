@@ -22,9 +22,9 @@ resource "packet_project" "cool_project" {
 resource "packet_device" "nodes" {
   count            = "1"
   hostname         = "node-${count.index + 1}"
-  plan             = "c2.medium.x86"
+  plan             = "c1.small.x86"
   facility         = "ewr1"
-  operating_system = "debian_9"
+  operating_system = "ubuntu_18_04"
   billing_cycle    = "hourly"
   project_id       = "${packet_project.cool_project.id}"
   connection {

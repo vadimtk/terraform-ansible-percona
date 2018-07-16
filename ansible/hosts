@@ -1,11 +1,13 @@
 [dbservers]
+34.232.109.185
 
 [sysbench-server]
+34.232.109.185
 
 [iotest]
-35.170.55.77
 
 [all:vars]
 user=ec2-user
 device=/dev/nvme1n1
 mountdir=/mnt/data
+ansible_ssh_private_key_file=/home/vadim/amazkey/1.pem
