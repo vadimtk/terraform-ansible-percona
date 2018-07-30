@@ -1,21 +1,17 @@
 # Configure the Packet Provider
 provider "packet" {
-  auth_token = "${chomp(file("/home/vadim/packet-key"))}"
+  auth_token = "${chomp(file("/home/vadim/keys/packet_key"))}"
 }
 
 resource "packet_ssh_key" "key1" {
   name       = "terraform-1"
-  public_key = "${file("/root/.ssh/id_rsa.pub")}"
+  public_key = "${file("/home/vadim/keys/packet-keys/packet_rsa.pub")}"
 }
 
-resource "packet_ssh_key" "key2" {
-  name       = "terraform-2"
-  public_key = "${file("/home/vadim/terraform/packet_rsa.pub")}"
-}
 
 # Create a project
 resource "packet_project" "cool_project" {
-  name           = "K8S"
+  name           = "MySQLTest"
 }
 
 # Create a device and add it to tf_project_1
@@ -30,7 +26,7 @@ resource "packet_device" "nodes" {
   connection {
     type     = "ssh"
     user = "root"
-    private_key = "${file("/root/.ssh/id_rsa")}"
+    private_key = "${file("/home/vadim/keys/packet-keys/packet_rsa")}"
   }
   provisioner "file" {
     source      = "conf/hosts.allow"

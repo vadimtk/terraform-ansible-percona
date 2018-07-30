@@ -1,8 +1,8 @@
 [dbservers]
-34.232.109.185
+box_innodb.aws.vtk.one
 
 [sysbench-server]
-34.232.109.185
+box_client.aws.vtk.one
 
 [iotest]
 
@@ -10,4 +10,5 @@
 user=ec2-user
 device=/dev/nvme1n1
 mountdir=/mnt/data
-ansible_ssh_private_key_file=/home/vadim/amazkey/1.pem
+ansible_ssh_private_key_file=/home/vadim/keys/1.pem
+backupdir=mysql.innodb

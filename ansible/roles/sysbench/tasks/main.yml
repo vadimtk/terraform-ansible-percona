@@ -29,3 +29,4 @@
         dest: "/home/vadim/sysench-tpcc/{{ item }}"
       with_items:
         - prepare_tpcc.sh
+        - run_tpcc.sh
