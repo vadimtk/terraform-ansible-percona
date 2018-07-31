@@ -9,6 +9,11 @@
         name: git
         state: present
 
+    - name: Install mysql
+      yum:
+        name: mysql
+        state: present
+
     - name: Install sysbench-tpcc
       git:
         repo: https://github.com/Percona-Lab/sysbench-tpcc.git

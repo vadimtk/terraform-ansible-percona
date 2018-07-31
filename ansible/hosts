@@ -2,7 +2,7 @@
 box_innodb.aws.vtk.one
 
 [sysbench-server]
-box_client.aws.vtk.one
+box_client-0.aws.vtk.one
 
 [iotest]
 

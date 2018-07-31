@@ -117,8 +117,8 @@ resource "aws_route53_record" "box_innodb" {
 resource "aws_spot_instance_request" "box_client" {
   ami = "ami-b70554c8"
   instance_type = "c5.9xlarge"
-  availability_zone = "us-east-1a"
-  subnet_id = "${aws_subnet.public-subnet.id}"
+  availability_zone = "us-east-1b"
+  subnet_id = "${aws_subnet.private-subnet.id}"
   associate_public_ip_address=true
   vpc_security_group_ids = ["${aws_security_group.sgdb.id}"]
   key_name="VadimAmazonNorthV"
@@ -245,6 +245,30 @@ resource "aws_volume_attachment" "attach_innodb1" {
   instance_id = "${data.aws_instance.box1.id}"
 }
 
+
+resource "aws_db_instance" "db1" {
+  identifier = "vadim-db1"
+  allocated_storage    = 3400
+  storage_type         = "gp2"
+  engine               = "mysql"
+  engine_version       = "5.7"
+  instance_class       = "db.m4.10xlarge"
+  name                 = "mydb"
+  multi_az             = false
+  username             = "sbtest"
+  password             = "sbtestsbtest"
+  parameter_group_name = "default.mysql5.7"
+  skip_final_snapshot  = true
+  vpc_security_group_ids  = ["${aws_security_group.sgdb.id}"]
+  db_subnet_group_name     = "${aws_db_subnet_group.default.id}"
+  tags {
+    deparment = "CTOLab"
+    Name = "Vadim-test-rds"
+    iit-billing-tag = "vadim-perf"
+  }
+}
+
+
 resource "aws_vpc" "default" {
     cidr_block = "${var.vpc_cidr}"
     enable_dns_hostnames = true
@@ -260,8 +284,29 @@ resource "aws_subnet" "public-subnet" {
   availability_zone = "us-east-1a"
 
   tags {
-        Name = "Public Subnet"
-        deparment = "CTOLab"
+     Name = "Vadim Public Subnet"
+     deparment = "CTOLab"
+  }
+}
+
+resource "aws_subnet" "private-subnet" {
+  vpc_id = "${aws_vpc.default.id}"
+  cidr_block = "10.0.1.0/24"
+  availability_zone = "us-east-1b"
+
+  tags {
+     Name = "Vadim Private Subnet"
+     deparment = "CTOLab"
+  }
+}
+
+
+resource "aws_db_subnet_group" "default" {
+  name       = "main"
+  subnet_ids = ["${aws_subnet.public-subnet.id}", "${aws_subnet.private-subnet.id}"]
+
+  tags {
+    Name = "Vadim DB subnet group"
   }
 }
 
@@ -274,7 +319,7 @@ resource "aws_security_group" "sgdb"{
     from_port = 3306
     to_port = 3306
     protocol = "tcp"
-    cidr_blocks = ["${var.public_subnet_cidr}"]
+    cidr_blocks = ["${var.public_subnet_cidr}","10.0.1.0/24"]
   }
 
   ingress {
