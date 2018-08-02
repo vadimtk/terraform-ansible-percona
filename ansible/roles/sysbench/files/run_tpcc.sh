@@ -1,0 +1,1 @@
+./tpcc.lua --mysql-socket=/tmp/mysql.sock --mysql-user=root --mysql-db=sbrocks --time=3600 --threads=32 --report-interval=1 --tables=50 --scale=100 --use_fk=0 --mysql_storage_engine=rocksdb --mysql_table_options="COLLATE latin1_bin" --trx_level=RC run |

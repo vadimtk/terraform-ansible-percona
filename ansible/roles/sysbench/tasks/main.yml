@@ -35,3 +35,5 @@
       with_items:
         - prepare_tpcc.sh
         - run_tpcc.sh
+        - prepare_tpcc_rds.sh
+        - run_tpcc_rds.sh

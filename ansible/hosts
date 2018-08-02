@@ -1,8 +1,8 @@
 [dbservers]
-box_innodb.aws.vtk.one
+box_innodb.aws.vadimtk.com
 
 [sysbench-server]
-box_client-0.aws.vtk.one
+34.232.51.167
 
 [iotest]
 
@@ -12,3 +12,4 @@ device=/dev/nvme1n1
 mountdir=/mnt/data
 ansible_ssh_private_key_file=/home/vadim/keys/1.pem
 backupdir=mysql.innodb
+initdatadir=false
