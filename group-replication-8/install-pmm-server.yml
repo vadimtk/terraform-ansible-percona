@@ -1,0 +1,54 @@
+---
+- hosts: pmm-server
+  remote_user: root
+  become: yes
+  become_user: root
+  tasks:
+    - name: Create a ext4 filesystem on /dev/sdb1 and check disk blocks
+      filesystem:
+        fstype: ext4
+        dev: /dev/sdb
+        force: no
+
+    - name: Mount FS
+      mount:
+        path: /mnt/disks/pdsdd
+        src: /dev/sdb
+        fstype: ext4
+        state: mounted
+
+    - name: Docker dir
+      file:
+        path: /mnt/disks/pdsdd/docker 
+        state: directory
+        owner: root
+        group: root
+
+    - name: Generate global mysql.cnf file for group replication
+      template:
+        src: docker.conf
+        dest:  /etc/default/docker
+        owner: root
+        group: root
+
+    - name: Install Docker
+      yum:
+        name: docker
+        state: present
+
+    - name: Start docker
+      systemd:
+        name: docker
+        state: started
+
+    - name: Init docker pmm
+      shell: >
+        docker pull percona/pmm-server:latest
+
+    - name: Init docker pmm 1
+      shell: >
+        docker create -v /opt/prometheus/data -v /opt/consul-data -v /var/lib/mysql -v /var/lib/grafana --name pmm-data percona/pmm-server:latest /bin/true
+
+    - name: Start docker pmm 
+      shell: >
+        docker run -d -p 80:80 --volumes-from pmm-data --name pmm-server --restart always percona/pmm-server:latest

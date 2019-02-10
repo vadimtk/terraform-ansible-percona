@@ -1,0 +1,148 @@
+---
+- hosts: mysql-node
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: false
+  vars_files:
+    - mysql_nodes.yml
+
+  pre_tasks:
+
+  - name: Install python2 for Ansible
+    raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qqy python-minimal)"
+    register: output
+    changed_when:
+    - output.stdout != ""
+    - output.stdout != "\r\n"
+  - name: Gathering Facts
+    setup:
+
+
+  tasks:
+
+    - name: UMount FS
+      mount:
+        path: "{{ mountdir }}"
+        src: "{{ disk }}"
+        fstype: ext4
+        opts: discard
+        state: unmounted
+      when: disk is defined
+
+    - name: Create  ext4 filesystem
+      filesystem:
+        fstype: ext4
+        dev: "{{ disk }}"
+        force: no
+        opts: -E lazy_itable_init=0,lazy_journal_init=0,discard
+      when: disk is defined
+
+    - name: Mount FS
+      mount:
+        path: "{{ mountdir }}"
+        src: "{{ disk }}"
+        fstype: ext4
+        opts: discard
+        state: mounted
+      when: disk is defined
+
+    - name: Remove datadir
+      file:
+        path: "{{ mysqldir }}"
+        state: "{{ item }}"
+        owner: root
+        group: root
+      with_items:
+        - absent
+        - directory
+
+    - name: copy gpgkey
+      copy:
+        src: gpgkey
+        dest: /tmp
+        owner: root
+        mode: 644
+
+    - name: import gpgkey
+      shell: apt-key add /tmp/gpgkey
+
+    - name: Install  MySQL repo 
+      apt_repository:
+        repo: deb http://repo.mysql.com/apt/ubuntu/ bionic mysql-8.0
+        state: present
+
+    - name: update host file
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '{{ hostvars[item].ansible_bond0_0.ipv4.address }}.*{{  hostvars[item].ansible_hostname}}$'
+        line: "{{ hostvars[item].ansible_bond0_0.ipv4.address }} {{hostvars[item].ansible_hostname}}"
+        state: present
+      become: yes
+      with_items:
+        - "{{ groups['mysql-node'] }}"
+
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+
+    - name: Install MySQL
+      apt:
+        name: mysql-server
+        state: present
+
+    - name: Install  apparmor-utils
+      apt:
+        name: apparmor-utils
+        state: present
+
+    - name: Install MySQL-python
+      apt:
+        name: python-mysqldb
+        state: present
+
+    - name: Stop MySQL
+      systemd:
+        name: mysql
+        state: stopped
+      tags: init-setup
+
+    - import_tasks: root_tasks.yml
+
+    - name: Remove datadir
+      file:
+        path: "{{ mysqldir }}"
+        state: "{{ item }}"
+        owner: mysql
+        group: mysql
+      with_items:
+        - absent
+        - directory
+      tags: init-setup
+
+    - name: Remove datadir
+      file:
+        path: "/mnt/logs"
+        state: "{{ item }}"
+        owner: mysql
+        group: mysql
+      with_items:
+        - directory
+      tags: init-setup
+
+    - name: Disable apparmor for mysqld
+      shell: >
+         aa-complain /usr/sbin/mysqld
+      ignore_errors: yes
+      tags: init-setup
+
+    - name: Init datadir
+      shell: >
+        mysqld --no-defaults --initialize-insecure --datadir="{{ mysqldir }}" --user=mysql
+      tags: init-setup
+
+    - name: Reload systemctl
+      shell: systemctl daemon-reload
+
+    - import_tasks: group_replication.yml
+

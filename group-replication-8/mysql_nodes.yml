@@ -1,0 +1,13 @@
+---
+osuser: root
+networkinterface: ansible_bond0_0
+# Credentials
+mysql_root_pass: sammytheshark
+
+mysql_repl_user: repl
+mysql_repl_pass: replpassword
+
+mountdir: /mnt/data
+mysqldir: /mnt/data/mysql
+disk: /dev/nvme0n1
+deploy_user: mysql

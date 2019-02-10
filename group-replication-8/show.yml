@@ -1,0 +1,7 @@
+- hosts: mysql-node
+  gather_facts: yes
+  remote_user: ubuntu
+  tasks:
+  - name: show 
+    debug:
+      msg: "{{ hostvars[groups['all'][0]] }}"
