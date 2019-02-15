@@ -1,0 +1,31 @@
+---
+- hosts: mysql-node
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: false
+  vars_files:
+    - mysql_nodes.yml
+
+  pre_tasks:
+
+  tasks:
+
+    - name: Install perf
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - perf-tools-unstable
+        - linux-tools-4.15.0-38-generic
+        - linux-cloud-tools-4.15.0-38-generic
+
+    - name: Get http://dimitrik.free.fr/STATsrv-v5-Linux-x64-mysql.tgz
+      get_url:
+        url: http://dimitrik.free.fr/STATsrv-v5-Linux-x64-mysql.tgz
+        dest: /tmp/STATsrv-v5-Linux-x64-mysql.tgz
+
+    - name: Unpack
+      unarchive:
+        src: /tmp/STATsrv-v5-Linux-x64-mysql.tgz
+        dest: /opt/stats

@@ -1,37 +1,27 @@
 ---
 - hosts: sysbench-node
-  remote_user: vadim
+  remote_user: "{{ osuser }}"
   become: yes
   become_user: root
   vars_files:
     - mysql_nodes.yml
   tasks:
 
-    - name: Stop selinux
-      selinux:
-        state: disabled
-
     - name: Add repository
       shell: >
-        curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.rpm.sh | sudo bash
+        curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.deb.sh | sudo bash
 
     - name: Install sysbench
-      yum:
+      apt:
         name: sysbench
-        disable_gpg_check: yes
         state: present
 
     - name: Install git
-      yum:
+      apt:
         name: git
-        state: present
-
-    - name: Install MySQL client
-      yum:
-        name: mysql
         state: present
 
     - name: Install sysbench-tpcc
       git:
         repo: https://github.com/Percona-Lab/sysbench-tpcc.git
-        dest: /home/vadim/sysench-tpcc
+        dest: /home/vadim/sysbench-tpcc

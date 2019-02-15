@@ -1,9 +1,23 @@
-{%- set public_host_ips = ansible_play_hosts | map('extract', hostvars, ['ansible_eth0', 'ipv4', 'address']) | list -%}
-{%- set clusteraddr = hostvars[groups['all'][0]]['ansible_eth0']['ipv4']['address'] if inventory_hostname != groups['all'][0] else '' -%}
+{%- set public_host_ips = ansible_play_hosts | map('extract', hostvars, [networkinterface, 'ipv4', 'address']) | list -%}
+{%- set clusteraddr = hostvars[groups['all'][0]][networkinterface]['ipv4']['address'] if inventory_hostname != groups['all'][0] else '' -%}
 [mysqld]
 
 datadir={{ mysqldir }}
 socket=/tmp/mysql.sock
+log-error=error.log
+
+#  master_info_repository = TABLE
+#  relay_log_info_repository = TABLE
+
+#  binlog_checksum = NONE
+#  log_slave_updates = ON
+
+#log_bin = binlog
+#relay_log=relay
+#sync_binlog=1000
+#binlog_format = ROW
+#binlog_row_image=MINIMAL
+#server_id = {{ ansible_play_hosts.index(inventory_hostname) + 1 }}
 
 # general
   table_open_cache = 200000
@@ -13,19 +27,19 @@ socket=/tmp/mysql.sock
 
 # files
   innodb_file_per_table
-  innodb_log_file_size=4G
+  innodb_log_file_size=10G
   innodb_log_files_in_group=2
   innodb_open_files=4000
 
 # buffers
-  innodb_buffer_pool_size= 80G
+  innodb_buffer_pool_size= 40G
   innodb_buffer_pool_instances=8
   innodb_log_buffer_size=64M
 
 default_storage_engine=InnoDB
-binlog_format=ROW
 
 innodb_flush_log_at_trx_commit  = 0
+innodb_doublewrite=0
 innodb_flush_method             = O_DIRECT
 innodb_file_per_table           = 1
 innodb_autoinc_lock_mode=2
@@ -35,21 +49,29 @@ innodb_io_capacity_max=4000
 
 bind_address = 0.0.0.0
 
-wsrep_slave_threads=2
-wsrep_cluster_address=gcomm://
+wsrep_slave_threads=16
 
-wsrep_node_address="{{ ansible_eth0.ipv4.address }}"
+wsrep_node_address="{{ ansible_bond0_0.ipv4.address }}"
 wsrep_cluster_name="{{ cluster_name }}"
 wsrep_cluster_address=gcomm://{{ clusteraddr }}
 
-# ansible_play_hosts[0] | map('extract', hostvars, ['ansible_eth0', 'ipv4', 'address'])|list|join(',') if inventory_hostname != ansible_play_hosts[0] else "" 
+# ansible_play_hosts[0] | map('extract', hostvars, [networkinterface, 'ipv4', 'address'])|list|join(',') if inventory_hostname != ansible_play_hosts[0] else "" 
 
 
-wsrep_provider=/usr/lib64/galera3/libgalera_smm.so
+wsrep_provider=/usr/lib/libgalera_smm.so
 
 wsrep_sst_method=xtrabackup-v2
 wsrep_sst_auth="root:"
 
+#pxc-encrypt-cluster-traffic=ON
+
+ssl-ca=/etc/mysql/certs/ca.pem
+ssl-cert=/etc/mysql/certs/server-cert.pem
+ssl-key=/etc/mysql/certs/server-key.pem
+
 [client]
 socket=/tmp/mysql.sock
+ssl-ca=/etc/mysql/certs/ca.pem
+ssl-cert=/etc/mysql/certs/client-cert.pem
+ssl-key=/etc/mysql/certs/client-key.pem
 

@@ -1,6 +1,6 @@
-- hosts: node
+- hosts: mysql-node
   gather_facts: yes
-  remote_user: root
+  remote_user: ubuntu
   tasks:
   - name: show 
     debug:

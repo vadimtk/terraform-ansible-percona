@@ -1,71 +1,13 @@
 ---
-- hosts: tag_pxc-node
-  remote_user: vadim
+- hosts: node
+  remote_user: "{{ osuser }}"
   become: yes
   become_user: root
   vars_files:
-    - vars.yml
+    - mysql_nodes.yml
   tasks:
-    - name: Create a ext4 filesystem on /dev/sdb1 and check disk blocks
-      filesystem:
-        fstype: ext4
-        dev: /dev/nvme0n1
-        force: no
-        opts: -E lazy_itable_init=0,lazy_journal_init=0,discard
 
-    - name: Mount FS
-      mount:
-        path: "{{ mountdir }}"
-        src: /dev/nvme0n1
-        fstype: ext4
-        opts: discard
-        state: mounted
-
-    - name: Stop and disable firewalld.
-      service:
-        name: firewalld
-        state: stopped
-        enabled: False
-
-    - name: Stop selinux
-      selinux:
-        state: disabled
-
-    - name: Add repository
-      yum:
-        name: http://www.percona.com/downloads/percona-release/redhat/0.1-4/percona-release-0.1-4.noarch.rpm
-        state: present
-
-    - name: Install PXC
-      yum:
-        name: Percona-XtraDB-Cluster-57
-        disable_gpg_check: yes
-        state: present
-
-    - name: Install MySQL-Python
-      yum:
-        name: MySQL-python
-        disable_gpg_check: yes
-        state: present
-
-    - name: Stop MySQL
-      systemd:
-        name: mysqld
-        state: stopped
-
-    - name: Remove datadir
-      file:
-        path: "{{ mysqldir }}"
-        state: "{{ item }}"
-        owner: mysql
-        group: mysql
-      with_items:
-        - absent
-        - directory
-
-    - name: Init datadir
-      shell: >
-        mysqld --no-defaults --initialize-insecure --datadir="{{ mysqldir }}" --user=mysql
+    - import_tasks: root_tasks.yml
 
     - import_tasks: pxc_replication.yml
 

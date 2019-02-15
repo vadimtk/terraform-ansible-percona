@@ -1,8 +1,17 @@
 ---
+- name: copy certificates
+  copy:
+    src: "{{ item }}"
+    dest: /etc/mysql/certs/
+    owner: root
+    mode: 644
+  with_fileglob:
+    - templates/*.pem
+
 - name: Generate global mysql.cnf file for PXC
   template:
     src: mysql.cnf.j2
-    dest: /etc/my.cnf
+    dest: /etc/mysql/my.cnf
     owner: root
     group: root
     mode: "0644"
@@ -12,6 +21,6 @@
 
 - name: Restart MySQL
   systemd:
-    name: mysqld
+    name: mysql
     state: restarted
   tags: apply-config

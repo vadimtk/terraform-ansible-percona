@@ -1,0 +1,38 @@
+---
+- hosts: node
+  remote_user: root
+  become: yes
+  become_user: root
+  gather_facts: true
+  vars_files:
+    - mysql_nodes.yml
+  tasks:
+
+    - name: Install Percona Repo
+      shell: >
+        wget -P /tmp https://repo.percona.com/apt/percona-release_latest.generic_all.deb
+
+    - name: Install Percona Repo
+      shell: >
+        dpkg -i /tmp/percona-release_latest.generic_all.deb
+
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+
+    - name: Install PMM Client
+      apt:
+        name: pmm-client
+        state: present
+
+    - name: Init client
+      shell: >
+        pmm-admin config --server "{{ groups['pmm-server'][0] }}" --force
+
+    - name: Metics system
+      shell: >
+        pmm-admin add linux:metrics --force
+
+    - name: Metics mysql
+      shell: >
+        pmm-admin add mysql:metrics --force

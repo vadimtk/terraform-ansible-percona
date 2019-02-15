@@ -1,0 +1,11 @@
+---
+- hosts: sysbench-node
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  vars_files:
+    - mysql_nodes.yml
+  tasks:
+
+    - name: Add repository
+      shell: sysbench oltp_read_write --report-interval=1 --time=1800 --threads=48 --tables=10 --table-size=10000000 --mysql-user=root  run

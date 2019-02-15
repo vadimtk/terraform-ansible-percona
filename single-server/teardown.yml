@@ -75,6 +75,6 @@
 
     - name: UnInstall  MySQL repo 
       apt_repository:
-        repo: deb http://repo.mysql.com/apt/ubuntu/ bionic mysql-8.0
+        repo: deb http://repo.mysql.com/apt/ubuntu/ bionic "{{ mysqlver }}"
         state: absent
 

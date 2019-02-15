@@ -10,15 +10,19 @@ resource "packet_ssh_key" "key1" {
 
 
 # Create a project
+resource "packet_project" "kube_project" {
+  name           = "KUBE"
+}
+
 resource "packet_project" "cool_project" {
   name           = "MySQLTest"
 }
 
 # Create a device and add it to tf_project_1
 resource "packet_device" "nodes" {
-  count            = "1"
-  hostname         = "node-${count.index + 1}"
-  plan             = "c1.small.x86"
+  count            = "3"
+  hostname         = "k8snode-${count.index + 1}"
+  plan             = "t1.small.x86"
   facility         = "ewr1"
   operating_system = "ubuntu_18_04"
   billing_cycle    = "hourly"
@@ -35,6 +39,21 @@ resource "packet_device" "nodes" {
   provisioner "file" {
     source      = "conf/hosts.deny"
     destination = "/etc/hosts.deny"
+  }
+}
+
+resource "packet_spot_market_request" "req" {
+  project_id      = "${packet_project.cool_project.id}"
+  "max_bid_price" = 0.20
+  "facilities"    = ["DFW2"]
+  "devices_min"   = 1
+  "devices_max"   = 1
+
+  "instance_parameters" {
+    "hostname"         = "testspot-${count.index + 1}"
+    "billing_cycle"    = "hourly"
+    "operating_system" = "ubuntu_18_04"
+    "plan"             = "c2.medium.x86"
   }
 }
 
