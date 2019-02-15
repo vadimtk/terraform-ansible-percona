@@ -1,0 +1,22 @@
+---
+- hosts: node
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: false
+  vars_files:
+    - mysql_nodes.yml
+
+  tasks:
+
+    - name: Stop MySQL
+      systemd:
+        name: mysql
+        state: stopped
+      tags: init-setup
+
+    - name: UnInstall PXC
+      apt:
+        name: percona-xtradb-cluster-57
+        state: absent
+
