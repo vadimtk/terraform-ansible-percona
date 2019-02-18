@@ -1,0 +1,29 @@
+---
+- hosts: all
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  vars_files:
+    - config_nodes.yml
+
+- hosts: worker
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  serial: 5
+  vars_files:
+    - config_nodes.yml
+
+  tasks:
+
+
+    - name: Reset Kubernetes component
+      shell: "kubeadm reset --force"
+
+    - name: Install kubeadm
+      shell: |
+        kubeadm join --token {{ token }} \
+                --discovery-token-unsafe-skip-ca-verification \
+                {{ master_ip }}:6443

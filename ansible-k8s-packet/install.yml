@@ -1,0 +1,59 @@
+---
+- hosts: master
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  vars_files:
+    - config_nodes.yml
+
+  tasks:
+
+    - name: Reset Kubernetes component
+      shell: "kubeadm reset --force"
+
+    - name: Install kubeadm
+      shell: >
+        kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address="{{ ansible_bond0.ipv4.address }}" --token {{ token }}
+#        kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-advertise-address="{{ ansible_bond0.ipv4.address }}" --token {{ token }}
+
+    - name: Untaint master
+      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl taint nodes --all node-role.kubernetes.io/master-
+
+#    - name: Change kubelet
+#      template:
+#        src: kubelet.j2
+#        dest: /etc/default/kubelet
+#        owner: root
+#        group: root
+#        mode: "0644"
+
+#    - name: Cope kube-router
+#      template:
+#        src: kube-router.yml
+#        dest: /tmp/kube-router.yml
+#        owner: root
+#        group: root
+#        mode: "0644"
+
+#    - name: reload systemctl
+#      shell: systemctl daemon-reload
+
+#    - name: restart kubelet
+#      shell: systemctl restart kubelet
+
+    - name: Install network
+      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml
+#shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://docs.projectcalico.org/v3.5/getting-started/kubernetes/installation/hosted/etcd.yaml
+#      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml
+#      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://raw.githubusercontent.com/romana/romana/master/docs/kubernetes/romana-kubeadm.yml
+
+#    - name: Install network RBAC
+#      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
+#      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml
+#      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://raw.githubusercontent.com/cloudnativelabs/kube-router/master/daemonset/kubeadm-kuberouter.yaml
+   
+    - name: Fix KUBECONFIG
+      shell: >
+        echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bashrc
+
