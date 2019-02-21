@@ -1,0 +1,16 @@
+[Unit]
+Description=MySQL Server
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+PermissionsStartOnly=true
+LimitNOFILE = 100000
+ExecStartPre=/bin/mkdir -p  "{{ mountdir }}/{{ mysqldir }}"
+ExecStartPre=/bin/chown mysql:mysql -R  "{{ mountdir }}/{{ mysqldir }}"
+ExecStart="{{ installdir }}/{{ mysqlbin }}/bin/mysqld" --defaults-file="{{ installdir }}/my.cnf" --basedir="{{ installdir }}/{{ mysqlbin }}" --datadir="{{ mountdir }}/{{ mysqldir }}"
+TimeoutSec=300
+
+[Install]
+WantedBy=multi-user.target

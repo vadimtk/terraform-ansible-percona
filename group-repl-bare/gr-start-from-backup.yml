@@ -1,0 +1,82 @@
+---
+- hosts: node
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  vars_files:
+    - mysql_nodes.yml
+
+  tasks:
+
+    - name: Stop MySQL
+      systemd:
+        name: mysql-cd
+        state: stopped
+
+    - name: Remove datadir
+      file:
+        path: "{{ mountdir }}/{{ mysqldir }}"
+        state: "{{ item }}"
+      with_items:
+        - absent
+      tags: copyfiles
+
+    - name: Copy files
+      shell:  msrsync -p 8 "{{ mountdir }}/{{ mysqldir }}-copy/" "{{ mountdir }}/{{ mysqldir }}"
+      tags: copyfiles
+#      shell: cp -r "{{ mountdir }}/{{ mysqldir }}-copy" "{{ mountdir }}/{{ mysqldir }}"
+
+    - name: Drop cache
+      shell: sync; echo 3 > /proc/sys/vm/drop_caches
+
+    - name: Fix ownership
+      file: dest="{{ mountdir }}/{{ mysqldir }}" owner=mysql group=mysql recurse=yes
+
+    - name: Generate global mysql.cnf file for group replication
+      template:
+        src: mysql.cnf.j2
+        dest: "{{ installdir }}/my.cnf"
+
+    - name: Start MySQL
+      systemd:
+        name: mysql-cd
+        state: started
+
+    - name: Wait for socket
+      wait_for:
+        path: /tmp/mysql.sock
+        state: present
+
+    - name: Bootstrap group replication on first node
+      command: 'mysql -ne "{{ item }}"'
+      with_items:
+        - "SET GLOBAL group_replication_bootstrap_group=ON"
+        - "RESET SLAVE"
+        - "START GROUP_REPLICATION"
+        - "SET GLOBAL group_replication_bootstrap_group=OFF"
+      when:
+        - inventory_hostname == ansible_play_hosts[0]
+
+    - name: Register GTID
+      command: 'mysql -Ns -e "select @@GLOBAL.gtid_executed"'
+      register: gtidexecuted
+      when:
+        - inventory_hostname == groups['node'][0]
+#        - inventory_hostname == ansible_play_hosts[0]
+
+    - debug: var=hostvars[groups['node'][0]]['gtidexecuted']['stdout']
+
+    - name: Bootstrap group replication on first node
+      command: 'mysql -ne "{{ item }}"'
+      with_items:
+        - "RESET MASTER"
+        - "SET global gtid_purged='{{ hostvars[groups['node'][0]]['gtidexecuted']['stdout'] }}'"
+        - "START GROUP_REPLICATION"
+      when:
+        - inventory_hostname != ansible_play_hosts[0]
+
+
+#    - import_tasks: group_replication.yml
+
+# vim: set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab

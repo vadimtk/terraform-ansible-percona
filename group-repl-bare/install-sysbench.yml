@@ -1,0 +1,27 @@
+---
+- hosts: sysbench-node
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  vars_files:
+    - mysql_nodes.yml
+  tasks:
+
+    - name: Add repository
+      shell: >
+        curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.deb.sh | sudo bash
+
+    - name: Install sysbench
+      apt:
+        name: sysbench
+        state: present
+
+    - name: Install git
+      apt:
+        name: git
+        state: present
+
+    - name: Install sysbench-tpcc
+      git:
+        repo: https://github.com/Percona-Lab/sysbench-tpcc.git
+        dest: /home/vadim/sysench-tpcc

@@ -1,0 +1,19 @@
+---
+osuser: root
+networkinterface: ansible_eno2
+# Credentials
+mysql_root_pass: sammytheshark
+
+mysql_repl_user: repl
+
+mysql_repl_pass: replpassword
+
+
+installdir: /opt/vadim/servers
+mountdir: /mnt/data
+mysqldir: "mysql-{{ mysqlminor }}"
+disk: /dev/sdb
+deploy_user: mysql
+mysqlbin: "mysql-{{ mysqlminor }}-linux-glibc2.12-x86_64"
+
+bufferpool: 100G

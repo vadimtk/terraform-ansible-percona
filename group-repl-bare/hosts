@@ -1,0 +1,11 @@
+[node]
+10.30.2.5
+10.30.2.7
+10.30.2.8
+[sysbench-node]
+139.178.82.239
+[pmm-server]
+
+[all:vars]
+mysqlver=5.7
+mysqlminor=5.7.25

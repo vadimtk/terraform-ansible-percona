@@ -10,7 +10,7 @@
   tasks:
 
     - name: Hostname
-      hostname: name="node-{{ play_hosts.index(inventory_hostname)|int+1 }}"
+      hostname: name="worknode-{{ play_hosts.index(inventory_hostname)|int+1 }}"
 
 - hosts: all
   remote_user: "{{ osuser }}"

@@ -1,0 +1,34 @@
+---
+- hosts: node
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: false
+  vars_files:
+    - mysql_nodes.yml
+
+  pre_tasks:
+
+  tasks:
+
+    - import_tasks: root_tasks.yml
+
+    - name: Reload systemctl
+      shell: systemctl daemon-reload
+
+    - name: Generate global mysql.cnf file for group replication
+      template:
+        src: mysql.cnf.j2
+        dest: /etc/mysql/my.cnf
+        owner: root
+        group: root
+        mode: "0644"
+        backup: true
+      become: true
+      tags: apply-config,init-setup
+
+    - name: Start MySQL
+      systemd:
+        name: mysql
+        state: started
+      tags: apply-config,init-setup

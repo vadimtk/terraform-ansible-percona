@@ -1,0 +1,77 @@
+{%- set public_host_ips = ansible_play_hosts | map('extract', hostvars, [networkinterface, 'ipv4', 'address']) | list -%}
+{%- set private_host_ips = ansible_play_hosts | map('extract', hostvars, [networkinterface, 'ipv4', 'address']) | list -%}
+{%- set uuid = "8b7cabb0-ed41-4986-be1a-acfdc800c8a2" -%}
+
+[mysqld]
+datadir= {{ mysqldir }}
+user=mysql
+plugin-load=group_replication=group_replication.so
+#performance-schema-instrument='wait/%=ON'
+
+# general
+  table_open_cache = 200000
+  table_open_cache_instances=64
+  back_log=3500
+  max_connections=4000
+
+# files
+  innodb_file_per_table
+  innodb_log_file_size=10G
+  innodb_log_files_in_group=2
+  innodb_open_files=4000
+
+# buffers
+  innodb_buffer_pool_size= {{ bufferpool }}
+  innodb_buffer_pool_instances=8
+  innodb_log_buffer_size=64M
+innodb_doublewrite=0
+innodb_flush_log_at_trx_commit  = 0
+innodb_flush_method             = O_DIRECT
+innodb_io_capacity=2000
+innodb_io_capacity_max=4000
+innodb_purge_threads=4
+innodb_monitor_enable=all
+
+# General replication settings
+gtid_mode = ON
+enforce_gtid_consistency = ON
+master_info_repository = TABLE
+relay_log_info_repository = TABLE
+binlog_checksum = NONE
+log_slave_updates = ON
+
+log_bin = binlog
+relay_log=relay
+sync_binlog=1000
+binlog_format = ROW
+binlog_row_image=MINIMAL
+
+transaction_write_set_extraction = XXHASH64
+loose-group_replication_bootstrap_group = OFF
+loose-group_replication_start_on_boot = OFF
+loose-group_replication_ssl_mode = DISABLED
+loose-group_replication_recovery_use_ssl = OFF
+
+# Shared replication group configuration
+loose-group_replication_group_name = "{{ uuid }}"
+loose-group_replication_ip_whitelist = "{{ public_host_ips | join(',') }}"
+loose-group_replication_group_seeds = "{{ public_host_ips | zip_longest([], fillvalue=':33061') | map('join') | join(',') }}"
+
+# Single or Multi-primary mode? Uncomment these two lines
+# for multi-primary mode, where any host can accept writes
+#loose-group_replication_single_primary_mode = OFF
+#loose-group_replication_enforce_update_everywhere_checks = ON
+
+#loose-group_replication_compression_threshold= 100
+
+# Host specific replication configuration
+server_id = {{ ansible_play_hosts.index(inventory_hostname) + 1 }}
+report_host = "{{ ansible_eno2.ipv4.address }}"
+loose-group_replication_local_address = "{{ ansible_eno2.ipv4.address }}:33061"
+disabled_storage_engines = MyISAM,BLACKHOLE,FEDERATED,CSV,ARCHIVE
+report_port = 3306
+log-error=error.log
+
+slave-parallel-type=LOGICAL_CLOCK
+slave-parallel-workers=16
+slave-preserve-commit-order=ON
