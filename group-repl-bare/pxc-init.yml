@@ -1,0 +1,47 @@
+---
+- hosts: node
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: false
+  vars_files:
+    - mysql_nodes.yml
+
+  tasks:
+
+    - name: Stop MySQL
+      systemd:
+        name: mysql-cd
+        state: stopped
+
+    - name: Install Percona Repo
+      shell: >
+        wget -P /tmp https://repo.percona.com/apt/percona-release_latest.generic_all.deb
+
+    - name: Install Percona Repo
+      shell: >
+        dpkg -i /tmp/percona-release_latest.generic_all.deb
+
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+
+    - name: Install XtraBackup
+      apt:
+        name: percona-xtrabackup-24
+        state: present
+
+    - name: Generate global mysql.cnf file for PXC
+      template:
+        src: mysql-pxc.cnf.j2
+        dest: "{{ installdir }}/my.cnf"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Start PXC
+      systemd:
+        name: mysql-cd
+        state: started
+
+# vim: set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab

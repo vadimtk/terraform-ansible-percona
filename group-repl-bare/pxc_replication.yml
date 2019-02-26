@@ -1,0 +1,15 @@
+---
+- name: Generate global mysql.cnf file for PXC
+  template:
+    src: mysql-pxc.cnf.j2
+    dest: "{{ installdir }}/my.cnf"
+    owner: root
+    group: root
+    mode: "0644"
+  tags: apply-config
+
+- name: Restart MySQL
+  systemd:
+    name: mysql-cd
+    state: started
+  tags: apply-config

@@ -8,4 +8,4 @@
 
 [all:vars]
 mysqlver=5.7
-mysqlminor=5.7.25
+mysqlminor=5.7.24
