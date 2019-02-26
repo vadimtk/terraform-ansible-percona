@@ -7,11 +7,14 @@ variable "public_subnet_cidr" {
     default = "10.0.0.0/24"
 }
 variable "region" {
-    default = "us-west-2"
+    default = "us-east-1"
 }
 variable "keyname" {
-    default = "Vadim-us-west-2-key"
+    default = "lab-box-mini"
 }
 variable "ami" {
-    default = "ami-a9d09ed1"
+    default = "ami-035be7bafff33b6b6"
 }
+
+variable "aws_access_key" {}
+variable "aws_secret_key" {}

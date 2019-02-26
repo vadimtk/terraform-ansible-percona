@@ -12,10 +12,22 @@
     - name: Reset Kubernetes component
       shell: "kubeadm reset --force"
 
+    - name: Disable swap
+      shell: >
+        swapoff -a
+
+    - name: Start Docker
+      systemd:
+        name: docker
+        state: started
+
+    - name: Fix sysctl bridge-nf-call-iptables
+      shell: sysctl net.bridge.bridge-nf-call-iptables=1
+
     - name: Install kubeadm
       shell: >
-        kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address="{{ ansible_bond0.ipv4.address }}" --token {{ token }}
-#        kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-advertise-address="{{ ansible_bond0.ipv4.address }}" --token {{ token }}
+        kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-advertise-address="{{ ansible_facts[iface].ipv4.address }}" --token {{ token }} --apiserver-cert-extra-sans="{{ ansible_bond0.ipv4.address }}"
+#        kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address="{{ ansible_enp2s0d1.ipv4.address }}" --token {{ token }}
 
     - name: Untaint master
       shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl taint nodes --all node-role.kubernetes.io/master-
@@ -42,8 +54,8 @@
 #    - name: restart kubelet
 #      shell: systemctl restart kubelet
 
-    - name: Install network
-      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl create -f https://raw.githubusercontent.com/cilium/cilium/v1.4/examples/kubernetes/1.13/cilium.yaml
+#    - name: Install network
+#      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl create -f https://raw.githubusercontent.com/cilium/cilium/v1.4/examples/kubernetes/1.13/cilium.yaml
 #      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml
 #shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://docs.projectcalico.org/v3.5/getting-started/kubernetes/installation/hosted/etcd.yaml
 #      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml

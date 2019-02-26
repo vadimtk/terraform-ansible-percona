@@ -17,20 +17,29 @@
     - name: Reload systemctl
       shell: systemctl daemon-reload
 
-    - name: Generate global mysql.cnf file for group replication
+    - name: Generate global my.cnf file 
       template:
         src: mysql.cnf.j2
         dest: /etc/mysql/my.cnf
         owner: root
         group: root
         mode: "0644"
-        backup: true
       become: true
-      tags: apply-config,init-setup
+      when: server=="mysql"
 
-    - name: Start MySQL
+    - name: Generate global my.cnf file 
+      template:
+        src: mysql.cnf.j2
+        dest: /etc/mysql/mariadb.cnf
+        owner: root
+        group: root
+        mode: "0644"
+      become: true
+      when: server=="mariadb"
+
+    - name: Start Server
       systemd:
-        name: mysql
+        name: "{{ server }}"
         state: started
       tags: apply-config,init-setup
 

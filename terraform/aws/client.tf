@@ -1,11 +1,16 @@
+
+data "aws_subnet" "selected" {
+  id = "subnet-e31c7ebf"
+}
+
 resource "aws_spot_instance_request" "box_clients" {
   count            = "1"
   ami = "${var.ami}"
   instance_type = "c5.9xlarge"
   availability_zone = "${var.region}a"
-  subnet_id = "${aws_subnet.public-subnet.id}"
+  subnet_id = "${data.aws_subnet.selected.id}"
   associate_public_ip_address=true
-  vpc_security_group_ids = ["${aws_security_group.sgdb.id}"]
+  vpc_security_group_ids = ["sg-423ea407"]
   key_name="${var.keyname}"
   wait_for_fulfillment = true
   spot_type = "one-time"

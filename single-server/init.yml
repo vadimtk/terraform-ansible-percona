@@ -7,18 +7,6 @@
   vars_files:
     - mysql_nodes.yml
 
-  pre_tasks:
-
-  - name: Install python2 for Ansible
-    raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qqy python-minimal)"
-    register: output
-    changed_when:
-    - output.stdout != ""
-    - output.stdout != "\r\n"
-  - name: Gathering Facts
-    setup:
-
-
   tasks:
 
     - name: Create  ext4 filesystem
@@ -51,11 +39,28 @@
       file:
         path: /etc/apt/sources.list.d/repo_mysql_com_apt_ubuntu.list
         state: absent
+      when: server=="mysql"
+
+    - name: Install software-properties-common
+      apt:
+        name: software-properties-common
+        state: present
 
     - name: Install  MySQL repo
       apt_repository:
         repo: deb http://repo.mysql.com/apt/ubuntu/ bionic "{{ mysqlver }}"
         state: present
+      when: server=="mysql"
+
+    - name: Install keys
+      shell: apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+      when: server=="mariadb"
+
+    - name: Install  MariaDB repo
+      apt_repository:
+        repo: deb [arch=amd64,arm64,ppc64el] http://mirrors.syringanetworks.net/mariadb/repo/10.3/ubuntu bionic main
+        state: present
+      when: server=="mariadb"
 
     - name: Update and upgrade apt packages
       apt:
@@ -65,17 +70,23 @@
       apt:
         name: mysql-server
         state: present
+      when: server=="mysql"
+
+    - name: Install MariaDB
+      apt:
+        name: mariadb-server
+        state: present
+      when: server=="mariadb"
 
     - name: Install MySQL-python
       apt:
         name: python-mysqldb
         state: present
 
-    - name: Stop MySQL
+    - name: Stop Server
       systemd:
-        name: mysql
+        name: "{{ server }}"
         state: stopped
-      tags: init-setup
 
     - name: Remove datadir
       file:
@@ -86,7 +97,6 @@
       with_items:
         - absent
         - directory
-      tags: init-setup
 
     - name: Remove datadir
       file:
@@ -112,4 +122,9 @@
     - name: Init datadir
       shell: >
         mysqld --no-defaults --initialize-insecure --datadir="{{ mysqldir }}" --user=mysql
-      tags: init-setup
+      when: server=="mysql"
+
+    - name: Init datadir
+      shell: >
+         mysql_install_db  --no-defaults  --datadir="{{ mysqldir }}" --user=mysql
+      when: server=="mariadb"

@@ -1,12 +1,12 @@
 # Configure the Packet Provider
 provider "aws" {
   region     = "${var.region}"
-  shared_credentials_file = "/home/vadim/cred"
+  shared_credentials_file = "/home/vadim/keys/amazon/cred"
 }
 
 data "aws_route53_zone" "vadimtk" {
   # name         = "aws.vadimtk.one."
-  zone_id = "Z3COWKV4NXOYXI"
+  zone_id = "ZTU30Y1XQXYAG"
   private_zone = false
 }
 

@@ -9,7 +9,9 @@ mysql_repl_pass: replpassword
 
 mountdir: /mnt/data
 mysqldir: /mnt/data/mysql
-disk: /dev/sdb
-#disk: /dev/nvme0n1
+#disk: /dev/sdb
+disk: /dev/nvme0n1
 deploy_user: mysql
 mysqlver: mysql-5.7
+
+server: mysql

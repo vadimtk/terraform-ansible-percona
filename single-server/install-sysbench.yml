@@ -27,3 +27,8 @@
       git:
         repo: https://github.com/Percona-Lab/sysbench-tpcc.git
         dest: /home/vadim/sysench-tpcc
+
+    - name: Install sysbench-prepare
+      copy:
+        src: templates/prepare.sh
+        dest: /home/vadim/

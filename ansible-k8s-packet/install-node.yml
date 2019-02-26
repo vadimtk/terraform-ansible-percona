@@ -19,6 +19,20 @@
   tasks:
 
 
+    - name: Install nuttcp
+      apt:
+        name: nuttcp
+        state: present
+
+    - name: Disable swap
+      shell: >
+        swapoff -a
+
+    - name: Start Docker
+      systemd:
+        name: docker
+        state: started
+
     - name: Reset Kubernetes component
       shell: "kubeadm reset --force"
 
