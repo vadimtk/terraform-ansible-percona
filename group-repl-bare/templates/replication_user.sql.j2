@@ -1,7 +1,7 @@
 SET SQL_LOG_BIN=0;
 CREATE USER '{{ mysql_repl_user }}'@'%' IDENTIFIED WITH 'mysql_native_password' BY '{{ mysql_repl_pass }}';
 GRANT REPLICATION SLAVE on *.* TO '{{ mysql_repl_user }}'@'%';
-CREATE USER sbtest@'%' IDENTIFIED BY 'sbtest';
+CREATE USER sbtest@'%' IDENTIFIED WITH 'mysql_native_password' BY 'sbtest';
 GRANT ALL on *.* TO 'sbtest'@'%';
 FLUSH PRIVILEGES;
 SET SQL_LOG_BIN=1;

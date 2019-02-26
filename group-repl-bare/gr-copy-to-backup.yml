@@ -1,0 +1,39 @@
+---
+- hosts: node
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  vars_files:
+    - mysql_nodes.yml
+
+  tasks:
+
+    - name: Stop MySQL
+      systemd:
+        name: mysql-cd
+        state: stopped
+
+    - name: Remove datadir
+      file:
+        path: "{{ mountdir }}/{{ mysqldir }}-copy"
+        state: "{{ item }}"
+      with_items:
+        - absent
+      tags: copyfiles
+
+    - name: Remove binlogs
+      shell:  rm -f "{{ mountdir }}/{{ mysqldir }}/binlog.*"
+      tags: copyfiles
+
+    - name: Copy files
+      shell:  msrsync -p 8 "{{ mountdir }}/{{ mysqldir }}/" "{{ mountdir }}/{{ mysqldir }}-copy"
+      tags: copyfiles
+
+#      shell: cp -r "{{ mountdir }}/{{ mysqldir }}-copy" "{{ mountdir }}/{{ mysqldir }}"
+
+    - name: Drop cache
+      shell: sync; echo 3 > /proc/sys/vm/drop_caches
+
+
+# vim: set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab

@@ -3,7 +3,7 @@
 {%- set uuid = "8b7cabb0-ed41-4986-be1a-acfdc800c8a2" -%}
 
 [mysqld]
-datadir= {{ mysqldir }}
+datadir= {{ mountdir }}/{{ mysqldir }}
 user=mysql
 plugin-load=group_replication=group_replication.so
 #performance-schema-instrument='wait/%=ON'
@@ -24,6 +24,10 @@ plugin-load=group_replication=group_replication.so
   innodb_buffer_pool_size= {{ bufferpool }}
   innodb_buffer_pool_instances=8
   innodb_log_buffer_size=64M
+
+  innodb-buffer-pool-load-at-startup=OFF
+  innodb_buffer_pool_dump_at_shutdown=OFF
+
 innodb_doublewrite=0
 innodb_flush_log_at_trx_commit  = 0
 innodb_flush_method             = O_DIRECT

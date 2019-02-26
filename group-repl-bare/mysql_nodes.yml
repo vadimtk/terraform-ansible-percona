@@ -14,6 +14,13 @@ mountdir: /mnt/data
 mysqldir: "mysql-{{ mysqlminor }}"
 disk: /dev/sdb
 deploy_user: mysql
-mysqlbin: "mysql-{{ mysqlminor }}-linux-glibc2.12-x86_64"
+
+#mysqlbin: "mysql-{{ mysqlminor }}-linux-glibc2.12-x86_64"
 
 bufferpool: 100G
+
+server: "pxc"
+downurl: https://www.percona.com/downloads/Percona-XtraDB-Cluster-LATEST/Percona-XtraDB-Cluster-5.7.24-31.33/binary/tarball/Percona-XtraDB-Cluster-5.7.24-rel26-31.33.1.Linux.x86_64.ssl100.tar.gz
+
+mysqlbin: "Percona-XtraDB-Cluster-5.7.24-rel26-31.33.1.Linux.x86_64.ssl100"
+cluster_name: "cluster1"
