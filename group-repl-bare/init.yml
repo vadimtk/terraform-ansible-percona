@@ -9,6 +9,11 @@
 
   tasks:
 
+    - name: Add the user MySQL
+      user:
+        name: mysql
+        comment: John Doe
+
     - name: Create  ext4 filesystem
       filesystem:
         fstype: ext4
@@ -34,6 +39,11 @@
       with_items:
         - directory
 
+    - name: Install software-properties-common
+      apt:
+        name: software-properties-common
+        state: present
+
     - name: Download Server
       get_url:
         url: "https://dev.mysql.com/get/Downloads/MySQL-{{ mysqlver }}/{{ mysqlbin }}.tar.xz"
@@ -51,20 +61,55 @@
       get_url:
         url: "{{ downurl }}"
         dest: "{{ installdir }}"
-      when: server=="pxc"
+      when: server=="pxc" or server=="mariadb"
+      tags: download
 
     - name: Install Server
       unarchive:
         src: "{{ installdir }}/{{ mysqlbin }}.tar.gz"
         dest: "{{ installdir }}"
         remote_src: yes
-      when: server=="pxc"
+      when: server=="pxc" or server=="mariadb"
+      tags: download
 
-    - name: Install MySQL-python
-      apt:
-        name: python-mysqldb
+    - name: Install keys
+      shell: apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+      when: server=="mariadbrepo"
+
+    - name: Install  MariaDB repo
+      apt_repository:
+        repo: deb [arch=amd64,arm64,ppc64el] http://mirrors.syringanetworks.net/mariadb/repo/10.3/ubuntu bionic main
+        state: absent
+      when: server=="mariadbrepo"
+
+    - name: Install  MariaDB repo
+      apt_repository:
+        repo: deb [arch=amd64,arm64,ppc64el] http://sfo1.mirrors.digitalocean.com/mariadb/repo/10.4/ubuntu bionic main
         state: present
+      when: server=="mariadbrepo"
 
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+
+    - name: Install  MariaDB 
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - mariadb-server-10.4
+        - galera-4
+      when: server=="mariadbrepo"
+
+    - name: Install packages
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - libsystemd0
+        - numactl
+        - python-mysqldb
+        - mysql-client
 
     - name: Stop MySQL
       shell: >
@@ -84,7 +129,12 @@
     - name: Init datadir
       shell: >
         "{{ installdir }}/{{ mysqlbin }}/bin/mysqld" --no-defaults --initialize-insecure --datadir="{{ mountdir }}/{{ mysqldir }}" --user=mysql
-      tags: init-setup
+      when: server=="pxc"
+
+    - name: Init datadir
+      shell: >
+         "{{ installdir }}/{{ mysqlbin }}/scripts/mysql_install_db"  --no-defaults  --datadir="{{ mountdir }}/{{ mysqldir }}" --user=mysql
+      when: server=="mariadb"
 
     - name: Generate systemctl file
       template:

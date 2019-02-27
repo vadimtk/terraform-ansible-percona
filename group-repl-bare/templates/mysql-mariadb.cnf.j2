@@ -59,20 +59,10 @@ wsrep_cluster_address=gcomm://{{ clusteraddr }}
 
 
 #wsrep_provider="{{ installdir }}/{{ mysqlbin }}/lib/libgalera_smm.so"
-wsrep_provider="/opt/vadim/servers/galera-26.4.1-glibc_214-x86_64/usr/lib/libgalera_smm.so"
+wsrep_on=ON
+wsrep_provider="/opt/vadim/servers/mariadb-10.4.3-linux-glibc_214-x86_64/lib/galera/libgalera_smm.so"
 
-#wsrep_sst_method=xtrabackup-v2
+#wsrep_sst_method=mariabackup
 #wsrep_sst_auth="root:"
 
-#pxc-encrypt-cluster-traffic=ON
-
-ssl-ca=/etc/mysql/certs/ca.pem
-ssl-cert=/etc/mysql/certs/server-cert.pem
-ssl-key=/etc/mysql/certs/server-key.pem
-
-[client]
-socket=/tmp/mysql.sock
-ssl-ca=/etc/mysql/certs/ca.pem
-ssl-cert=/etc/mysql/certs/client-cert.pem
-ssl-key=/etc/mysql/certs/client-key.pem
 
