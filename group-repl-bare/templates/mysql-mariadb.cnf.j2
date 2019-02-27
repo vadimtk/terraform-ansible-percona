@@ -60,7 +60,8 @@ wsrep_cluster_address=gcomm://{{ clusteraddr }}
 
 #wsrep_provider="{{ installdir }}/{{ mysqlbin }}/lib/libgalera_smm.so"
 wsrep_on=ON
-wsrep_provider="/opt/vadim/servers/mariadb-10.4.3-linux-glibc_214-x86_64/lib/galera/libgalera_smm.so"
+wsrep_provider="{{ installdir }}/{{ mysqlbin }}/lib/galera/libgalera_smm.so"
+#wsrep_provider="/opt/vadim/servers/mariadb-10.4.3-linux-glibc_214-x86_64/lib/galera/libgalera_smm.so"
 
 #wsrep_sst_method=mariabackup
 #wsrep_sst_auth="root:"

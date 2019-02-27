@@ -11,7 +11,7 @@
 
     - name: Stop MySQL
       systemd:
-        name: mariadb
+        name: mysql-cd
         state: stopped
 
     - name: Update and upgrade apt packages
@@ -23,13 +23,14 @@
         src: mysql-mariadb.cnf.j2
         dest: "{{ installdir }}/my.cnf"
 
-    - name: Bootstrap PXC 1st Node
-      lineinfile:
-        path: "{{ mountdir }}/{{ mysqldir }}/grastate.dat"
-        regexp: '^safe_to_bootstrap'
-        line: 'safe_to_bootstrap=1'
-      when:
-        - inventory_hostname == ansible_play_hosts[0]
+#    - name: Bootstrap PXC 1st Node
+#      lineinfile:
+#        path: "{{ mountdir }}/{{ mysqldir }}/grastate.dat"
+#        regexp: '^safe_to_bootstrap'
+#        line: 'safe_to_bootstrap=1'
+#      when:
+#        - inventory_hostname == ansible_play_hosts[0]
+     
 
     - name: Start PXC 1st Node
       systemd:
