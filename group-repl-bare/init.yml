@@ -49,6 +49,7 @@
         url: "https://dev.mysql.com/get/Downloads/MySQL-{{ mysqlver }}/{{ mysqlbin }}.tar.xz"
         dest: "{{ installdir }}"
       when: server=="mysql"
+      tags: download
 
     - name: Install Server
       unarchive:
@@ -56,6 +57,7 @@
         dest: "{{ installdir }}"
         remote_src: yes
       when: server=="mysql"
+      tags: download
 
     - name: Download Server
       get_url:
@@ -129,7 +131,7 @@
     - name: Init datadir
       shell: >
         "{{ installdir }}/{{ mysqlbin }}/bin/mysqld" --no-defaults --initialize-insecure --datadir="{{ mountdir }}/{{ mysqldir }}" --user=mysql
-      when: server=="pxc"
+      when: server=="pxc" or server=="mysql"
 
     - name: Init datadir
       shell: >

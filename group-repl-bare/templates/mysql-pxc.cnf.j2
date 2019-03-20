@@ -58,11 +58,10 @@ wsrep_cluster_address=gcomm://{{ clusteraddr }}
 # ansible_play_hosts[0] | map('extract', hostvars, [networkinterface, 'ipv4', 'address'])|list|join(',') if inventory_hostname != ansible_play_hosts[0] else "" 
 
 
-#wsrep_provider="{{ installdir }}/{{ mysqlbin }}/lib/libgalera_smm.so"
-wsrep_provider="/opt/vadim/servers/galera-26.4.1-glibc_214-x86_64/usr/lib/libgalera_smm.so"
+wsrep_provider="{{ installdir }}/{{ mysqlbin }}/lib/libgalera_smm.so"
 
-#wsrep_sst_method=xtrabackup-v2
-#wsrep_sst_auth="root:"
+wsrep_sst_method=xtrabackup-v2
+wsrep_sst_auth="root:"
 
 #pxc-encrypt-cluster-traffic=ON
 

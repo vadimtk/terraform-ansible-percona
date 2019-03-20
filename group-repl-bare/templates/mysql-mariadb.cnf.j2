@@ -19,6 +19,9 @@ binlog_format = ROW
 #binlog_row_image=MINIMAL
 #server_id = {{ ansible_play_hosts.index(inventory_hostname) + 1 }}
 
+  query_cache_type = 0
+  query_cache_size = 0
+ 
 # general
   table_open_cache = 200000
   table_open_cache_instances=64
@@ -38,8 +41,8 @@ binlog_format = ROW
 
 default_storage_engine=InnoDB
 
-innodb_flush_log_at_trx_commit  = 0
-innodb_doublewrite=0
+innodb_flush_log_at_trx_commit  = 1
+innodb_doublewrite=1
 innodb_flush_method             = O_DIRECT
 innodb_file_per_table           = 1
 innodb_autoinc_lock_mode=2
