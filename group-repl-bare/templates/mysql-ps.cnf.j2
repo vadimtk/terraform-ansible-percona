@@ -6,6 +6,7 @@
 datadir= {{ mountdir }}/{{ mysqldir }}
 user=mysql
 plugin-load=group_replication=group_replication.so
+#plugin-load=rocksdb=ha_rocksdb.so
 #performance-schema-instrument='wait/%=ON'
 
 # general
@@ -21,7 +22,7 @@ plugin-load=group_replication=group_replication.so
   innodb_open_files=4000
 
 # buffers
-  innodb_buffer_pool_size= {{ bufferpool }}
+  innodb_buffer_pool_size=  {{ bufferpool }}
   innodb_buffer_pool_instances=8
   innodb_log_buffer_size=64M
 
@@ -60,6 +61,7 @@ loose-group_replication_recovery_use_ssl = OFF
 loose-group_replication_group_name = "{{ uuid }}"
 loose-group_replication_ip_whitelist = "{{ public_host_ips | join(',') }}"
 loose-group_replication_group_seeds = "{{ public_host_ips | zip_longest([], fillvalue=':33061') | map('join') | join(',') }}"
+group_replication_consistency={{ consistency }}
 
 # Single or Multi-primary mode? Uncomment these two lines
 # for multi-primary mode, where any host can accept writes
@@ -75,7 +77,9 @@ loose-group_replication_local_address = "{{ ansible_eno2.ipv4.address }}:33061"
 disabled_storage_engines = MyISAM,BLACKHOLE,FEDERATED,CSV,ARCHIVE
 report_port = 3306
 log-error=error.log
+log_error_verbosity=3
 
 slave-parallel-type=LOGICAL_CLOCK
 slave-parallel-workers=16
 slave-preserve-commit-order=ON
+

@@ -22,9 +22,18 @@
         - absent
       tags: copyfiles
 
-    - name: Remove binlogs
-      shell:  rm -f "{{ mountdir }}/{{ mysqldir }}/binlog.*"
-      tags: copyfiles
+    - name: Ansible delete file glob
+      find:
+        paths: "{{ mountdir }}/{{ mysqldir }}/"
+        patterns: binlog.*
+      register: files_to_delete
+
+    - name: Ansible remove file glob
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ files_to_delete.files }}"
+
 
     - name: Copy files
       shell:  msrsync -p 8 "{{ mountdir }}/{{ mysqldir }}/" "{{ mountdir }}/{{ mysqldir }}-copy"

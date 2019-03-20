@@ -12,12 +12,12 @@ log-error=error.log
 #  binlog_checksum = NONE
 #  log_slave_updates = ON
 
-#log_bin = binlog
-#relay_log=relay
-#sync_binlog=1000
+log_bin = binlog
+relay_log=relay
+sync_binlog=0
 binlog_format = ROW
-#binlog_row_image=MINIMAL
-#server_id = {{ ansible_play_hosts.index(inventory_hostname) + 1 }}
+binlog_row_image=MINIMAL
+server_id = {{ ansible_play_hosts.index(inventory_hostname) + 1 }}
 
 # general
   table_open_cache = 200000
@@ -38,8 +38,8 @@ binlog_format = ROW
 
 default_storage_engine=InnoDB
 
-innodb_flush_log_at_trx_commit  = 0
-innodb_doublewrite=0
+innodb_flush_log_at_trx_commit  = 1
+innodb_doublewrite=1
 innodb_flush_method             = O_DIRECT
 innodb_file_per_table           = 1
 innodb_autoinc_lock_mode=2
@@ -58,8 +58,8 @@ wsrep_cluster_address=gcomm://{{ clusteraddr }}
 # ansible_play_hosts[0] | map('extract', hostvars, [networkinterface, 'ipv4', 'address'])|list|join(',') if inventory_hostname != ansible_play_hosts[0] else "" 
 
 
-#wsrep_provider="{{ installdir }}/{{ mysqlbin }}/lib/libgalera_smm.so"
-wsrep_provider="/opt/vadim/servers/galera-26.4.1-glibc_214-x86_64/usr/lib/libgalera_smm.so"
+wsrep_provider="{{ installdir }}/{{ mysqlbin }}/lib/libgalera_smm.so"
+wsrep_provider_options="gcs.fc_limit=16;evs.send_window=4;evs.user_send_window=2"
 
 #wsrep_sst_method=xtrabackup-v2
 #wsrep_sst_auth="root:"
