@@ -18,7 +18,7 @@
 
 - name: Generate global mysql.cnf file for group replication
   template:
-    src: mysql.cnf.j2
+    src: mysql-ps.cnf.j2
     dest: "{{ installdir }}/my.cnf"
     owner: root
     group: root
@@ -36,6 +36,13 @@
   wait_for:
     path: /tmp/mysql.sock
     state: present
+
+
+#- name: Init datadir
+#  shell: >
+#     "{{ installdir }}/{{ mysqlbin }}/bin/ps-admin"  --enable-rocksdb
+#  when: server=="ps"
+
 
 - name: Check if group replication is already enabled
   shell: >
@@ -60,6 +67,7 @@
     state: import
     target: "/tmp/replication_user.sql"
   when: "'ON' not in group_replication_running.stdout"
+  tags: setup-user
 
 - name: Bootstrap group replication on first node
   command: 'mysql -ne "{{ item }}"'

@@ -35,7 +35,7 @@
 
     - name: Generate global mysql.cnf file for group replication
       template:
-        src: mysql.cnf.j2
+        src: mysql-ps.cnf.j2
         dest: "{{ installdir }}/my.cnf"
 
     - name: Start MySQL

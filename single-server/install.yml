@@ -25,7 +25,7 @@
         group: root
         mode: "0644"
       become: true
-      when: server=="mysql"
+      when: server=="mysql" or server=="ps"
 
     - name: Generate global my.cnf file 
       template:
@@ -39,7 +39,7 @@
 
     - name: Start Server
       systemd:
-        name: "{{ server }}"
+        name: "{{ service }}"
         state: started
       tags: apply-config,init-setup
 

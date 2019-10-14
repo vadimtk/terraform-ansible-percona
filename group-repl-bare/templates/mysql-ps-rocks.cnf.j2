@@ -6,6 +6,7 @@
 datadir= {{ mountdir }}/{{ mysqldir }}
 user=mysql
 plugin-load=group_replication=group_replication.so
+#plugin-load=rocksdb=ha_rocksdb.so
 #performance-schema-instrument='wait/%=ON'
 
 # general
@@ -21,7 +22,7 @@ plugin-load=group_replication=group_replication.so
   innodb_open_files=4000
 
 # buffers
-  innodb_buffer_pool_size= {{ bufferpool }}
+  innodb_buffer_pool_size= 1G
   innodb_buffer_pool_instances=8
   innodb_log_buffer_size=64M
 
@@ -60,6 +61,7 @@ loose-group_replication_recovery_use_ssl = OFF
 loose-group_replication_group_name = "{{ uuid }}"
 loose-group_replication_ip_whitelist = "{{ public_host_ips | join(',') }}"
 loose-group_replication_group_seeds = "{{ public_host_ips | zip_longest([], fillvalue=':33061') | map('join') | join(',') }}"
+group_replication_consistency={{ consistency }}
 
 # Single or Multi-primary mode? Uncomment these two lines
 # for multi-primary mode, where any host can accept writes
@@ -70,12 +72,34 @@ loose-group_replication_group_seeds = "{{ public_host_ips | zip_longest([], fill
 
 # Host specific replication configuration
 server_id = {{ ansible_play_hosts.index(inventory_hostname) + 1 }}
-report_host = "{{ hostvars[inventory_hostname][networkinterface]['ipv4']['address'] }}"
-loose-group_replication_local_address = "{{ hostvars[inventory_hostname][networkinterface]['ipv4']['address'] }}:33061"
+report_host = "{{ ansible_eno2.ipv4.address }}"
+loose-group_replication_local_address = "{{ ansible_eno2.ipv4.address }}:33061"
 disabled_storage_engines = MyISAM,BLACKHOLE,FEDERATED,CSV,ARCHIVE
 report_port = 3306
 log-error=error.log
+log_error_verbosity=3
 
 slave-parallel-type=LOGICAL_CLOCK
 slave-parallel-workers=16
 slave-preserve-commit-order=ON
+
+rocksdb_block_cache_size= {{ bufferpool }}
+loose-rocksdb_max_open_files=-1
+loose-rocksdb_max_background_jobs=8
+loose-rocksdb_max_total_wal_size=4G
+loose-rocksdb_block_size=16384
+loose-rocksdb_table_cache_numshardbits=6
+
+# rate limiter
+loose-rocksdb_bytes_per_sync=4194304
+loose-rocksdb_wal_bytes_per_sync=4194304
+
+# triggering compaction if there are many sequential deletes
+loose-rocksdb_compaction_sequential_deletes_count_sd=1
+loose-rocksdb_compaction_sequential_deletes=199999
+loose-rocksdb_compaction_sequential_deletes_window=200000
+
+loose-rocksdb_use_direct_reads=ON
+loose-rocksdb_use_direct_io_for_flush_and_compaction=ON
+
+loose-rocksdb_default_cf_options="write_buffer_size=256m;target_file_size_base=32m;max_bytes_for_level_base=512m;max_write_buffer_number=4;level0_file_num_compaction_trigger=4;level0_slowdown_writes_trigger=20;level0_stop_writes_trigger=30;max_write_buffer_number=4;block_based_table_factory={cache_index_and_filter_blocks=1;filter_policy=bloomfilter:10:false;whole_key_filtering=0};level_compaction_dynamic_level_bytes=true;optimize_filters_for_hits=true;memtable_prefix_bloom_size_ratio=0.05;prefix_extractor=capped:12;compaction_pri=kMinOverlappingRatio;compression=kLZ4Compression;bottommost_compression=kLZ4Compression;compression_opts=-14:4:0"

@@ -1,5 +1,13 @@
 [master]
-147.75.81.117 intip=172.20.10.1 iface=enp2s0d1
+147.75.33.185
+
 [worker]
-147.75.81.59 intip=172.20.10.2 iface=enp2s0d1
-147.75.100.97 intip=172.20.10.3 iface=enp2s0d1
+147.75.85.14
+147.75.205.134
+147.75.33.223
+
+
+[rancher-node]
+
+[all:vars]
+iface=bond0_0

@@ -36,6 +36,7 @@
       with_items:
         - absent
         - directory
+      tags: removedata
 
     - name: Remove datadir
       file:

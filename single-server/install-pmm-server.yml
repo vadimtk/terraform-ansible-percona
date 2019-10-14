@@ -1,43 +1,20 @@
 ---
-- hosts: tag_pmmserver-node
-  remote_user: vadim
+- hosts: pmm-server
+  remote_user: "{{ osuser }}"
   become: yes
   become_user: root
+  gather_facts: false
+  vars_files:
+    - mysql_nodes.yml
   tasks:
-    - name: Create a ext4 filesystem on /dev/sdb1 and check disk blocks
-      filesystem:
-        fstype: ext4
-        dev: /dev/sdb
-        force: no
 
-    - name: Stop selinux
-      selinux:
-        state: disabled
-
-    - name: Mount FS
-      mount:
-        path: /mnt/disks/pdsdd
-        src: /dev/sdb
-        fstype: ext4
-        state: mounted
-
-    - name: Docker dir
-      file:
-        path: /mnt/disks/pdsdd/docker 
-        state: directory
-        owner: root
-        group: root
-
-    - name: Generate global mysql.cnf file for group replication
-      template:
-        src: docker.conf
-        dest:  /etc/default/docker
-        owner: root
-        group: root
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
 
     - name: Install Docker
-      yum:
-        name: docker
+      apt:
+        name: docker.io
         state: present
 
     - name: Start docker

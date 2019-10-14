@@ -68,7 +68,7 @@
 
     - name: Add repository for Ubuntu
       apt:
-        deb: https://repo.percona.com/apt/percona-release_0.1-6.{{ releasename }}_all.deb
+        deb: "https://repo.percona.com/apt/percona-release_latest.{{ releasename}}_all.deb"
         state: present
       when:                                                                                                                         
         - "'Ubuntu' in distro or 'Debian' in distro" 
@@ -87,9 +87,19 @@
       when:
         - "'CentOS' in distro" 
 
+    - name: Enable repo
+      shell: percona-release setup ps80
+
     - name: Install PS for Ubuntu
       apt:
-        name: percona-server-server-5.7
+        name: percona-server-server
+        state: present
+      when:
+        - "'Ubuntu' in distro or 'Debian' in distro" 
+
+    - name: Install PS MyRocks for Ubuntu
+      apt:
+        name: percona-server-rocksdb
         state: present
       when:
         - "'Ubuntu' in distro or 'Debian' in distro" 
@@ -195,12 +205,12 @@
         name: git
         state: present
       when:
-        - "'CentOS' in distro" 
+        - "'Ubuntu' in distro or 'Debian' in distro or 'CentOS' in distro"
 
     - name: Install sysbench-tpcc
       git:
         repo: https://github.com/Percona-Lab/sysbench-tpcc.git
         dest: /root/sysench-tpcc
       when:
-        - "'CentOS' in distro" 
+        - "'Ubuntu' in distro or 'Debian' in distro 'CentOS' in distro" 
 

@@ -12,6 +12,7 @@ mysqldir: /mnt/data/mysql
 #disk: /dev/sdb
 disk: /dev/nvme0n1
 deploy_user: mysql
-mysqlver: mysql-5.7
+mysqlver: mysql-8.0
 
-server: mysql
+
+service: "{{'mariadb' if (server=='mariadb') else 'mysql'}}"

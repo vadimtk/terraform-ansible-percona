@@ -30,9 +30,11 @@
         dest: /tmp
         owner: root
         mode: 644
+      when: server=="mysql"
 
     - name: import gpgkey
       shell: apt-key add /tmp/gpgkey
+      when: server=="mysql"
 
 
     - name: Remove repo
@@ -62,6 +64,16 @@
         state: present
       when: server=="mariadb"
 
+    - name: Install Percona Repo
+      shell: >
+        wget -P /tmp https://repo.percona.com/apt/percona-release_latest.generic_all.deb
+      when: server=="ps"
+
+    - name: Install Percona Repo
+      shell: >
+        dpkg -i /tmp/percona-release_latest.generic_all.deb
+      when: server=="ps"
+
     - name: Update and upgrade apt packages
       apt:
         update_cache: yes
@@ -78,6 +90,17 @@
         state: present
       when: server=="mariadb"
 
+    - name: Install Percona Repo
+      shell: >
+        percona-release setup ps80
+      when: server=="ps"
+
+    - name: Install Percona Server
+      apt:
+        name: percona-server-server
+        state: present
+      when: server=="ps"
+
     - name: Install MySQL-python
       apt:
         name: python-mysqldb
@@ -85,7 +108,7 @@
 
     - name: Stop Server
       systemd:
-        name: "{{ server }}"
+        name: "{{ service }}"
         state: stopped
 
     - name: Remove datadir
@@ -97,16 +120,7 @@
       with_items:
         - absent
         - directory
-
-    - name: Remove datadir
-      file:
-        path: "/mnt/logs"
-        state: "{{ item }}"
-        owner: mysql
-        group: mysql
-      with_items:
-        - directory
-      tags: init-setup
+      tags: removedata
 
     - name: Install  apparmor-utils
       apt:
@@ -123,6 +137,7 @@
       shell: >
         mysqld --no-defaults --initialize-insecure --datadir="{{ mysqldir }}" --user=mysql
       when: server=="mysql"
+      tags: removedata
 
     - name: Init datadir
       shell: >

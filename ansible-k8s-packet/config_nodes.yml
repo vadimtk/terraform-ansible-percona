@@ -4,7 +4,7 @@ networkinterface: ansible_enp2s0d1
 # Credentials
 
 mountdir: /mnt/data
-disk: /dev/md127
+disk: /dev/sdc
 
 master_ip: "{{ hostvars[groups['master'][0]].ansible_facts[hostvars[groups['master'][0]].iface].ipv4.address | default(groups['master'][0]) }}"
 token: b0f7b8.8d1767876297d85c

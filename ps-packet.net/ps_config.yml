@@ -20,6 +20,7 @@
     mode: "0644"
     backup: true
   become: true
+  when: keyring
   tags: apply-config
 
 - name: Generate cert file
@@ -31,6 +32,7 @@
     mode: "0600"
     backup: true
   become: true
+  when: keyring
   tags: apply-config
 
 - name: Restart MySQL

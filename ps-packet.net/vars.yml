@@ -12,4 +12,6 @@ cluster_name: cluster1
 tuning_kernel_parameters: True
 tuning_irqbalance_value: True
 deploy_user: mysql
+#device: /dev/nvme0n1
 device: /dev/sdb
+keyring: false
