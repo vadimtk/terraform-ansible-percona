@@ -1,0 +1,7 @@
+- hosts: master
+  gather_facts: yes
+  remote_user: root
+  tasks:
+  - name: show 
+    debug:
+      msg: "{{ hostvars[groups['all'][0]] }}"

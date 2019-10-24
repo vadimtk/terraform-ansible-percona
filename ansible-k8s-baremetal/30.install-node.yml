@@ -1,0 +1,48 @@
+---
+- hosts: all
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  vars_files:
+    - config_nodes.yml
+
+- hosts: worker
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  serial: 5
+  vars_files:
+    - config_nodes.yml
+
+  tasks:
+
+    - name: Disable swap
+      shell: >
+        swapoff -a
+
+    - name: Reset Kubernetes component
+      shell: "kubeadm reset --force"
+
+    - name: Add node-ip line
+      lineinfile:
+        path: /etc/default/kubelet
+        line: KUBELET_EXTRA_ARGS="--node-ip={{ inventory_hostname }}"
+        create: yes
+
+    - name: Install kubeadm
+      shell: |
+        kubeadm join --token {{ token }} \
+                --discovery-token-unsafe-skip-ca-verification \
+                {{ master_ip }}:6443
+
+    - name: just force systemd to reread config
+      systemd:
+        daemon_reload: yes
+
+    - name: restart kubelet
+      systemd:
+        name: kubelet
+        state: restarted
+

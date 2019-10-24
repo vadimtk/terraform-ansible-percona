@@ -1,0 +1,17 @@
+---
+osuser: root
+networkinterface: ansible_eno2
+# Credentials
+mysql_root_pass: sammytheshark
+
+mysql_repl_user: repl
+mysql_repl_pass: replpassword
+
+mountdir: /mnt/data
+mysqldir: /mnt/data/mysql
+disk: /dev/sdb
+deploy_user: mysql
+
+#master_ip: "{{ hostvars[groups['master'][0]].ansible_eno2.ipv4.address | default(groups['master'][0]) }}"
+master_ip: "172.16.0.5"
+token: b0f7b8.8d1767876297d85c

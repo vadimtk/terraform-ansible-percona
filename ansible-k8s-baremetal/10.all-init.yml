@@ -1,0 +1,36 @@
+---
+- hosts: worker
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  vars_files:
+    - config_nodes.yml
+
+- hosts: all
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  serial: 5
+  vars_files:
+    - config_nodes.yml
+
+  tasks:
+
+    - import_tasks: network_tasks.yml
+
+#    - name: Install external script
+#      shell: >
+#        curl -sL https://gist.githubusercontent.com/alexellis/7315e75635623667c32199368aa11e95/raw/b025dfb91b43ea9309ce6ed67e24790ba65d7b67/kube.sh | sudo sh
+
+    - name: Disable swap
+      shell: >
+        swapoff -a
+
+    - name: Fix sysctl
+      shell: sysctl net.bridge.bridge-nf-call-iptables=1
+
+    - name: Reset Kubernetes component
+      shell: "kubeadm reset --force"
+

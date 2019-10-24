@@ -1,0 +1,9 @@
+[master]
+172.16.0.5 iface=p1p2
+[worker]
+172.16.0.3
+172.16.0.4
+172.16.0.1
+
+[all:vars]                                                                                                                                                                                                                                    
+iface=eno2
