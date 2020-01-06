@@ -1,0 +1,49 @@
+---
+
+- name: Generate sysctl file
+  copy:
+    src: 11-percona.conf
+    dest:  /etc/sysctl.d/11-percona.conf
+  become: true
+  when: tuning_kernel_parameters
+
+- name: setting present kernel params
+  shell: >
+    sysctl -p /etc/sysctl.d/11-percona.conf
+  when: tuning_kernel_parameters
+
+- name: update /etc/security/limits.conf
+  blockinfile:
+    dest: /etc/security/limits.conf
+    insertbefore: '# End of file'
+    block: |
+      {{ deploy_user }}        soft        nofile        1000000
+      {{ deploy_user }}        hard        nofile        1000000
+      {{ deploy_user }}        soft        core          unlimited
+      {{ deploy_user }}        soft        stack         10240
+  when: tuning_kernel_parameters
+
+- name: Set MySQL Filehandle Limits
+  copy:
+    src: limits.conf
+    dest: /lib/systemd/system/mysqld.service.d/
+
+# modify irqbalance configuration file
+- name: check centos configuration file exists
+  stat: path=/etc/sysconfig/irqbalance
+  register: centos_irq_config_file
+
+- name: modify centos irqbalance configuration file
+  lineinfile:
+    dest=/etc/sysconfig/irqbalance
+    regexp='(?<!_)ONESHOT='
+    line='ONESHOT=yes'
+  when:
+    - tuning_irqbalance_value
+    - centos_irq_config_file.stat.exists
+
+# start irqbalance value
+- name: start irqbalance service
+  service: name=irqbalance state=started
+  ignore_errors: true
+  when: tuning_irqbalance_value

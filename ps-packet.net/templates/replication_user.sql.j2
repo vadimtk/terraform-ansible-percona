@@ -1,0 +1,5 @@
+SET SQL_LOG_BIN=0;
+CREATE USER IF NOT EXISTS '{{ mysql_repl_user }}'@'%' IDENTIFIED WITH 'mysql_native_password' BY '{{ mysql_repl_pass }}';
+GRANT REPLICATION SLAVE on *.* TO '{{ mysql_repl_user }}'@'%';
+FLUSH PRIVILEGES;
+SET SQL_LOG_BIN=1;

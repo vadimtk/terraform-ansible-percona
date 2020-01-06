@@ -1,0 +1,22 @@
+[node]
+139.178.84.41
+147.75.54.191
+147.75.54.189
+
+[sysbench-node]
+139.178.82.85
+[pmm-server]
+
+[all:vars]
+#mysqlver=10.4
+#mysqlminor=10.4.3
+
+#mysqlver=10.3
+#mysqlminor=10.3.13
+
+mysqlver=8.0
+mysqlminor=8.0.15
+
+networkinterface=ansible_bond0
+disk=/dev/sdc
+ssh_args = -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -o ConnectTimeout=30 -i /home/vadim/keys/packet-keys/packet_rsa

@@ -1,0 +1,96 @@
+---
+- hosts: ps-node
+  remote_user: root
+  gather_facts: yes
+  vars_files:
+    - vars.yml
+
+  tasks:
+
+    - name: Get distro name from /etc/os-release
+      raw: "([ -f /etc/os-release ] && grep '^NAME=' /etc/os-release | sed s'/NAME=//' | tr -d \\\") || ([ -f /etc/redhat-release ] && cat /etc/redhat-release | cut '-d ' -f1)"
+      register: distro_st
+      failed_when: false
+      changed_when: false
+
+    - name: set distro facts
+      set_fact:
+        distro: "{{ distro_st.stdout | trim }}"
+
+    - name: set release facts
+      set_fact:
+        releasename: "{{ ansible_distribution_release }}"
+
+    - name: set service mysql facts
+      set_fact:
+        mysqlservice: "mysql"
+        mysqlconf: "/etc/mysql/my.cnf"
+      when:                                                                                                                         
+        - ansible_distribution=='Ubuntu'
+      tags: apply-config
+
+    - name: set service mysql facts
+      set_fact:
+        mysqlservice: "mysqld"
+        mysqlconf: "/etc/my.cnf"
+      when:                                                                                                                         
+        - "'CentOS' in distro" 
+
+    - name: Install MySQL-python
+      apt:
+        name: python-mysqldb
+        state: present
+    
+    - name: root config
+      template:
+        src: root-my.cnf.j2
+        dest: /root/.my.cnf
+
+#    - name: create replicator user
+#      mysql_user:
+#        name: "replicator"
+#        host: "%"
+#        password: "{{ mysql_replicator_password }}"
+#        priv: "*.*:REPLICATION SLAVE"
+#        state: present
+
+    - name: Generate MySQL replication user script
+      template:
+        src: replication_user.sql.j2
+        dest: "/tmp/replication_user.sql"
+        mode: "0600"
+
+    - name: Set up replication user
+      mysql_db:
+        name: all
+        state: import
+        target: "/tmp/replication_user.sql"
+
+    - name: Check master replication status.
+      mysql_replication: mode=getmaster
+      register: master
+      when: 
+        - inventory_hostname == groups["ps-node"][0]
+
+    - name: stop slave
+      mysql_replication: mode=stopslave
+      when: 
+        - inventory_hostname == groups["ps-node"][1]
+
+    - name: reset slave
+      mysql_replication: mode=resetslave
+      when: 
+        - inventory_hostname == groups["ps-node"][1]
+
+    - name: print the variable
+      debug: var=hostvars[groups["ps-node"][0]]["master"]["File"]
+
+    - mysql_replication:
+        mode: changemaster
+        master_host: "{{ groups['ps-node'][0] }}"
+        master_user: "{{ mysql_repl_user }}"
+        master_password: "{{ mysql_repl_pass }}"
+        master_log_file: "{{ hostvars[groups['ps-node'][0]]['master']['File'] }}"
+        master_log_pos: "{{ hostvars[groups['ps-node'][0]]['master']['Position'] }}"
+      when: 
+        - inventory_hostname == groups["ps-node"][1]

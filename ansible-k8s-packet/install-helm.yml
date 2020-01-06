@@ -1,0 +1,42 @@
+---
+- hosts: master
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  vars_files:
+    - config_nodes.yml
+
+  tasks:
+
+    - name: Download helm
+      get_url:
+        url: https://storage.googleapis.com/kubernetes-helm/helm-v2.13.0-linux-amd64.tar.gz
+        dest: /tmp/helm-v2.13.0-linux-amd64.tar.gz
+
+    - name: kubectl create serviceaccount
+      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl create serviceaccount --namespace kube-system tiller
+      ignore_errors: yes
+
+    - name: kubectl create clusterrolebinding
+      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+
+    - name: helm init
+      shell: KUBECONFIG=/etc/kubernetes/admin.conf helm init 
+      tags: helm
+
+    - name: kubectl patch deploy
+      shell:  KUBECONFIG=/etc/kubernetes/admin.conf kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+
+    - name: helm init
+      shell: KUBECONFIG=/etc/kubernetes/admin.conf helm init --service-account tiller
+      tags: helm
+
+    - name: helm repo
+      shell: KUBECONFIG=/etc/kubernetes/admin.conf helm repo update
+      tags: helm
+ 
+    - name: rancher
+      shell: docker run -d --restart=unless-stopped  -p 80:80 -p 443:443  rancher/rancher:latest
+      tags: rancher
+

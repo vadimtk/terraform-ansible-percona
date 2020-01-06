@@ -1,0 +1,15 @@
+[dbservers]
+box_innodb.aws.vadimtk.com
+
+[sysbench-server]
+34.232.51.167
+
+[iotest]
+
+[all:vars]
+user=ec2-user
+device=/dev/nvme1n1
+mountdir=/mnt/data
+ansible_ssh_private_key_file=/home/vadim/keys/1.pem
+backupdir=mysql.innodb
+initdatadir=false

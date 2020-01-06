@@ -1,0 +1,935 @@
+{
+    "ansible_all_ipv4_addresses": [
+        "139.178.83.67", 
+        "10.32.21.3"
+    ], 
+    "ansible_all_ipv6_addresses": [
+        "2604:1380:4111:2700::3", 
+        "fe80::526b:4bff:feb1:c4f6"
+    ], 
+    "ansible_apparmor": {
+        "status": "enabled"
+    }, 
+    "ansible_architecture": "x86_64", 
+    "ansible_bios_date": "06/29/2018", 
+    "ansible_bios_version": "1.4.9", 
+    "ansible_bond0": {
+        "active": true, 
+        "device": "bond0", 
+        "ipv4": {
+            "address": "139.178.83.67", 
+            "broadcast": "255.255.255.255", 
+            "netmask": "255.255.255.254", 
+            "network": "139.178.83.66"
+        }, 
+        "ipv6": [
+            {
+                "address": "2604:1380:4111:2700::3", 
+                "prefix": "127", 
+                "scope": "global"
+            }
+        ], 
+        "lacp_rate": "fast", 
+        "macaddress": "50:6b:4b:b1:c4:f6", 
+        "miimon": "100", 
+        "mode": "802.3ad", 
+        "mtu": 1500, 
+        "promisc": false, 
+        "slaves": [
+            "eno1", 
+            "eno2"
+        ], 
+        "speed": 20000, 
+        "type": "bonding"
+    }, 
+    "ansible_bond0_0": {
+        "ipv4": {
+            "address": "10.32.21.3", 
+            "broadcast": "255.255.255.255", 
+            "netmask": "255.255.255.254", 
+            "network": "10.32.21.2"
+        }
+    }, 
+    "ansible_cmdline": {
+        "BOOT_IMAGE": "/boot/vmlinuz", 
+        "biosdevname": "0", 
+        "console": "ttyS1,115200n8", 
+        "net.ifnames": "1", 
+        "ro": true, 
+        "root": "UUID=d3813576-5ced-45f7-a4c3-83c72eebd92d"
+    }, 
+    "ansible_date_time": {
+        "date": "2019-02-19", 
+        "day": "19", 
+        "epoch": "1550539273", 
+        "hour": "01", 
+        "iso8601": "2019-02-19T01:21:13Z", 
+        "iso8601_basic": "20190219T012113435607", 
+        "iso8601_basic_short": "20190219T012113", 
+        "iso8601_micro": "2019-02-19T01:21:13.435659Z", 
+        "minute": "21", 
+        "month": "02", 
+        "second": "13", 
+        "time": "01:21:13", 
+        "tz": "UTC", 
+        "tz_offset": "+0000", 
+        "weekday": "Tuesday", 
+        "weekday_number": "2", 
+        "weeknumber": "07", 
+        "year": "2019"
+    }, 
+    "ansible_default_ipv4": {
+        "address": "139.178.83.67", 
+        "alias": "bond0", 
+        "broadcast": "255.255.255.255", 
+        "gateway": "139.178.83.66", 
+        "interface": "bond0", 
+        "macaddress": "50:6b:4b:b1:c4:f6", 
+        "mtu": 1500, 
+        "netmask": "255.255.255.254", 
+        "network": "139.178.83.66", 
+        "type": "bonding"
+    }, 
+    "ansible_default_ipv6": {
+        "address": "2604:1380:4111:2700::3", 
+        "gateway": "2604:1380:4111:2700::2", 
+        "interface": "bond0", 
+        "macaddress": "50:6b:4b:b1:c4:f6", 
+        "mtu": 1500, 
+        "prefix": "127", 
+        "scope": "global", 
+        "type": "bonding"
+    }, 
+    "ansible_device_links": {
+        "ids": {
+            "nvme0n1": [
+                "nvme-Micron_9200_MTFDHAL3T2TCU_18351E946F62", 
+                "nvme-eui.000000000000000075a000626f941e01"
+            ], 
+            "sda": [
+                "ata-MTFDDAV240TCB_18331E06669D", 
+                "scsi-0ATA_MTFDDAV240TCB_18331E06669D", 
+                "scsi-1ATA_MTFDDAV240TCB_18331E06669D", 
+                "scsi-3500a07511e06669d", 
+                "scsi-SATA_MTFDDAV240TCB_18331E06669D", 
+                "wwn-0x500a07511e06669d"
+            ], 
+            "sdb": [
+                "ata-MTFDDAV240TCB_18331E06668F", 
+                "scsi-0ATA_MTFDDAV240TCB_18331E06668F", 
+                "scsi-1ATA_MTFDDAV240TCB_18331E06668F", 
+                "scsi-3500a07511e06668f", 
+                "scsi-SATA_MTFDDAV240TCB_18331E06668F", 
+                "wwn-0x500a07511e06668f"
+            ], 
+            "sdc": [
+                "scsi-355cd2e414f3e2246", 
+                "scsi-SATA_SSDSC2BB120G7R_PHDV819200PX150MGN", 
+                "wwn-0x55cd2e414f3e2246"
+            ], 
+            "sdc1": [
+                "scsi-355cd2e414f3e2246-part1", 
+                "scsi-SATA_SSDSC2BB120G7R_PHDV819200PX150MGN-part1", 
+                "wwn-0x55cd2e414f3e2246-part1"
+            ], 
+            "sdc2": [
+                "scsi-355cd2e414f3e2246-part2", 
+                "scsi-SATA_SSDSC2BB120G7R_PHDV819200PX150MGN-part2", 
+                "wwn-0x55cd2e414f3e2246-part2"
+            ], 
+            "sdc3": [
+                "scsi-355cd2e414f3e2246-part3", 
+                "scsi-SATA_SSDSC2BB120G7R_PHDV819200PX150MGN-part3", 
+                "wwn-0x55cd2e414f3e2246-part3"
+            ]
+        }, 
+        "labels": {
+            "sdc3": [
+                "ROOT"
+            ]
+        }, 
+        "masters": {}, 
+        "uuids": {
+            "sdc2": [
+                "4481d1e9-aa68-4715-880d-63437763c31f"
+            ], 
+            "sdc3": [
+                "d3813576-5ced-45f7-a4c3-83c72eebd92d"
+            ]
+        }
+    }, 
+    "ansible_devices": {
+        "loop0": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "1", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "none", 
+            "sectors": "0", 
+            "sectorsize": "512", 
+            "size": "0.00 Bytes", 
+            "support_discard": "0", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "loop1": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "1", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "none", 
+            "sectors": "0", 
+            "sectorsize": "512", 
+            "size": "0.00 Bytes", 
+            "support_discard": "0", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "loop2": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "1", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "none", 
+            "sectors": "0", 
+            "sectorsize": "512", 
+            "size": "0.00 Bytes", 
+            "support_discard": "0", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "loop3": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "1", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "none", 
+            "sectors": "0", 
+            "sectorsize": "512", 
+            "size": "0.00 Bytes", 
+            "support_discard": "0", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "loop4": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "1", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "none", 
+            "sectors": "0", 
+            "sectorsize": "512", 
+            "size": "0.00 Bytes", 
+            "support_discard": "0", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "loop5": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "1", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "none", 
+            "sectors": "0", 
+            "sectorsize": "512", 
+            "size": "0.00 Bytes", 
+            "support_discard": "0", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "loop6": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "1", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "none", 
+            "sectors": "0", 
+            "sectorsize": "512", 
+            "size": "0.00 Bytes", 
+            "support_discard": "0", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "loop7": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "1", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "none", 
+            "sectors": "0", 
+            "sectorsize": "512", 
+            "size": "0.00 Bytes", 
+            "support_discard": "0", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "nvme0n1": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [
+                    "nvme-Micron_9200_MTFDHAL3T2TCU_18351E946F62", 
+                    "nvme-eui.000000000000000075a000626f941e01"
+                ], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": "Micron_9200_MTFDHAL3T2TCU", 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "0", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "none", 
+            "sectors": "6251233968", 
+            "sectorsize": "512", 
+            "size": "2.91 TB", 
+            "support_discard": "512", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "sda": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [
+                    "ata-MTFDDAV240TCB_18331E06669D", 
+                    "scsi-0ATA_MTFDDAV240TCB_18331E06669D", 
+                    "scsi-1ATA_MTFDDAV240TCB_18331E06669D", 
+                    "scsi-3500a07511e06669d", 
+                    "scsi-SATA_MTFDDAV240TCB_18331E06669D", 
+                    "wwn-0x500a07511e06669d"
+                ], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": "MTFDDAV240TCB", 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "0", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "cfq", 
+            "sectors": "468862128", 
+            "sectorsize": "512", 
+            "serial": "18331E06669D", 
+            "size": "223.57 GB", 
+            "support_discard": "4096", 
+            "vendor": "ATA", 
+            "virtual": 1, 
+            "wwn": "0x500a07511e06669d"
+        }, 
+        "sdb": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [
+                    "ata-MTFDDAV240TCB_18331E06668F", 
+                    "scsi-0ATA_MTFDDAV240TCB_18331E06668F", 
+                    "scsi-1ATA_MTFDDAV240TCB_18331E06668F", 
+                    "scsi-3500a07511e06668f", 
+                    "scsi-SATA_MTFDDAV240TCB_18331E06668F", 
+                    "wwn-0x500a07511e06668f"
+                ], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": "MTFDDAV240TCB", 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "0", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "cfq", 
+            "sectors": "468862128", 
+            "sectorsize": "512", 
+            "serial": "18331E06668F", 
+            "size": "223.57 GB", 
+            "support_discard": "4096", 
+            "vendor": "ATA", 
+            "virtual": 1, 
+            "wwn": "0x500a07511e06668f"
+        }, 
+        "sdc": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [
+                    "scsi-355cd2e414f3e2246", 
+                    "scsi-SATA_SSDSC2BB120G7R_PHDV819200PX150MGN", 
+                    "wwn-0x55cd2e414f3e2246"
+                ], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": "SSDSC2BB120G7R", 
+            "partitions": {
+                "sdc1": {
+                    "holders": [], 
+                    "links": {
+                        "ids": [
+                            "scsi-355cd2e414f3e2246-part1", 
+                            "scsi-SATA_SSDSC2BB120G7R_PHDV819200PX150MGN-part1", 
+                            "wwn-0x55cd2e414f3e2246-part1"
+                        ], 
+                        "labels": [], 
+                        "masters": [], 
+                        "uuids": []
+                    }, 
+                    "sectors": "4096", 
+                    "sectorsize": 512, 
+                    "size": "2.00 MB", 
+                    "start": "2048", 
+                    "uuid": null
+                }, 
+                "sdc2": {
+                    "holders": [], 
+                    "links": {
+                        "ids": [
+                            "scsi-355cd2e414f3e2246-part2", 
+                            "scsi-SATA_SSDSC2BB120G7R_PHDV819200PX150MGN-part2", 
+                            "wwn-0x55cd2e414f3e2246-part2"
+                        ], 
+                        "labels": [], 
+                        "masters": [], 
+                        "uuids": [
+                            "4481d1e9-aa68-4715-880d-63437763c31f"
+                        ]
+                    }, 
+                    "sectors": "3993600", 
+                    "sectorsize": 512, 
+                    "size": "1.90 GB", 
+                    "start": "6144", 
+                    "uuid": "4481d1e9-aa68-4715-880d-63437763c31f"
+                }, 
+                "sdc3": {
+                    "holders": [], 
+                    "links": {
+                        "ids": [
+                            "scsi-355cd2e414f3e2246-part3", 
+                            "scsi-SATA_SSDSC2BB120G7R_PHDV819200PX150MGN-part3", 
+                            "wwn-0x55cd2e414f3e2246-part3"
+                        ], 
+                        "labels": [
+                            "ROOT"
+                        ], 
+                        "masters": [], 
+                        "uuids": [
+                            "d3813576-5ced-45f7-a4c3-83c72eebd92d"
+                        ]
+                    }, 
+                    "sectors": "230441871", 
+                    "sectorsize": 512, 
+                    "size": "109.88 GB", 
+                    "start": "3999744", 
+                    "uuid": "d3813576-5ced-45f7-a4c3-83c72eebd92d"
+                }
+            }, 
+            "removable": "0", 
+            "rotational": "0", 
+            "sas_address": "0x500056b3b23c8ec0", 
+            "sas_device_handle": "0x000a", 
+            "scheduler_mode": "cfq", 
+            "sectors": "234441648", 
+            "sectorsize": "512", 
+            "serial": "PHDV819200PX150MGN", 
+            "size": "111.79 GB", 
+            "support_discard": "4096", 
+            "vendor": "ATA", 
+            "virtual": 1, 
+            "wwn": "0x55cd2e414f3e2246"
+        }
+    }, 
+    "ansible_distribution": "Ubuntu", 
+    "ansible_distribution_file_parsed": true, 
+    "ansible_distribution_file_path": "/etc/os-release", 
+    "ansible_distribution_file_variety": "Debian", 
+    "ansible_distribution_major_version": "18", 
+    "ansible_distribution_release": "bionic", 
+    "ansible_distribution_version": "18.04", 
+    "ansible_dns": {
+        "nameservers": [
+            "147.75.207.207", 
+            "147.75.207.208"
+        ]
+    }, 
+    "ansible_domain": "", 
+    "ansible_effective_group_id": 0, 
+    "ansible_effective_user_id": 0, 
+    "ansible_eno1": {
+        "active": true, 
+        "device": "eno1", 
+        "macaddress": "50:6b:4b:b1:c4:f6", 
+        "module": "mlx5_core", 
+        "mtu": 1500, 
+        "pciid": "0000:19:00.0", 
+        "perm_macaddress": "50:6b:4b:b1:c4:f6", 
+        "promisc": false, 
+        "speed": 10000, 
+        "type": "ether"
+    }, 
+    "ansible_eno2": {
+        "active": true, 
+        "device": "eno2", 
+        "macaddress": "50:6b:4b:b1:c4:f6", 
+        "module": "mlx5_core", 
+        "mtu": 1500, 
+        "pciid": "0000:19:00.1", 
+        "perm_macaddress": "50:6b:4b:b1:c4:f7", 
+        "promisc": false, 
+        "speed": 10000, 
+        "type": "ether"
+    }, 
+    "ansible_env": {
+        "HOME": "/root", 
+        "LANG": "en_US.UTF-8", 
+        "LOGNAME": "root", 
+        "MAIL": "/var/mail/root", 
+        "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games", 
+        "PWD": "/root", 
+        "SHELL": "/bin/bash", 
+        "SHLVL": "1", 
+        "SSH_CLIENT": "40.143.89.205 16353 22", 
+        "SSH_CONNECTION": "40.143.89.205 16353 139.178.83.67 22", 
+        "USER": "root", 
+        "XDG_RUNTIME_DIR": "/run/user/0", 
+        "XDG_SESSION_ID": "3", 
+        "_": "/bin/sh"
+    }, 
+    "ansible_fips": false, 
+    "ansible_form_factor": "Rack Mount Chassis", 
+    "ansible_fqdn": "localhost", 
+    "ansible_hostname": "s-server1", 
+    "ansible_interfaces": [
+        "lo", 
+        "eno2", 
+        "bond0_0", 
+        "bond0", 
+        "eno1"
+    ], 
+    "ansible_is_chroot": false, 
+    "ansible_iscsi_iqn": "iqn.1993-08.org.debian:01:f1a85f23645f", 
+    "ansible_kernel": "4.15.0-20-generic", 
+    "ansible_lo": {
+        "active": true, 
+        "device": "lo", 
+        "ipv4": {
+            "address": "127.0.0.1", 
+            "broadcast": "host", 
+            "netmask": "255.0.0.0", 
+            "network": "127.0.0.0"
+        }, 
+        "ipv6": [
+            {
+                "address": "::1", 
+                "prefix": "128", 
+                "scope": "host"
+            }
+        ], 
+        "mtu": 65536, 
+        "promisc": false, 
+        "type": "loopback"
+    }, 
+    "ansible_local": {}, 
+    "ansible_lsb": {
+        "codename": "bionic", 
+        "description": "Ubuntu 18.04 LTS", 
+        "id": "Ubuntu", 
+        "major_release": "18", 
+        "release": "18.04"
+    }, 
+    "ansible_machine": "x86_64", 
+    "ansible_machine_id": "9e3bbd93b364486ab2ad7ee9310bfbfa", 
+    "ansible_memfree_mb": 383318, 
+    "ansible_memory_mb": {
+        "nocache": {
+            "free": 383428, 
+            "used": 2185
+        }, 
+        "real": {
+            "free": 383318, 
+            "total": 385613, 
+            "used": 2295
+        }, 
+        "swap": {
+            "cached": 0, 
+            "free": 1949, 
+            "total": 1949, 
+            "used": 0
+        }
+    }, 
+    "ansible_memtotal_mb": 385613, 
+    "ansible_mounts": [
+        {
+            "block_available": 26553471, 
+            "block_size": 4096, 
+            "block_total": 28320025, 
+            "block_used": 1766554, 
+            "device": "/dev/sdc3", 
+            "fstype": "ext4", 
+            "inode_available": 7151201, 
+            "inode_total": 7208960, 
+            "inode_used": 57759, 
+            "mount": "/", 
+            "options": "rw,relatime,errors=remount-ro,data=ordered", 
+            "size_available": 108763017216, 
+            "size_total": 115998822400, 
+            "uuid": "d3813576-5ced-45f7-a4c3-83c72eebd92d"
+        }
+    ], 
+    "ansible_nodename": "s-server1", 
+    "ansible_os_family": "Debian", 
+    "ansible_pkg_mgr": "apt", 
+    "ansible_processor": [
+        "0", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "1", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "2", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "3", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "4", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "5", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "6", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "7", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "8", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "9", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "10", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "11", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "12", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "13", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "14", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "15", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "16", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "17", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "18", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "19", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "20", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "21", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "22", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "23", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "24", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "25", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "26", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "27", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "28", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "29", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "30", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "31", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "32", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "33", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "34", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "35", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "36", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "37", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "38", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "39", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "40", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "41", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "42", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "43", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "44", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "45", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "46", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "47", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "48", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "49", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "50", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "51", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "52", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "53", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "54", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz", 
+        "55", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) Gold 5120 CPU @ 2.20GHz"
+    ], 
+    "ansible_processor_cores": 14, 
+    "ansible_processor_count": 2, 
+    "ansible_processor_threads_per_core": 2, 
+    "ansible_processor_vcpus": 56, 
+    "ansible_product_name": "PowerEdge R640", 
+    "ansible_product_serial": "G0NBMR2", 
+    "ansible_product_uuid": "4C4C4544-0030-4E10-8042-C7C04F4D5232", 
+    "ansible_product_version": "NA", 
+    "ansible_python": {
+        "executable": "/usr/bin/python", 
+        "has_sslcontext": true, 
+        "type": "CPython", 
+        "version": {
+            "major": 2, 
+            "micro": 15, 
+            "minor": 7, 
+            "releaselevel": "candidate", 
+            "serial": 1
+        }, 
+        "version_info": [
+            2, 
+            7, 
+            15, 
+            "candidate", 
+            1
+        ]
+    }, 
+    "ansible_python_version": "2.7.15rc1", 
+    "ansible_real_group_id": 0, 
+    "ansible_real_user_id": 0, 
+    "ansible_selinux": {
+        "status": "Missing selinux Python library"
+    }, 
+    "ansible_selinux_python_present": false, 
+    "ansible_service_mgr": "systemd", 
+    "ansible_ssh_host_key_dsa_public": "AAAAB3NzaC1kc3MAAACBAKpZtSIEAqfJXBkJq+jPg3dmEUn4PXLRhgJNSUGsRDYSnjAUw7b3HtzB9bBsJc8P/FkMs1yRK86ImA9EM7smqrhGPbvxzPjHNOlez1kaCKT4s+WkKyj0cxy476KiajZarZ4dJWZUhw0n3OiOwLiOZai5JzPD7bai5ytChaJqhIZ7AAAAFQD6Z6/QB85TJziXRFMkJNkBoho2GwAAAIAO2eDq2+718HB8P39+XlxLLN8K0xyFzI/2ekxomjabE5L1XQ3CPUTGbswd15YW+zNeJTtxPORCLr/O3Bnw0Z2Y1i6No8jDyKjPtOJVLsj4oRNoF/mSdg9/y+N6DGPD3fiLgGF/7Gw50axzXZpZ8KCcmN4bMy4T9+jeCUT3PpJDIAAAAIAIW22mRcwD908vcaVTzdzR9V6ggHUkqQ4U4LkRf/jJdc5nEFhFwqSJr6J/PqkMrT3KY9IOEu8Uifksv+erB6ByNImRWelaVSSF2Wwc+URkwUsdQ98bUPuZCeVvTGR4HBQ0fRnJBMh3lJaxPAcFJaFrEiMHNkoIS+VUTigJEFOj0w==", 
+    "ansible_ssh_host_key_ecdsa_public": "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBETpic2CNZIKkQh1ULYV/3LNzEpxHxYp5ecQPXpNbuuys+nnVe0YgWqYjDXsixYyR8DnD0f6fwmKw9sCvMIdlVU=", 
+    "ansible_ssh_host_key_rsa_public": "AAAAB3NzaC1yc2EAAAADAQABAAABAQC1+V53azcXdJRjgtOyATRVMELJfpDDa4VjYAXharzsG7MMfoe13ZUhjjrGDDAiIaIwRLaavweQq/jSzmZJAuMhuPgQfwydbyTLDu0LFehC0FG9ta90nj7+bYPFBm4XkJH+a/px6GsdIRBNYFHBr0GND5UK7eR6lpWT/NF+EyIHVe+BA8LxiNM8thtybcpZVYpSkRcErbBWg6H5UusegfhLGQp7C78kA9RwLxy96UByAQVmErZ/9zvbPq1GgjlvASmuc0AgV0ACvHrJulTAYz+rgdJ4zwhLKuCAHS8uwPk6DnLzJW52w7ShOQMgW5eI6RvoQ++b99tGiBi2NzQjZFgF", 
+    "ansible_swapfree_mb": 1949, 
+    "ansible_swaptotal_mb": 1949, 
+    "ansible_system": "Linux", 
+    "ansible_system_capabilities": [
+        "cap_chown", 
+        "cap_dac_override", 
+        "cap_dac_read_search", 
+        "cap_fowner", 
+        "cap_fsetid", 
+        "cap_kill", 
+        "cap_setgid", 
+        "cap_setuid", 
+        "cap_setpcap", 
+        "cap_linux_immutable", 
+        "cap_net_bind_service", 
+        "cap_net_broadcast", 
+        "cap_net_admin", 
+        "cap_net_raw", 
+        "cap_ipc_lock", 
+        "cap_ipc_owner", 
+        "cap_sys_module", 
+        "cap_sys_rawio", 
+        "cap_sys_chroot", 
+        "cap_sys_ptrace", 
+        "cap_sys_pacct", 
+        "cap_sys_admin", 
+        "cap_sys_boot", 
+        "cap_sys_nice", 
+        "cap_sys_resource", 
+        "cap_sys_time", 
+        "cap_sys_tty_config", 
+        "cap_mknod", 
+        "cap_lease", 
+        "cap_audit_write", 
+        "cap_audit_control", 
+        "cap_setfcap", 
+        "cap_mac_override", 
+        "cap_mac_admin", 
+        "cap_syslog", 
+        "cap_wake_alarm", 
+        "cap_block_suspend", 
+        "cap_audit_read+ep"
+    ], 
+    "ansible_system_capabilities_enforced": "True", 
+    "ansible_system_vendor": "Dell Inc.", 
+    "ansible_uptime_seconds": 260, 
+    "ansible_user_dir": "/root", 
+    "ansible_user_gecos": "root", 
+    "ansible_user_gid": 0, 
+    "ansible_user_id": "root", 
+    "ansible_user_shell": "/bin/bash", 
+    "ansible_user_uid": 0, 
+    "ansible_userspace_architecture": "x86_64", 
+    "ansible_userspace_bits": "64", 
+    "ansible_virtualization_role": "host", 
+    "ansible_virtualization_type": "kvm", 
+    "gather_subset": [
+        "all"
+    ], 
+    "module_setup": true
+}

@@ -12,9 +12,9 @@ log-error=error.log
 #  binlog_checksum = NONE
 #  log_slave_updates = ON
 
-log_bin = binlog
-relay_log=relay
-sync_binlog=0
+#log_bin = binlog
+#relay_log=relay
+#sync_binlog=0
 binlog_format = ROW
 binlog_row_image=MINIMAL
 server_id = {{ ansible_play_hosts.index(inventory_hostname) + 1 }}

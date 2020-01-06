@@ -1,0 +1,7 @@
+- hosts: iotest
+  remote_user: '{{ user }}'
+  become: true
+  gather_facts: yes
+
+  roles:
+  - iotest

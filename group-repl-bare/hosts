@@ -14,4 +14,6 @@
 #mysqlver=8.0
 #mysqlminor=8.0.15
 mysqlver=5.7
-mysqlminor=5.7.24
+mysqlminor=pxc-5.7.27
+
+networkinterface=ansible_eno2

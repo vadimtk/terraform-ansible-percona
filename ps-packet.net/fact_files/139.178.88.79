@@ -1,0 +1,288 @@
+{
+    "ansible_all_ipv4_addresses": [
+        "139.178.88.79", 
+        "10.88.59.3"
+    ], 
+    "ansible_all_ipv6_addresses": [
+        "2604:1380:1000:8200::3", 
+        "fe80::ee0d:9aff:febf:fcec"
+    ], 
+    "ansible_apparmor": {
+        "status": "enabled"
+    }, 
+    "ansible_architecture": "x86_64", 
+    "ansible_bond0": {
+        "active": true, 
+        "device": "bond0", 
+        "ipv4": {
+            "address": "139.178.88.79", 
+            "broadcast": "255.255.255.255", 
+            "netmask": "255.255.255.254", 
+            "network": "139.178.88.78"
+        }, 
+        "ipv6": [
+            {
+                "address": "2604:1380:1000:8200::3", 
+                "prefix": "127", 
+                "scope": "global"
+            }
+        ], 
+        "lacp_rate": "fast", 
+        "macaddress": "ec:0d:9a:bf:fc:ec", 
+        "miimon": "100", 
+        "mode": "802.3ad", 
+        "mtu": 1500, 
+        "promisc": false, 
+        "slaves": [
+            "enp94s0f0", 
+            "enp94s0f1"
+        ], 
+        "speed": 20000, 
+        "type": "bonding"
+    }, 
+    "ansible_bond0_0": {
+        "ipv4": {
+            "address": "10.88.59.3", 
+            "broadcast": "255.255.255.255", 
+            "netmask": "255.255.255.254", 
+            "network": "10.88.59.2"
+        }
+    }, 
+    "ansible_cmdline": {
+        "BOOT_IMAGE": "/boot/vmlinuz", 
+        "biosdevname": "0", 
+        "console": "ttyS1,115200n8", 
+        "net.ifnames": "1", 
+        "ro": true, 
+        "root": "UUID=4018f515-c728-4c17-9767-e9f1e1a02b06"
+    }, 
+    "ansible_date_time": {
+        "date": "2019-04-04", 
+        "day": "04", 
+        "epoch": "1554389864", 
+        "hour": "14", 
+        "iso8601": "2019-04-04T14:57:44Z", 
+        "iso8601_basic": "20190404T145744196815", 
+        "iso8601_basic_short": "20190404T145744", 
+        "iso8601_micro": "2019-04-04T14:57:44.196874Z", 
+        "minute": "57", 
+        "month": "04", 
+        "second": "44", 
+        "time": "14:57:44", 
+        "tz": "UTC", 
+        "tz_offset": "+0000", 
+        "weekday": "Thursday", 
+        "weekday_number": "4", 
+        "weeknumber": "13", 
+        "year": "2019"
+    }, 
+    "ansible_default_ipv4": {
+        "address": "139.178.88.79", 
+        "alias": "bond0", 
+        "broadcast": "255.255.255.255", 
+        "gateway": "139.178.88.78", 
+        "interface": "bond0", 
+        "macaddress": "ec:0d:9a:bf:fc:ec", 
+        "mtu": 1500, 
+        "netmask": "255.255.255.254", 
+        "network": "139.178.88.78", 
+        "type": "bonding"
+    }, 
+    "ansible_default_ipv6": {
+        "address": "2604:1380:1000:8200::3", 
+        "gateway": "2604:1380:1000:8200::2", 
+        "interface": "bond0", 
+        "macaddress": "ec:0d:9a:bf:fc:ec", 
+        "mtu": 1500, 
+        "prefix": "127", 
+        "scope": "global", 
+        "type": "bonding"
+    }, 
+    "ansible_distribution": "Ubuntu", 
+    "ansible_distribution_file_parsed": true, 
+    "ansible_distribution_file_path": "/etc/os-release", 
+    "ansible_distribution_file_variety": "Debian", 
+    "ansible_distribution_major_version": "18", 
+    "ansible_distribution_release": "bionic", 
+    "ansible_distribution_version": "18.04", 
+    "ansible_dns": {
+        "nameservers": [
+            "147.75.207.207", 
+            "147.75.207.208"
+        ]
+    }, 
+    "ansible_domain": "", 
+    "ansible_effective_group_id": 0, 
+    "ansible_effective_user_id": 0, 
+    "ansible_enp94s0f0": {
+        "active": true, 
+        "device": "enp94s0f0", 
+        "macaddress": "ec:0d:9a:bf:fc:ec", 
+        "module": "mlx5_core", 
+        "mtu": 1500, 
+        "pciid": "0000:5e:00.0", 
+        "perm_macaddress": "ec:0d:9a:bf:fc:ec", 
+        "promisc": false, 
+        "speed": 10000, 
+        "type": "ether"
+    }, 
+    "ansible_enp94s0f1": {
+        "active": true, 
+        "device": "enp94s0f1", 
+        "macaddress": "ec:0d:9a:bf:fc:ec", 
+        "module": "mlx5_core", 
+        "mtu": 1500, 
+        "pciid": "0000:5e:00.1", 
+        "perm_macaddress": "ec:0d:9a:bf:fc:ed", 
+        "promisc": false, 
+        "speed": 10000, 
+        "type": "ether"
+    }, 
+    "ansible_env": {
+        "HOME": "/root", 
+        "LANG": "en_US.UTF-8", 
+        "LOGNAME": "root", 
+        "MAIL": "/var/mail/root", 
+        "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games", 
+        "PWD": "/root", 
+        "SHELL": "/bin/bash", 
+        "SHLVL": "1", 
+        "SSH_CLIENT": "40.143.89.205 5924 22", 
+        "SSH_CONNECTION": "40.143.89.205 5924 139.178.88.79 22", 
+        "SSH_TTY": "/dev/pts/0", 
+        "TERM": "screen.linux", 
+        "USER": "root", 
+        "XDG_RUNTIME_DIR": "/run/user/0", 
+        "XDG_SESSION_ID": "2060", 
+        "_": "/bin/sh"
+    }, 
+    "ansible_fips": false, 
+    "ansible_fqdn": "localhost", 
+    "ansible_hostname": "node", 
+    "ansible_interfaces": [
+        "bond0_0", 
+        "lo", 
+        "enp94s0f0", 
+        "enp94s0f1", 
+        "bond0"
+    ], 
+    "ansible_kernel": "4.15.0-20-generic", 
+    "ansible_lo": {
+        "active": true, 
+        "device": "lo", 
+        "ipv4": {
+            "address": "127.0.0.1", 
+            "broadcast": "host", 
+            "netmask": "255.0.0.0", 
+            "network": "127.0.0.0"
+        }, 
+        "ipv6": [
+            {
+                "address": "::1", 
+                "prefix": "128", 
+                "scope": "host"
+            }
+        ], 
+        "mtu": 65536, 
+        "promisc": false, 
+        "type": "loopback"
+    }, 
+    "ansible_local": {}, 
+    "ansible_lsb": {
+        "codename": "bionic", 
+        "description": "Ubuntu 18.04 LTS", 
+        "id": "Ubuntu", 
+        "major_release": "18", 
+        "release": "18.04"
+    }, 
+    "ansible_machine": "x86_64", 
+    "ansible_machine_id": "6936dc3558a3401f9dde32fafc3fbc9a", 
+    "ansible_nodename": "node", 
+    "ansible_os_family": "Debian", 
+    "ansible_pkg_mgr": "apt", 
+    "ansible_python": {
+        "executable": "/usr/bin/python", 
+        "has_sslcontext": true, 
+        "type": "CPython", 
+        "version": {
+            "major": 2, 
+            "micro": 15, 
+            "minor": 7, 
+            "releaselevel": "candidate", 
+            "serial": 1
+        }, 
+        "version_info": [
+            2, 
+            7, 
+            15, 
+            "candidate", 
+            1
+        ]
+    }, 
+    "ansible_python_version": "2.7.15rc1", 
+    "ansible_real_group_id": 0, 
+    "ansible_real_user_id": 0, 
+    "ansible_selinux": {
+        "status": "Missing selinux Python library"
+    }, 
+    "ansible_selinux_python_present": false, 
+    "ansible_service_mgr": "systemd", 
+    "ansible_ssh_host_key_dsa_public": "AAAAB3NzaC1kc3MAAACBAMow18ULz3ZCzUlrWGEshEhBWNv8HvD4FoeIFoM/Jz3IlabOVF8B1JpVLAgXXiJs4upif7SwMURWWi+Jyc3GuluyMYt9IFUleEkmEb+5CRfi/0qHaYgOL19sw3wu8r/zfSEyXwVzlHuLEaV1hiy1WamSgb52LXqqtK+ngOPDwoXjAAAAFQCowECaKWnvmeOXDT9pLts6cfXJvQAAAIBJVN+0ufyaOLa4enz9D8ZlTN5kvJE2rLBkgmXi7W40TEJ9EZTrbd91/8C3lF3edYZhbdzwWcXdA6r2G5/o9x+pn1C4TPRlPtB13d6KFIKkpib1UQQfP2uOKeLp3oZnwdOPMSvtoMxwivVDBQAWKsDvxSJK1NXuNpQQI6OdZRaz2wAAAIAB29WokfIuq0x/8aVvNnrE5Fp3mhJStQR36ewOwtspi1PozHYAmutA9OFe6+VUcYF9nVS0xRlr3yvYa7CtMF0TUpwWSKvyOs5gdhiIJTHnEHoFGWUiAqpGuWGh2wVZENbOm7IBGsT9lBMb6jivVjHnq53zaeNsfJAGrosIFrvIaA==", 
+    "ansible_ssh_host_key_ecdsa_public": "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBByYksAHnn6Jc8JjNr2EHCAAO0RRYJguy3hy/8xohUw/CSWtSyCG/6C1qjAFdEj+hCFQB9RAXAxA/Q/bI4oUvLM=", 
+    "ansible_ssh_host_key_rsa_public": "AAAAB3NzaC1yc2EAAAADAQABAAABAQDAmAPWFH8fUVxVA2jqs7kalvMHy98YhMrKwgy4fdZlI7KeiUaTVLAp4tkvoQc30zfRaUwMXLqVoXThf5bcZXSWAVWX9Jsf+Od15C5uuJICkvIIH1Wj5aZ7CejuGEsajWWNyYSoLRG9QAZ7z2rskcYEjAp4kmdH3pM5mBLQkW2kxJA5cYYOI5y/kYwkTqgsS7OvNRDKAHUsxl78MmYwrm7hJU9HzsjEWVe2Rrh5SSokzndrsDb4YFJj+ch9qNhT2dZFaVIWnx98KlJ43VfCTUCwFfJtr8Zu6/iNNIj/SEi9lNSiaPk+iA7DcT4XPfpWYC/BxGowM5/99WbhNyns7Rld", 
+    "ansible_system": "Linux", 
+    "ansible_system_capabilities": [
+        "cap_chown", 
+        "cap_dac_override", 
+        "cap_dac_read_search", 
+        "cap_fowner", 
+        "cap_fsetid", 
+        "cap_kill", 
+        "cap_setgid", 
+        "cap_setuid", 
+        "cap_setpcap", 
+        "cap_linux_immutable", 
+        "cap_net_bind_service", 
+        "cap_net_broadcast", 
+        "cap_net_admin", 
+        "cap_net_raw", 
+        "cap_ipc_lock", 
+        "cap_ipc_owner", 
+        "cap_sys_module", 
+        "cap_sys_rawio", 
+        "cap_sys_chroot", 
+        "cap_sys_ptrace", 
+        "cap_sys_pacct", 
+        "cap_sys_admin", 
+        "cap_sys_boot", 
+        "cap_sys_nice", 
+        "cap_sys_resource", 
+        "cap_sys_time", 
+        "cap_sys_tty_config", 
+        "cap_mknod", 
+        "cap_lease", 
+        "cap_audit_write", 
+        "cap_audit_control", 
+        "cap_setfcap", 
+        "cap_mac_override", 
+        "cap_mac_admin", 
+        "cap_syslog", 
+        "cap_wake_alarm", 
+        "cap_block_suspend", 
+        "cap_audit_read+ep"
+    ], 
+    "ansible_system_capabilities_enforced": "True", 
+    "ansible_user_dir": "/root", 
+    "ansible_user_gecos": "root", 
+    "ansible_user_gid": 0, 
+    "ansible_user_id": "root", 
+    "ansible_user_shell": "/bin/bash", 
+    "ansible_user_uid": 0, 
+    "ansible_userspace_architecture": "x86_64", 
+    "ansible_userspace_bits": "64", 
+    "gather_subset": [
+        "network", 
+        "!hardware"
+    ], 
+    "module_setup": true
+}

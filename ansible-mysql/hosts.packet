@@ -1,0 +1,17 @@
+[master]
+147.75.192.231
+147.75.107.57
+147.75.79.223
+[slave]
+
+[dbservers:children]
+master
+slave
+
+[sysbench-server]
+
+
+[dbservers:vars]
+user=root
+device=/dev/sdb
+ssh_args = -i /root/.ssh/id_rsa

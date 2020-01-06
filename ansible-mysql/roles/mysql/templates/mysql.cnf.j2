@@ -1,0 +1,68 @@
+[mysqld]
+
+{% if enable_vault_plugin %}
+early-plugin-load="keyring_vault=keyring_vault.so" 
+loose-keyring_vault_config="/var/lib/mysql-keyring/keyring_vault.conf"
+{% endif %}
+
+datadir={{ mysqldir }}
+socket=/tmp/mysql.sock
+log-error=error.log
+
+# general
+  table_open_cache = 200000
+  table_open_cache_instances=64
+  back_log=3500
+  query_cache_type=0
+  max_connections=4000
+  max_prepared_stmt_count=1000000
+
+# files
+  innodb_file_per_table
+  innodb_log_file_size=4G
+  innodb_log_files_in_group=2
+  innodb_open_files=4000
+
+# buffers
+  innodb_buffer_pool_size= 50G
+  innodb_buffer_pool_instances=8
+  innodb_log_buffer_size=64M
+
+# tune
+  innodb_doublewrite= 1 
+  innodb_support_xa=0
+  innodb_thread_concurrency=0 
+  innodb_flush_log_at_trx_commit= 1
+  innodb_flush_method=O_DIRECT_NO_FSYNC
+  innodb_max_dirty_pages_pct=90
+  innodb_max_dirty_pages_pct_lwm=10
+  innodb_lru_scan_depth=2048
+  innodb_page_cleaners=4
+  join_buffer_size=256K
+  sort_buffer_size=256K
+  innodb_use_native_aio=1
+  innodb_stats_persistent = 1
+  #innodb_spin_wait_delay=96
+
+# perf special
+  innodb_adaptive_flushing = 1
+  innodb_flush_neighbors = 0
+  innodb_read_io_threads = 16
+  innodb_write_io_threads = 16
+  innodb_io_capacity=2500 
+  innodb_io_capacity_max=4500
+  innodb_purge_threads=4
+
+  innodb_adaptive_hash_index=0
+#innodb_change_buffering=none
+
+
+default_storage_engine=InnoDB
+
+
+bind_address = 0.0.0.0
+
+
+[client]
+socket=/tmp/mysql.sock
+

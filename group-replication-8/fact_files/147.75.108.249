@@ -1,0 +1,916 @@
+{
+    "ansible_all_ipv4_addresses": [
+        "147.75.108.249", 
+        "10.88.182.5"
+    ], 
+    "ansible_all_ipv6_addresses": [
+        "2604:1380:1001:6200::5", 
+        "fe80::ae1f:6bff:fe92:d432"
+    ], 
+    "ansible_apparmor": {
+        "status": "enabled"
+    }, 
+    "ansible_architecture": "x86_64", 
+    "ansible_bios_date": "05/16/2018", 
+    "ansible_bios_version": "2.2", 
+    "ansible_bond0": {
+        "active": true, 
+        "device": "bond0", 
+        "ipv4": {
+            "address": "147.75.108.249", 
+            "broadcast": "255.255.255.255", 
+            "netmask": "255.255.255.254", 
+            "network": "147.75.108.248"
+        }, 
+        "ipv6": [
+            {
+                "address": "2604:1380:1001:6200::5", 
+                "prefix": "127", 
+                "scope": "global"
+            }
+        ], 
+        "lacp_rate": "fast", 
+        "macaddress": "ac:1f:6b:92:d4:32", 
+        "miimon": "100", 
+        "mode": "802.3ad", 
+        "mtu": 1500, 
+        "promisc": false, 
+        "slaves": [
+            "enp1s0f0", 
+            "enp1s0f1"
+        ], 
+        "speed": 2000, 
+        "type": "bonding"
+    }, 
+    "ansible_bond0_0": {
+        "ipv4": {
+            "address": "10.88.182.5", 
+            "broadcast": "255.255.255.255", 
+            "netmask": "255.255.255.254", 
+            "network": "10.88.182.4"
+        }
+    }, 
+    "ansible_cmdline": {
+        "BOOT_IMAGE": "/boot/vmlinuz", 
+        "biosdevname": "0", 
+        "console": "ttyS1,115200n8", 
+        "net.ifnames": "1", 
+        "ro": true, 
+        "root": "UUID=7bf141e4-5a10-4ad0-8d75-59a154684de4"
+    }, 
+    "ansible_date_time": {
+        "date": "2019-02-16", 
+        "day": "16", 
+        "epoch": "1550335409", 
+        "hour": "16", 
+        "iso8601": "2019-02-16T16:43:29Z", 
+        "iso8601_basic": "20190216T164329979364", 
+        "iso8601_basic_short": "20190216T164329", 
+        "iso8601_micro": "2019-02-16T16:43:29.979406Z", 
+        "minute": "43", 
+        "month": "02", 
+        "second": "29", 
+        "time": "16:43:29", 
+        "tz": "UTC", 
+        "tz_offset": "+0000", 
+        "weekday": "Saturday", 
+        "weekday_number": "6", 
+        "weeknumber": "06", 
+        "year": "2019"
+    }, 
+    "ansible_default_ipv4": {
+        "address": "147.75.108.249", 
+        "alias": "bond0", 
+        "broadcast": "255.255.255.255", 
+        "gateway": "147.75.108.248", 
+        "interface": "bond0", 
+        "macaddress": "ac:1f:6b:92:d4:32", 
+        "mtu": 1500, 
+        "netmask": "255.255.255.254", 
+        "network": "147.75.108.248", 
+        "type": "bonding"
+    }, 
+    "ansible_default_ipv6": {
+        "address": "2604:1380:1001:6200::5", 
+        "gateway": "2604:1380:1001:6200::4", 
+        "interface": "bond0", 
+        "macaddress": "ac:1f:6b:92:d4:32", 
+        "mtu": 1500, 
+        "prefix": "127", 
+        "scope": "global", 
+        "type": "bonding"
+    }, 
+    "ansible_device_links": {
+        "ids": {
+            "md126": [
+                "md-name-ROOT", 
+                "md-uuid-a04953e5:023310fd:52964554:54b5c263"
+            ], 
+            "md127": [
+                "md-name-SWAP", 
+                "md-uuid-23362f2b:a8c1d1f2:1a8af838:f35dd582"
+            ], 
+            "sda": [
+                "ata-SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707196", 
+                "scsi-0ATA_SAMSUNG_MZ7KM240_S3F5NX0K707196", 
+                "scsi-1ATA_SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707196", 
+                "scsi-35002538c40b0798b", 
+                "scsi-SATA_SAMSUNG_MZ7KM240_S3F5NX0K707196", 
+                "wwn-0x5002538c40b0798b"
+            ], 
+            "sda1": [
+                "ata-SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707196-part1", 
+                "scsi-0ATA_SAMSUNG_MZ7KM240_S3F5NX0K707196-part1", 
+                "scsi-1ATA_SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707196-part1", 
+                "scsi-35002538c40b0798b-part1", 
+                "scsi-SATA_SAMSUNG_MZ7KM240_S3F5NX0K707196-part1", 
+                "wwn-0x5002538c40b0798b-part1"
+            ], 
+            "sda2": [
+                "ata-SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707196-part2", 
+                "scsi-0ATA_SAMSUNG_MZ7KM240_S3F5NX0K707196-part2", 
+                "scsi-1ATA_SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707196-part2", 
+                "scsi-35002538c40b0798b-part2", 
+                "scsi-SATA_SAMSUNG_MZ7KM240_S3F5NX0K707196-part2", 
+                "wwn-0x5002538c40b0798b-part2"
+            ], 
+            "sda3": [
+                "ata-SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707196-part3", 
+                "scsi-0ATA_SAMSUNG_MZ7KM240_S3F5NX0K707196-part3", 
+                "scsi-1ATA_SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707196-part3", 
+                "scsi-35002538c40b0798b-part3", 
+                "scsi-SATA_SAMSUNG_MZ7KM240_S3F5NX0K707196-part3", 
+                "wwn-0x5002538c40b0798b-part3"
+            ], 
+            "sdb": [
+                "ata-SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707173", 
+                "scsi-0ATA_SAMSUNG_MZ7KM240_S3F5NX0K707173", 
+                "scsi-1ATA_SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707173", 
+                "scsi-35002538c40b07974", 
+                "scsi-SATA_SAMSUNG_MZ7KM240_S3F5NX0K707173", 
+                "wwn-0x5002538c40b07974"
+            ], 
+            "sdb1": [
+                "ata-SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707173-part1", 
+                "scsi-0ATA_SAMSUNG_MZ7KM240_S3F5NX0K707173-part1", 
+                "scsi-1ATA_SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707173-part1", 
+                "scsi-35002538c40b07974-part1", 
+                "scsi-SATA_SAMSUNG_MZ7KM240_S3F5NX0K707173-part1", 
+                "wwn-0x5002538c40b07974-part1"
+            ], 
+            "sdb2": [
+                "ata-SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707173-part2", 
+                "scsi-0ATA_SAMSUNG_MZ7KM240_S3F5NX0K707173-part2", 
+                "scsi-1ATA_SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707173-part2", 
+                "scsi-35002538c40b07974-part2", 
+                "scsi-SATA_SAMSUNG_MZ7KM240_S3F5NX0K707173-part2", 
+                "wwn-0x5002538c40b07974-part2"
+            ], 
+            "sdb3": [
+                "ata-SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707173-part3", 
+                "scsi-0ATA_SAMSUNG_MZ7KM240_S3F5NX0K707173-part3", 
+                "scsi-1ATA_SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707173-part3", 
+                "scsi-35002538c40b07974-part3", 
+                "scsi-SATA_SAMSUNG_MZ7KM240_S3F5NX0K707173-part3", 
+                "wwn-0x5002538c40b07974-part3"
+            ]
+        }, 
+        "labels": {
+            "md126": [
+                "ROOT"
+            ]
+        }, 
+        "masters": {
+            "sda2": [
+                "md127"
+            ], 
+            "sda3": [
+                "md126"
+            ], 
+            "sdb2": [
+                "md127"
+            ], 
+            "sdb3": [
+                "md126"
+            ]
+        }, 
+        "uuids": {
+            "md126": [
+                "7bf141e4-5a10-4ad0-8d75-59a154684de4"
+            ], 
+            "md127": [
+                "b3f911b0-d0e7-4370-8e24-f09b3fa02b28"
+            ]
+        }
+    }, 
+    "ansible_devices": {
+        "loop0": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "1", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "none", 
+            "sectors": "0", 
+            "sectorsize": "512", 
+            "size": "0.00 Bytes", 
+            "support_discard": "0", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "loop1": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "1", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "none", 
+            "sectors": "0", 
+            "sectorsize": "512", 
+            "size": "0.00 Bytes", 
+            "support_discard": "0", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "loop2": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "1", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "none", 
+            "sectors": "0", 
+            "sectorsize": "512", 
+            "size": "0.00 Bytes", 
+            "support_discard": "0", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "loop3": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "1", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "none", 
+            "sectors": "0", 
+            "sectorsize": "512", 
+            "size": "0.00 Bytes", 
+            "support_discard": "0", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "loop4": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "1", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "none", 
+            "sectors": "0", 
+            "sectorsize": "512", 
+            "size": "0.00 Bytes", 
+            "support_discard": "0", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "loop5": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "1", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "none", 
+            "sectors": "0", 
+            "sectorsize": "512", 
+            "size": "0.00 Bytes", 
+            "support_discard": "0", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "loop6": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "1", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "none", 
+            "sectors": "0", 
+            "sectorsize": "512", 
+            "size": "0.00 Bytes", 
+            "support_discard": "0", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "loop7": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "1", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "none", 
+            "sectors": "0", 
+            "sectorsize": "512", 
+            "size": "0.00 Bytes", 
+            "support_discard": "0", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "md126": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [
+                    "md-name-ROOT", 
+                    "md-uuid-a04953e5:023310fd:52964554:54b5c263"
+                ], 
+                "labels": [
+                    "ROOT"
+                ], 
+                "masters": [], 
+                "uuids": [
+                    "7bf141e4-5a10-4ad0-8d75-59a154684de4"
+                ]
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "0", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "", 
+            "sectors": "464600192", 
+            "sectorsize": "512", 
+            "size": "221.54 GB", 
+            "support_discard": "512", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "md127": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [
+                    "md-name-SWAP", 
+                    "md-uuid-23362f2b:a8c1d1f2:1a8af838:f35dd582"
+                ], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": [
+                    "b3f911b0-d0e7-4370-8e24-f09b3fa02b28"
+                ]
+            }, 
+            "model": null, 
+            "partitions": {}, 
+            "removable": "0", 
+            "rotational": "0", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "", 
+            "sectors": "3991552", 
+            "sectorsize": "512", 
+            "size": "1.90 GB", 
+            "support_discard": "512", 
+            "vendor": null, 
+            "virtual": 1
+        }, 
+        "sda": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [
+                    "ata-SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707196", 
+                    "scsi-0ATA_SAMSUNG_MZ7KM240_S3F5NX0K707196", 
+                    "scsi-1ATA_SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707196", 
+                    "scsi-35002538c40b0798b", 
+                    "scsi-SATA_SAMSUNG_MZ7KM240_S3F5NX0K707196", 
+                    "wwn-0x5002538c40b0798b"
+                ], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": "SAMSUNG MZ7KM240", 
+            "partitions": {
+                "sda1": {
+                    "holders": [], 
+                    "links": {
+                        "ids": [
+                            "ata-SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707196-part1", 
+                            "scsi-0ATA_SAMSUNG_MZ7KM240_S3F5NX0K707196-part1", 
+                            "scsi-1ATA_SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707196-part1", 
+                            "scsi-35002538c40b0798b-part1", 
+                            "scsi-SATA_SAMSUNG_MZ7KM240_S3F5NX0K707196-part1", 
+                            "wwn-0x5002538c40b0798b-part1"
+                        ], 
+                        "labels": [], 
+                        "masters": [], 
+                        "uuids": []
+                    }, 
+                    "sectors": "4096", 
+                    "sectorsize": 512, 
+                    "size": "2.00 MB", 
+                    "start": "2048", 
+                    "uuid": null
+                }, 
+                "sda2": {
+                    "holders": [], 
+                    "links": {
+                        "ids": [
+                            "ata-SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707196-part2", 
+                            "scsi-0ATA_SAMSUNG_MZ7KM240_S3F5NX0K707196-part2", 
+                            "scsi-1ATA_SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707196-part2", 
+                            "scsi-35002538c40b0798b-part2", 
+                            "scsi-SATA_SAMSUNG_MZ7KM240_S3F5NX0K707196-part2", 
+                            "wwn-0x5002538c40b0798b-part2"
+                        ], 
+                        "labels": [], 
+                        "masters": [
+                            "md127"
+                        ], 
+                        "uuids": []
+                    }, 
+                    "sectors": "3993600", 
+                    "sectorsize": 512, 
+                    "size": "1.90 GB", 
+                    "start": "6144", 
+                    "uuid": null
+                }, 
+                "sda3": {
+                    "holders": [], 
+                    "links": {
+                        "ids": [
+                            "ata-SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707196-part3", 
+                            "scsi-0ATA_SAMSUNG_MZ7KM240_S3F5NX0K707196-part3", 
+                            "scsi-1ATA_SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707196-part3", 
+                            "scsi-35002538c40b0798b-part3", 
+                            "scsi-SATA_SAMSUNG_MZ7KM240_S3F5NX0K707196-part3", 
+                            "wwn-0x5002538c40b0798b-part3"
+                        ], 
+                        "labels": [], 
+                        "masters": [
+                            "md126"
+                        ], 
+                        "uuids": []
+                    }, 
+                    "sectors": "464862351", 
+                    "sectorsize": 512, 
+                    "size": "221.66 GB", 
+                    "start": "3999744", 
+                    "uuid": null
+                }
+            }, 
+            "removable": "0", 
+            "rotational": "0", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "cfq", 
+            "sectors": "468862128", 
+            "sectorsize": "512", 
+            "serial": "S3F5NX0K707196", 
+            "size": "223.57 GB", 
+            "support_discard": "512", 
+            "vendor": "ATA", 
+            "virtual": 1, 
+            "wwn": "0x5002538c40b0798b"
+        }, 
+        "sdb": {
+            "holders": [], 
+            "host": "", 
+            "links": {
+                "ids": [
+                    "ata-SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707173", 
+                    "scsi-0ATA_SAMSUNG_MZ7KM240_S3F5NX0K707173", 
+                    "scsi-1ATA_SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707173", 
+                    "scsi-35002538c40b07974", 
+                    "scsi-SATA_SAMSUNG_MZ7KM240_S3F5NX0K707173", 
+                    "wwn-0x5002538c40b07974"
+                ], 
+                "labels": [], 
+                "masters": [], 
+                "uuids": []
+            }, 
+            "model": "SAMSUNG MZ7KM240", 
+            "partitions": {
+                "sdb1": {
+                    "holders": [], 
+                    "links": {
+                        "ids": [
+                            "ata-SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707173-part1", 
+                            "scsi-0ATA_SAMSUNG_MZ7KM240_S3F5NX0K707173-part1", 
+                            "scsi-1ATA_SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707173-part1", 
+                            "scsi-35002538c40b07974-part1", 
+                            "scsi-SATA_SAMSUNG_MZ7KM240_S3F5NX0K707173-part1", 
+                            "wwn-0x5002538c40b07974-part1"
+                        ], 
+                        "labels": [], 
+                        "masters": [], 
+                        "uuids": []
+                    }, 
+                    "sectors": "4096", 
+                    "sectorsize": 512, 
+                    "size": "2.00 MB", 
+                    "start": "2048", 
+                    "uuid": null
+                }, 
+                "sdb2": {
+                    "holders": [], 
+                    "links": {
+                        "ids": [
+                            "ata-SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707173-part2", 
+                            "scsi-0ATA_SAMSUNG_MZ7KM240_S3F5NX0K707173-part2", 
+                            "scsi-1ATA_SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707173-part2", 
+                            "scsi-35002538c40b07974-part2", 
+                            "scsi-SATA_SAMSUNG_MZ7KM240_S3F5NX0K707173-part2", 
+                            "wwn-0x5002538c40b07974-part2"
+                        ], 
+                        "labels": [], 
+                        "masters": [
+                            "md127"
+                        ], 
+                        "uuids": []
+                    }, 
+                    "sectors": "3993600", 
+                    "sectorsize": 512, 
+                    "size": "1.90 GB", 
+                    "start": "6144", 
+                    "uuid": null
+                }, 
+                "sdb3": {
+                    "holders": [], 
+                    "links": {
+                        "ids": [
+                            "ata-SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707173-part3", 
+                            "scsi-0ATA_SAMSUNG_MZ7KM240_S3F5NX0K707173-part3", 
+                            "scsi-1ATA_SAMSUNG_MZ7KM240HMHQ-00005_S3F5NX0K707173-part3", 
+                            "scsi-35002538c40b07974-part3", 
+                            "scsi-SATA_SAMSUNG_MZ7KM240_S3F5NX0K707173-part3", 
+                            "wwn-0x5002538c40b07974-part3"
+                        ], 
+                        "labels": [], 
+                        "masters": [
+                            "md126"
+                        ], 
+                        "uuids": []
+                    }, 
+                    "sectors": "464862351", 
+                    "sectorsize": 512, 
+                    "size": "221.66 GB", 
+                    "start": "3999744", 
+                    "uuid": null
+                }
+            }, 
+            "removable": "0", 
+            "rotational": "0", 
+            "sas_address": null, 
+            "sas_device_handle": null, 
+            "scheduler_mode": "cfq", 
+            "sectors": "468862128", 
+            "sectorsize": "512", 
+            "serial": "S3F5NX0K707173", 
+            "size": "223.57 GB", 
+            "support_discard": "512", 
+            "vendor": "ATA", 
+            "virtual": 1, 
+            "wwn": "0x5002538c40b07974"
+        }
+    }, 
+    "ansible_distribution": "Ubuntu", 
+    "ansible_distribution_file_parsed": true, 
+    "ansible_distribution_file_path": "/etc/os-release", 
+    "ansible_distribution_file_variety": "Debian", 
+    "ansible_distribution_major_version": "18", 
+    "ansible_distribution_release": "bionic", 
+    "ansible_distribution_version": "18.04", 
+    "ansible_dns": {
+        "nameservers": [
+            "147.75.207.207", 
+            "147.75.207.208"
+        ]
+    }, 
+    "ansible_domain": "", 
+    "ansible_effective_group_id": 0, 
+    "ansible_effective_user_id": 0, 
+    "ansible_enp1s0f0": {
+        "active": true, 
+        "device": "enp1s0f0", 
+        "macaddress": "ac:1f:6b:92:d4:32", 
+        "module": "igb", 
+        "mtu": 1500, 
+        "pciid": "0000:01:00.0", 
+        "perm_macaddress": "ac:1f:6b:92:d4:32", 
+        "promisc": false, 
+        "speed": 1000, 
+        "type": "ether"
+    }, 
+    "ansible_enp1s0f1": {
+        "active": true, 
+        "device": "enp1s0f1", 
+        "macaddress": "ac:1f:6b:92:d4:32", 
+        "module": "igb", 
+        "mtu": 1500, 
+        "pciid": "0000:01:00.1", 
+        "perm_macaddress": "ac:1f:6b:92:d4:33", 
+        "promisc": false, 
+        "speed": 1000, 
+        "type": "ether"
+    }, 
+    "ansible_env": {
+        "HOME": "/root", 
+        "LANG": "en_US.UTF-8", 
+        "LOGNAME": "root", 
+        "MAIL": "/var/mail/root", 
+        "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games", 
+        "PWD": "/root", 
+        "SHELL": "/bin/bash", 
+        "SHLVL": "1", 
+        "SSH_CLIENT": "40.143.89.205 51441 22", 
+        "SSH_CONNECTION": "40.143.89.205 51441 147.75.108.249 22", 
+        "SSH_TTY": "/dev/pts/0", 
+        "TERM": "screen.linux", 
+        "USER": "root", 
+        "XDG_RUNTIME_DIR": "/run/user/0", 
+        "XDG_SESSION_ID": "49", 
+        "_": "/bin/sh"
+    }, 
+    "ansible_fips": false, 
+    "ansible_form_factor": "Other", 
+    "ansible_fqdn": "localhost", 
+    "ansible_hostname": "node-3", 
+    "ansible_interfaces": [
+        "lo", 
+        "bond0_0", 
+        "bond0", 
+        "enp1s0f1", 
+        "enp1s0f0"
+    ], 
+    "ansible_is_chroot": false, 
+    "ansible_iscsi_iqn": "iqn.1993-08.org.debian:01:f1a85f23645f", 
+    "ansible_kernel": "4.15.0-20-generic", 
+    "ansible_lo": {
+        "active": true, 
+        "device": "lo", 
+        "ipv4": {
+            "address": "127.0.0.1", 
+            "broadcast": "host", 
+            "netmask": "255.0.0.0", 
+            "network": "127.0.0.0"
+        }, 
+        "ipv6": [
+            {
+                "address": "::1", 
+                "prefix": "128", 
+                "scope": "host"
+            }
+        ], 
+        "mtu": 65536, 
+        "promisc": false, 
+        "type": "loopback"
+    }, 
+    "ansible_local": {}, 
+    "ansible_lsb": {
+        "codename": "bionic", 
+        "description": "Ubuntu 18.04 LTS", 
+        "id": "Ubuntu", 
+        "major_release": "18", 
+        "release": "18.04"
+    }, 
+    "ansible_machine": "x86_64", 
+    "ansible_machine_id": "4a5d36afc70d4c449fc287d7b9fe5609", 
+    "ansible_memfree_mb": 31690, 
+    "ansible_memory_mb": {
+        "nocache": {
+            "free": 31796, 
+            "used": 196
+        }, 
+        "real": {
+            "free": 31690, 
+            "total": 31992, 
+            "used": 302
+        }, 
+        "swap": {
+            "cached": 0, 
+            "free": 1948, 
+            "total": 1948, 
+            "used": 0
+        }
+    }, 
+    "ansible_memtotal_mb": 31992, 
+    "ansible_mounts": [
+        {
+            "block_available": 53900739, 
+            "block_size": 4096, 
+            "block_total": 57130709, 
+            "block_used": 3229970, 
+            "device": "/dev/md126", 
+            "fstype": "ext4", 
+            "inode_available": 14466653, 
+            "inode_total": 14524416, 
+            "inode_used": 57763, 
+            "mount": "/", 
+            "options": "rw,relatime,errors=remount-ro,data=ordered", 
+            "size_available": 220777426944, 
+            "size_total": 234007384064, 
+            "uuid": "7bf141e4-5a10-4ad0-8d75-59a154684de4"
+        }
+    ], 
+    "ansible_nodename": "node-3", 
+    "ansible_os_family": "Debian", 
+    "ansible_pkg_mgr": "apt", 
+    "ansible_processor": [
+        "0", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) CPU E3-1240 v6 @ 3.70GHz", 
+        "1", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) CPU E3-1240 v6 @ 3.70GHz", 
+        "2", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) CPU E3-1240 v6 @ 3.70GHz", 
+        "3", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) CPU E3-1240 v6 @ 3.70GHz", 
+        "4", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) CPU E3-1240 v6 @ 3.70GHz", 
+        "5", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) CPU E3-1240 v6 @ 3.70GHz", 
+        "6", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) CPU E3-1240 v6 @ 3.70GHz", 
+        "7", 
+        "GenuineIntel", 
+        "Intel(R) Xeon(R) CPU E3-1240 v6 @ 3.70GHz"
+    ], 
+    "ansible_processor_cores": 4, 
+    "ansible_processor_count": 1, 
+    "ansible_processor_threads_per_core": 2, 
+    "ansible_processor_vcpus": 8, 
+    "ansible_product_name": "SYS-5039MS-H12TRF", 
+    "ansible_product_serial": "S211678X8B09504", 
+    "ansible_product_uuid": "00000000-0000-0000-0000-AC1F6B92D432", 
+    "ansible_product_version": "0123456789", 
+    "ansible_python": {
+        "executable": "/usr/bin/python", 
+        "has_sslcontext": true, 
+        "type": "CPython", 
+        "version": {
+            "major": 2, 
+            "micro": 15, 
+            "minor": 7, 
+            "releaselevel": "candidate", 
+            "serial": 1
+        }, 
+        "version_info": [
+            2, 
+            7, 
+            15, 
+            "candidate", 
+            1
+        ]
+    }, 
+    "ansible_python_version": "2.7.15rc1", 
+    "ansible_real_group_id": 0, 
+    "ansible_real_user_id": 0, 
+    "ansible_selinux": {
+        "status": "Missing selinux Python library"
+    }, 
+    "ansible_selinux_python_present": false, 
+    "ansible_service_mgr": "systemd", 
+    "ansible_ssh_host_key_dsa_public": "AAAAB3NzaC1kc3MAAACBAOwKK9kLM3As4V996dph/tPhVU/2kYan0kUrGiX8MNhAk3ytFvMcUCMlUCG+wsTmZptD0HhZDMqT1Wce41DQxB69/bjgc1wCBa8TFSlTOsCLYMsH/5UJUkJOPk4+YhJtZ6ESEZqoYx5mIT1OEuMD2bU7/59zfw2zWdWsxLbrLlXbAAAAFQCI7SuIZxVvJ6lYQ8jUHiOJTbIsjQAAAIEAu7kVwOrxrlDnaTZjRVxdYIP+cwNQ0Wg1Cvj7NIGMI4smHkQ7Vid2D4dhhyyn8VdydCXkVIKlIFx1sPvkhmCDLQzYjL2ggwGE+sGz1ZxHcv0DL4LVWDSWSdlx+SdfHk3rYNTqJVa3rXedEdm3f+PDC+f8a7l7qiEmqW+YUgcFMi0AAACAEQUVVM4N8VX4LHjyt0N3Tq4V08iLbMJzymMdtLfmE7/u5pc8ifD/ia2oL/OSke9tayvksP+XlN/LISqrXq9g2h1W4L+3SpD3qoxyPXKW8j/2Xv/v3KeiVrm6gUYCp4wSPANqPNzFqca6ZeZ+xWTLfsPD57An7rOUNk1vaTCtqMU=", 
+    "ansible_ssh_host_key_ecdsa_public": "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBF9d1e2cbb+DOKVd7Home6geR7rQQh3Wa1a2tU6JNdpS1JbHQkchyThTZ3LvqJEceP3k70I9S3cadqL9OYqe958=", 
+    "ansible_ssh_host_key_rsa_public": "AAAAB3NzaC1yc2EAAAADAQABAAABAQCpqWe6gS2CIc8brokw02F2NTNPzkj5dd2cD6n7tFciIXy/0BDA9YjRxOjw78BB9F+v5BeOfwSG0Up4yBLfLXMcENSTZyGj+VpoBoj63h4Olii85WELi510oXvetDgeQXARmUXD4SIcfgyX1fidCoTafbC35LwkG6sB50F4e/gX0MtpwaTwV6Yqb78TWSoWEXsvkobloNyL5HZ4XdI4bwbdT446sdmm990kcOLVCi9dHxsVFL/b6Mi1OmmFj2B0oJp88ZJ5UHh2T0J4MXYW2sbN9EesrA60f5r1JMOOKGaXS+LzlMPxJ3sfHfB1jcZvfVN6v1UJapluGoLE9j2Ja7Br", 
+    "ansible_swapfree_mb": 1948, 
+    "ansible_swaptotal_mb": 1948, 
+    "ansible_system": "Linux", 
+    "ansible_system_capabilities": [
+        "cap_chown", 
+        "cap_dac_override", 
+        "cap_dac_read_search", 
+        "cap_fowner", 
+        "cap_fsetid", 
+        "cap_kill", 
+        "cap_setgid", 
+        "cap_setuid", 
+        "cap_setpcap", 
+        "cap_linux_immutable", 
+        "cap_net_bind_service", 
+        "cap_net_broadcast", 
+        "cap_net_admin", 
+        "cap_net_raw", 
+        "cap_ipc_lock", 
+        "cap_ipc_owner", 
+        "cap_sys_module", 
+        "cap_sys_rawio", 
+        "cap_sys_chroot", 
+        "cap_sys_ptrace", 
+        "cap_sys_pacct", 
+        "cap_sys_admin", 
+        "cap_sys_boot", 
+        "cap_sys_nice", 
+        "cap_sys_resource", 
+        "cap_sys_time", 
+        "cap_sys_tty_config", 
+        "cap_mknod", 
+        "cap_lease", 
+        "cap_audit_write", 
+        "cap_audit_control", 
+        "cap_setfcap", 
+        "cap_mac_override", 
+        "cap_mac_admin", 
+        "cap_syslog", 
+        "cap_wake_alarm", 
+        "cap_block_suspend", 
+        "cap_audit_read+ep"
+    ], 
+    "ansible_system_capabilities_enforced": "True", 
+    "ansible_system_vendor": "Supermicro", 
+    "ansible_uptime_seconds": 376, 
+    "ansible_user_dir": "/root", 
+    "ansible_user_gecos": "root", 
+    "ansible_user_gid": 0, 
+    "ansible_user_id": "root", 
+    "ansible_user_shell": "/bin/bash", 
+    "ansible_user_uid": 0, 
+    "ansible_userspace_architecture": "x86_64", 
+    "ansible_userspace_bits": "64", 
+    "ansible_virtualization_role": "host", 
+    "ansible_virtualization_type": "kvm", 
+    "gather_subset": [
+        "all"
+    ], 
+    "module_setup": true
+}

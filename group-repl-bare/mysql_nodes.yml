@@ -1,7 +1,7 @@
 ---
 osuser: root
 
-#networkinterface: ansible_bond0_0
+#networkinterface: ansible_eno2
 # Credentials
 mysql_root_pass: sammytheshark
 
@@ -25,12 +25,18 @@ deploy_user: mysql
 bufferpool: 100G
 consistency: 'AFTER'
 
-server: "pxc"
-mysqlbin: "Percona-XtraDB-Cluster-5.7.24-rel26-31.33.1.Linux.x86_64.ssl100"
-downurl: https://www.percona.com/downloads/Percona-XtraDB-Cluster-LATEST/Percona-XtraDB-Cluster-5.7.24-31.33/binary/tarball/Percona-XtraDB-Cluster-5.7.24-rel26-31.33.1.Linux.x86_64.ssl100.tar.gz
+#server: "pxc"
+#mysqlbin: "Percona-XtraDB-Cluster-5.7.27-rel30-31.39.1.Linux.x86_64.ssl100"
+#downurl: https://www.percona.com/downloads/Percona-XtraDB-Cluster-LATEST/Percona-XtraDB-Cluster-5.7.27-31.39/binary/tarball/Percona-XtraDB-Cluster-5.7.27-rel30-31.39.1.Linux.x86_64.ssl100.tar.gz
+#mysqlbin: "pxc-5.7.27"
 
 #server: "ps"
-#mysqlbin: "percona-server-install"
+#mysqlbin: "Percona-Server-8.0.17-8-Linux.x86_64.ssl100"
+#downurl: https://www.percona.com/downloads/Percona-Server-LATEST/Percona-Server-8.0.17-8/binary/tarball/Percona-Server-8.0.17-8-Linux.x86_64.ssl100.tar.gz
+
+server: "pgr"
+mysqlbin: "Percona-Server-8.0.18-9-Linux.x86_64.ssl100"
+downurl: https://www.percona.com/downloads/Percona-Server-LATEST/Percona-Server-8.0.18-9/binary/tarball/Percona-Server-8.0.18-9-Linux.x86_64.ssl100.tar.gz
 
 #server: "mariadb"
 #downurl: https://downloads.mariadb.org/f/mariadb-10.4.3/bintar-linux-glibc_214-x86_64/mariadb-10.4.3-linux-glibc_214-x86_64.tar.gz

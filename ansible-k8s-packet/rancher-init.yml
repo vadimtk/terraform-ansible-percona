@@ -1,0 +1,54 @@
+---
+- hosts: rancher-node
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  vars_files:
+    - config_nodes.yml
+
+  tasks:
+
+    - name: Hostname
+      hostname: name="node-{{ play_hosts.index(inventory_hostname)|int+1 }}"
+
+- hosts: rancher-node
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  serial: 5
+  vars_files:
+    - config_nodes.yml
+
+  tasks:
+
+    - import_tasks: network_tasks.yml
+
+    - name: Update apt packages
+      apt:
+        update_cache: yes
+
+    - name: Install docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Disable swap
+      shell: >
+        swapoff -a
+
+    - name: Install node
+      shell: >
+        docker run -d --privileged --restart=unless-stopped --net=host -v /etc/kubernetes:/etc/kubernetes -v /var/run:/var/run rancher/rancher-agent:v2.1.7 --server https://147.75.83.67 --token xct7l4ljgq8n2vrscbrvj7glfjmxh2txmrrnwfk7lkgcxmcj5nd9d8 --ca-checksum af996463a906b0fd4e9c5066e4431b4e47202de32a4a2be93e2bcaa0caccd5c9 --worker
+
+    - name: Fix sysctl
+      shell: sysctl net.bridge.bridge-nf-call-iptables=1
+
+#    - name: Kernel config
+#      shell: apt-get install linux-image-4.15.0-20-generic -y
+
+#    - name: Reset Kubernetes component
+#      shell: "kubeadm reset --force"
+#      tags: reset
+

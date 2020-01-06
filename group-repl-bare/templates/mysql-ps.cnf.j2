@@ -72,8 +72,8 @@ group_replication_consistency={{ consistency }}
 
 # Host specific replication configuration
 server_id = {{ ansible_play_hosts.index(inventory_hostname) + 1 }}
-report_host = "{{ ansible_eno2.ipv4.address }}"
-loose-group_replication_local_address = "{{ ansible_eno2.ipv4.address }}:33061"
+report_host = "{{  hostvars[inventory_hostname][networkinterface]['ipv4']['address']  }}"
+loose-group_replication_local_address = "{{  hostvars[inventory_hostname][networkinterface]['ipv4']['address']  }}:33061"
 disabled_storage_engines = MyISAM,BLACKHOLE,FEDERATED,CSV,ARCHIVE
 report_port = 3306
 log-error=error.log

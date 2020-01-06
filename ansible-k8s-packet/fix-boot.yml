@@ -1,0 +1,26 @@
+---
+- hosts: all
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  vars_files:
+    - config_nodes.yml
+
+- hosts: worker
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  serial: 5
+  vars_files:
+    - config_nodes.yml
+
+  tasks:
+
+    - name: Bootstrap Node
+      lineinfile:
+        path: "{{ mountdir }}/mysql/grastate.dat"
+        regexp: '^safe_to_bootstrap'
+        line: 'safe_to_bootstrap=1'
+

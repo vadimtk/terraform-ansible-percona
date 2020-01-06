@@ -1,0 +1,1 @@
+aws rds create-db-subnet-group --db-subnet-group-name=DBSG1 --db-subnet-group-description=DBSG1 --subnet-ids subnet-0a6d11c322baf96ca subnet-0aab9db44ae78ae4b --region=us-east-1  --endpoint-url=https://rds-beta.us-east-1.amazonaws.com 

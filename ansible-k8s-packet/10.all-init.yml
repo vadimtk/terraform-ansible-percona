@@ -1,0 +1,77 @@
+---
+- hosts: worker
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  vars_files:
+    - config_nodes.yml
+
+  tasks:
+
+    - name: Hostname
+      hostname: name="node-{{ play_hosts.index(inventory_hostname)|int+1 }}"
+
+- hosts: all
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  serial: 5
+  vars_files:
+    - config_nodes.yml
+
+  tasks:
+
+    - import_tasks: network_tasks.yml
+
+    - name: Install repo
+      apt_repository:
+        repo: deb http://apt.kubernetes.io/ kubernetes-bionic main
+        state: absent
+
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+
+    - name: Install docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Install key
+      shell: >
+        curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+
+    - name: Install repo
+      apt_repository:
+        repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+        state: present
+
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+
+    - name: Install packages
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - kubelet
+        - kubeadm
+        - kubernetes-cni
+
+    - name: Disable swap
+      shell: >
+        swapoff -a
+
+    - name: Fix sysctl
+      shell: sysctl net.bridge.bridge-nf-call-iptables=1
+
+#    - name: Kernel config
+#      shell: apt-get install linux-image-4.15.0-20-generic -y
+
+#    - name: Reset Kubernetes component
+#      shell: "kubeadm reset --force"
+#      tags: reset
+

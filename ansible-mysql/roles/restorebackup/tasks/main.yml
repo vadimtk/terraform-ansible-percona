@@ -1,0 +1,37 @@
+---
+
+- name: Mount FS
+  mount:
+    path: /mnt/backup
+    src: /dev/nvme2n1
+    fstype: ext4
+    state: mounted
+
+- name: Stop MySQL
+  systemd:
+    name: mysqld
+    state: stopped
+
+- name: Remove datadir
+  file:
+    path: "{{ mysqldir }}/"
+    state: "{{ item }}"
+  with_items:
+    - absent
+
+- name: copy backup
+  shell: >
+    cp -r /mnt/backup/"{{ backupdir }}" /mnt/data/mysql
+
+- name: Ownership datadir
+  file:
+    path: "{{ mysqldir }}"
+    recurse: yes
+    owner: mysql
+    group: mysql
+
+- name: Restart mysqld
+  systemd:
+    name: mysqld
+    state: started
+    

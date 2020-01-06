@@ -1,0 +1,74 @@
+---
+- name: Generate global mysql.cnf file for PS
+  template:
+    src: mysql.cnf.j2
+    dest:  "{{ mysqlconf }}"
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+  become: true
+  tags: apply-config
+
+- name: Generate keyring file
+  copy:
+    src: keyring_vault.conf
+    dest:  /var/lib/mysql-keyring/keyring_vault.conf
+    owner: mysql
+    group: mysql
+    mode: "0644"
+    backup: true
+  become: true
+  when: enable_vault_plugin 
+  tags: apply-config
+
+- file: path=/etc/mysql state=directory
+  when: enable_vault_plugin
+
+- name: Generate cert file
+  copy:
+    src: cert.crt
+    dest:  /etc/mysql/cert.crt
+    owner: mysql
+    group: mysql
+    mode: "0600"
+    backup: true
+  become: true
+  when: enable_vault_plugin 
+  tags: apply-config
+
+- name: Restart MySQL
+  systemd:
+    name: "{{ mysqlservice }}"
+    state: restarted
+  tags: apply-config
+
+- name: enable RocksDB
+  shell: >
+    ps-admin --enable-rocksdb
+  when: 
+    - enable_myrocks is defined
+    - enable_myrocks
+
+- name: Generate global mysql.cnf file for MyRocks
+  template:
+    src: mysql-rocksdb.cnf.j2
+    dest:  "{{ mysqlconf }}"
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+  become: true
+  when: 
+    - enable_myrocks is defined
+    - enable_myrocks
+  tags: apply-config
+
+- name: Restart MySQL for MyRocks
+  systemd:
+    name: "{{ mysqlservice }}"
+    state: restarted
+  when: 
+    - enable_myrocks is defined
+    - enable_myrocks
+  tags: apply-config

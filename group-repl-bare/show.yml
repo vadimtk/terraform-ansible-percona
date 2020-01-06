@@ -1,7 +1,7 @@
-- hosts: mysql-node
+- hosts: node
   gather_facts: yes
-  remote_user: ubuntu
+  remote_user: root
   tasks:
   - name: show 
     debug:
-      msg: "{{ hostvars[groups['all'][0]] }}"
+      msg: "{{ hostvars[inventory_hostname][networkinterface]['ipv4']['address'] }}"
