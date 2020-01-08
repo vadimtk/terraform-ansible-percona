@@ -1,0 +1,29 @@
+---
+- hosts: worker
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  serial: 5
+  vars_files:
+    - config_nodes.yml
+
+  tasks:
+
+    - name: Create  ext4 filesystem
+      filesystem:
+        fstype: ext4
+        dev: "{{ disk }}"
+        force: no
+        opts: -E lazy_itable_init=0,lazy_journal_init=0,discard
+      when: disk is defined
+
+    - name: Mount FS
+      mount:
+        path: "{{ mountdir }}"
+        src: "{{ disk }}"
+        fstype: ext4
+        opts: discard
+        state: mounted
+      when: disk is defined
+
