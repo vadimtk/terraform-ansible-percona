@@ -1,0 +1,143 @@
+---
+- hosts: node
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+  vars_files:
+    - mysql_nodes.yml
+
+  tasks:
+
+    - name: Add the user MySQL
+      user:
+        name: mysql
+        comment: John Doe
+
+    - name: Create  ext4 filesystem
+      filesystem:
+        fstype: ext4
+        dev: "{{ disk }}"
+        force: no
+        opts: -E lazy_itable_init=0,lazy_journal_init=0,discard
+      when: disk is defined
+
+    - name: Mount FS
+      mount:
+        path: "{{ mountdir }}"
+        src: "{{ disk }}"
+        fstype: ext4
+        opts: discard
+        state: mounted
+      when: disk is defined
+      tags: mount    
+ 
+    - name: create install dir
+      file:
+        path: "{{ installdir }}"
+        state: "{{ item }}"
+      with_items:
+        - directory
+
+    - name: Install software-properties-common
+      apt:
+        name: software-properties-common
+        state: present
+
+    - name: Download Server
+      get_url:
+        url: "https://dev.mysql.com/get/Downloads/MySQL-{{ mysqlver }}/{{ mysqlbin }}.tar.xz"
+        dest: "{{ installdir }}"
+      when: server=="mysql"
+      tags: download
+
+    - name: Install Server
+      unarchive:
+        src: "{{ installdir }}/{{ mysqlbin }}.tar.xz"
+        dest: "{{ installdir }}"
+        remote_src: yes
+      when: server=="mysql"
+      tags: download
+
+    - name: Download Server
+      get_url:
+        url: "{{ downurl }}"
+        dest: "{{ installdir }}"
+      when: server=="pxc" or server=="mariadb" or server=="ps" or server=="pgr"
+      tags: download
+
+    - name: Install Server
+      unarchive:
+        src: "{{ installdir }}/{{ mysqlbin }}.tar.gz"
+        dest: "{{ installdir }}"
+        remote_src: yes
+      when: server=="pxc" or server=="mariadb" or server=="ps" or server=="pgr"
+      tags: download
+
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+
+    - name: Install packages
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - libsystemd0
+        - numactl
+        - python-mysqldb
+        - mysql-client
+
+    - name: Stop MySQL
+      shell: >
+        "{{ installdir }}/{{ mysqlbin }}/bin/mysqladmin" shutdown --socket=/tmp/mysql.sock
+      ignore_errors: yes
+
+    - name: Remove datadir
+      file:
+        path: "{{ mountdir }}/{{ mysqldir }}"
+        state: "{{ item }}"
+        owner: mysql
+        group: mysql
+      with_items:
+        - absent
+        - directory
+
+    - name: Init datadir
+      shell: >
+        "{{ installdir }}/{{ mysqlbin }}/bin/mysqld" --no-defaults --initialize-insecure --datadir="{{ mountdir }}/{{ mysqldir }}" --user=mysql
+      when: server=="pxc" or server=="mysql" or server=="ps" or server=="pgr"
+
+    - name: Init datadir
+      shell: >
+         "{{ installdir }}/{{ mysqlbin }}/scripts/mysql_install_db"  --no-defaults  --datadir="{{ mountdir }}/{{ mysqldir }}" --user=mysql
+      when: server=="mariadb"
+
+    - name: Generate systemctl file
+      template:
+        src: mysql.service.j2
+        dest: /etc/systemd/system/mysql-cd.service
+        owner: root
+        group: root
+        mode: "0644"
+        backup: false
+      tags: apply-service-file
+
+    - name: Generate client my.cnf
+      template:
+        src: my.cnf.j2
+        dest: /root/.my.cnf
+        owner: root
+        group: root
+        mode: "0644"
+        backup: false
+
+    - name: Reload systemd
+      shell: systemctl daemon-reload
+      tags: apply-service-file
+
+    - name: enable mysql systemd
+      shell: systemctl enable mysql-cd
+      tags: apply-service-file
+
+# vim: set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
