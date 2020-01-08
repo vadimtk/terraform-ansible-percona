@@ -11,9 +11,9 @@
 #mysqlminor=10.3.13
 #mysqlver=10.4
 #mysqlminor=10.4.3
-#mysqlver=8.0
-#mysqlminor=8.0.15
-mysqlver=5.7
-mysqlminor=pxc-5.7.27
+mysqlver=8.0
+mysqlminor=8.0.18
+#mysqlver=5.7
+#mysqlminor=pxc-5.7.27
 
 networkinterface=ansible_eno2

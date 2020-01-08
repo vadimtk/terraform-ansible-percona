@@ -47,7 +47,7 @@ log_slave_updates = ON
 
 log_bin = binlog
 relay_log=relay
-sync_binlog=0
+sync_binlog=1000
 binlog_format = ROW
 binlog_row_image=MINIMAL
 
@@ -62,6 +62,7 @@ loose-group_replication_group_name = "{{ uuid }}"
 loose-group_replication_ip_whitelist = "{{ public_host_ips | join(',') }}"
 loose-group_replication_group_seeds = "{{ public_host_ips | zip_longest([], fillvalue=':33061') | map('join') | join(',') }}"
 group_replication_consistency={{ consistency }}
+group_replication_ssl_mode=REQUIRED
 
 # Single or Multi-primary mode? Uncomment these two lines
 # for multi-primary mode, where any host can accept writes

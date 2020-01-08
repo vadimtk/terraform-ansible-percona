@@ -15,8 +15,13 @@ log-error=error.log
 #log_bin = binlog
 #relay_log=relay
 #sync_binlog=0
+
+log_bin = binlog
+relay_log=relay
+sync_binlog=1000
 binlog_format = ROW
 binlog_row_image=MINIMAL
+
 server_id = {{ ansible_play_hosts.index(inventory_hostname) + 1 }}
 
 # general
@@ -45,6 +50,7 @@ innodb_file_per_table           = 1
 innodb_autoinc_lock_mode=2
 innodb_io_capacity=2000
 innodb_io_capacity_max=4000
+innodb_monitor_enable=all
 
 
 bind_address = 0.0.0.0
@@ -60,20 +66,20 @@ wsrep_cluster_address=gcomm://{{ clusteraddr }}
 
 wsrep_provider="{{ installdir }}/{{ mysqlbin }}/lib/libgalera_smm.so"
 
-wsrep_provider_options="gcs.fc_limit=16;evs.send_window=4;evs.user_send_window=2"
+wsrep_provider_options="gcs.fc_limit=16;evs.send_window=4;evs.user_send_window=2;"
 
 wsrep_sst_method=xtrabackup-v2
-wsrep_sst_auth="root:"
+#wsrep_sst_auth="root:"
 
 #pxc-encrypt-cluster-traffic=ON
 
-ssl-ca=/etc/mysql/certs/ca.pem
-ssl-cert=/etc/mysql/certs/server-cert.pem
-ssl-key=/etc/mysql/certs/server-key.pem
+ssl-ca={{ mountdir }}/{{ mysqldir }}/ca.pem
+ssl-cert={{ mountdir }}/{{ mysqldir }}/server-cert.pem
+ssl-key={{ mountdir }}/{{ mysqldir }}/server-key.pem
 
 [client]
 socket=/tmp/mysql.sock
-ssl-ca=/etc/mysql/certs/ca.pem
-ssl-cert=/etc/mysql/certs/client-cert.pem
-ssl-key=/etc/mysql/certs/client-key.pem
+ssl-ca={{ mountdir }}/{{ mysqldir }}/ca.pem
+ssl-cert={{ mountdir }}/{{ mysqldir }}/client-cert.pem
+ssl-key={{ mountdir }}/{{ mysqldir }}/client-key.pem
 
