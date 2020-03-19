@@ -1,0 +1,22 @@
+---
+- hosts: node
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: false
+  vars_files:
+    - mysql_nodes.yml
+
+  tasks:
+
+    - name: Generate MySQL user script
+      template:
+        src: sbtest_user.sql.j2
+        dest: "/tmp/sbtest_user.sql"
+        mode: "0600"
+
+    - name: Set up user
+      mysql_db:
+        name: all
+        state: import
+        target: "/tmp/sbtest_user.sql"

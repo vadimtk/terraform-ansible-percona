@@ -1,0 +1,5 @@
+-- SET SQL_LOG_BIN=0;
+CREATE USER IF NOT EXISTS sbtest@'%' IDENTIFIED WITH 'mysql_native_password' BY 'sbtest';
+GRANT ALL on *.* TO 'sbtest'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+-- SET SQL_LOG_BIN=1;
