@@ -3,8 +3,8 @@
 
 # .tfstate files
 *.tfstate
+*.tfvars
 *.tfstate.*
 var.tf
 **/fact_files/*
 **/retry_files/*
-

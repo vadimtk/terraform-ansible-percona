@@ -64,14 +64,18 @@ wsrep_cluster_address=gcomm://{{ clusteraddr }}
 # ansible_play_hosts[0] | map('extract', hostvars, [networkinterface, 'ipv4', 'address'])|list|join(',') if inventory_hostname != ansible_play_hosts[0] else "" 
 
 
-wsrep_provider="{{ installdir }}/{{ mysqlbin }}/lib/libgalera_smm.so"
+wsrep_provider="{{ installdir }}/{{ mysqlbin[server] }}/lib/libgalera_smm.so"
 
-wsrep_provider_options="gcs.fc_limit=16;evs.send_window=4;evs.user_send_window=2;"
+#wsrep_provider_options="gcs.fc_limit=16;evs.send_window=4;evs.user_send_window=2;gcache.size=150G;cert.optimistic_pa=NO"
+wsrep_provider_options="gcs.fc_limit=16;evs.send_window=4;evs.user_send_window=2;gcache.size=15G;"
 
-wsrep_sst_method=xtrabackup-v2
+#wsrep_sst_method=xtrabackup-v2
 #wsrep_sst_auth="root:"
 
-#pxc-encrypt-cluster-traffic=ON
+#SET GLOBAL wsrep_provider_options="cert.optimistic_pa=NO";
+#wsrep_certification_rules='OPTIMIZED'
+
+pxc-encrypt-cluster-traffic=OFF
 
 ssl-ca={{ mountdir }}/{{ mysqldir }}/ca.pem
 ssl-cert={{ mountdir }}/{{ mysqldir }}/server-cert.pem

@@ -18,7 +18,7 @@
 
 - name: Generate global mysql.cnf file for group replication
   template:
-    src: mysql-ps.cnf.j2
+    src: mysql-{{ server }}.cnf.j2
     dest: "{{ installdir }}/my.cnf"
     owner: root
     group: root
@@ -78,11 +78,11 @@
   when:
     - "'ON' not in group_replication_running.stdout"
     - inventory_hostname == ansible_play_hosts[0]
-  tags: apply-config, bootstrap
+  tags: apply-config, bootstrap, startgr
 
 - name: Begin group replication on remaining nodes
   command: mysql -ne "START GROUP_REPLICATION"
   when:
     - "'ON' not in group_replication_running.stdout"
     - inventory_hostname != ansible_play_hosts[0]
-  tags: apply-config, bootstrap
+  tags: apply-config, bootstrap, stratgr

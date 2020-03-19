@@ -33,7 +33,7 @@
     - name: Fix ownership
       file: dest="{{ mountdir }}/{{ mysqldir }}" owner=mysql group=mysql recurse=yes
 
-    - name: Generate global mysql.cnf file for group replication
+    - name: Generate global mysql.cnf file
       template:
         src: "mysql-{{ server }}.cnf.j2"
         dest: "{{ installdir }}/my.cnf"

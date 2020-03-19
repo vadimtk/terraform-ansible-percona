@@ -14,20 +14,36 @@
         name: mysql
         comment: John Doe
 
-    - name: Create  ext4 filesystem
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+
+    - name: Install xfsprogs
+      apt:
+        name: xfsprogs
+        state: present
+
+    - name: UnMount FS
+      mount:
+        path: "{{ mountdir }}"
+        src: "{{ disk }}"
+        state: unmounted
+      when: disk is defined
+      tags: mount    
+
+    - name: Create  filesystem
       filesystem:
-        fstype: ext4
+        fstype: xfs
         dev: "{{ disk }}"
-        force: no
-        opts: -E lazy_itable_init=0,lazy_journal_init=0,discard
+        force: yes
       when: disk is defined
 
     - name: Mount FS
       mount:
         path: "{{ mountdir }}"
         src: "{{ disk }}"
-        fstype: ext4
-        opts: discard
+        fstype: xfs
+        opts: noatime
         state: mounted
       when: disk is defined
       tags: mount    
@@ -44,39 +60,30 @@
         name: software-properties-common
         state: present
 
+
     - name: Download Server
       get_url:
-        url: "https://dev.mysql.com/get/Downloads/MySQL-{{ mysqlver }}/{{ mysqlbin }}.tar.xz"
+        url: "{{ downurl[server] }}"
         dest: "{{ installdir }}"
-      when: server=="mysql"
+      when: server=="pxc" or server=="mariadb" or server=="ps" or server=="pgr" or server=="pxc8" or server=="mgr"
       tags: download
 
     - name: Install Server
       unarchive:
-        src: "{{ installdir }}/{{ mysqlbin }}.tar.xz"
+        src: "{{ installdir }}/{{ mysqlbin[server] }}.tar.gz"
         dest: "{{ installdir }}"
         remote_src: yes
-      when: server=="mysql"
-      tags: download
-
-    - name: Download Server
-      get_url:
-        url: "{{ downurl }}"
-        dest: "{{ installdir }}"
-      when: server=="pxc" or server=="mariadb" or server=="ps" or server=="pgr"
+      when: server=="pxc" or server=="mariadb" or server=="ps" or server=="pgr" or server=="pxc8"
       tags: download
 
     - name: Install Server
       unarchive:
-        src: "{{ installdir }}/{{ mysqlbin }}.tar.gz"
+        src: "{{ installdir }}/{{ mysqlbin[server] }}.tar.xz"
         dest: "{{ installdir }}"
         remote_src: yes
-      when: server=="pxc" or server=="mariadb" or server=="ps" or server=="pgr"
+      when: server=="mgr"
       tags: download
 
-    - name: Update and upgrade apt packages
-      apt:
-        update_cache: yes
 
     - name: Install packages
       apt:
@@ -90,7 +97,7 @@
 
     - name: Stop MySQL
       shell: >
-        "{{ installdir }}/{{ mysqlbin }}/bin/mysqladmin" shutdown --socket=/tmp/mysql.sock
+        "{{ installdir }}/{{ mysqlbin[server] }}/bin/mysqladmin" shutdown --socket=/tmp/mysql.sock
       ignore_errors: yes
 
     - name: Remove datadir
@@ -105,12 +112,12 @@
 
     - name: Init datadir
       shell: >
-        "{{ installdir }}/{{ mysqlbin }}/bin/mysqld" --no-defaults --initialize-insecure --datadir="{{ mountdir }}/{{ mysqldir }}" --user=mysql
-      when: server=="pxc" or server=="mysql" or server=="ps" or server=="pgr"
+        "{{ installdir }}/{{ mysqlbin[server] }}/bin/mysqld" --no-defaults --initialize-insecure --datadir="{{ mountdir }}/{{ mysqldir }}" --user=mysql
+      when: server=="pxc" or server=="mgr" or server=="ps" or server=="pgr" or server=="pxc8"
 
     - name: Init datadir
       shell: >
-         "{{ installdir }}/{{ mysqlbin }}/scripts/mysql_install_db"  --no-defaults  --datadir="{{ mountdir }}/{{ mysqldir }}" --user=mysql
+         "{{ installdir }}/{{ mysqlbin[server] }}/scripts/mysql_install_db"  --no-defaults  --datadir="{{ mountdir }}/{{ mysqldir }}" --user=mysql
       when: server=="mariadb"
 
     - name: Generate systemctl file

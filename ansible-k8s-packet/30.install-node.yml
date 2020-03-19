@@ -18,44 +18,6 @@
 
   tasks:
 
-    - name: Create  ext4 filesystem
-      filesystem:
-        fstype: ext4
-        dev: "{{ disk }}"
-        force: no
-        opts: -E lazy_itable_init=0,lazy_journal_init=0,discard
-      when: disk is defined
-      tags: mount
-
-    - name: Mount FS
-      mount:
-        path: "{{ mountdir }}"
-        src: "{{ disk }}"
-        fstype: ext4
-        opts: discard
-        state: mounted
-      when: disk is defined
-      tags: mount
-
-    - name: Chown
-      shell: chmod 777 "{{ mountdir }}"
-      tags: mount
-
-    - name: clean
-      shell: rm -fr "{{ mountdir }}/mysql"
-      tags: permission, mount
-
-    - name: create dir
-      file:
-        path: "{{ mountdir }}/mysql"
-        state: directory
-      tags: permission, mount
-
-    - name: Chown
-      shell: install -m777 -g 0 -d "{{ mountdir }}/mysql"
-      tags: permission, mount
-
-
     - name: Install nuttcp
       apt:
         name: nuttcp

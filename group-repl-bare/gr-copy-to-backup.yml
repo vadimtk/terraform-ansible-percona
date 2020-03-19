@@ -22,6 +22,17 @@
         - absent
       tags: copyfiles
 
+    - name: Check if the msrsync exists.
+      command: /usr/bin/test -e /usr/bin/msrsync
+      ignore_errors: True
+      register: msrsync_exists
+
+    - name: Download msrsync
+      get_url:
+        url: "https://raw.githubusercontent.com/jbd/msrsync/master/msrsync"
+        dest: "/usr/bin/msrsync"
+      when: msrsync_exists.rc != 0
+
     - name: Ansible delete file glob
       find:
         paths: "{{ mountdir }}/{{ mysqldir }}/"
@@ -36,7 +47,7 @@
 
 
     - name: Copy files
-      shell:  msrsync -p 8 "{{ mountdir }}/{{ mysqldir }}/" "{{ mountdir }}/{{ mysqldir }}-copy"
+      shell:  chmod a+x /usr/bin/msrsync; msrsync -p 8 "{{ mountdir }}/{{ mysqldir }}/" "{{ mountdir }}/{{ mysqldir }}-copy"
       tags: copyfiles
 
 #      shell: cp -r "{{ mountdir }}/{{ mysqldir }}-copy" "{{ mountdir }}/{{ mysqldir }}"

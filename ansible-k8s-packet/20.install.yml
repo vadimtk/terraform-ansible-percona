@@ -26,8 +26,8 @@
 
     - name: Install kubeadm
       shell: >
-        kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address="{{ ansible_facts[iface].ipv4.address }}" --token {{ token }} --apiserver-cert-extra-sans="{{ ansible_bond0.ipv4.address }}"
-#        kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-advertise-address="{{ ansible_facts[iface].ipv4.address }}" --token {{ token }} --apiserver-cert-extra-sans="{{ ansible_bond0.ipv4.address }}"
+        kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-advertise-address="{{ ansible_facts[iface].ipv4.address }}" --token {{ token }} --apiserver-cert-extra-sans="{{ ansible_bond0.ipv4.address }}"
+#        kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address="{{ ansible_facts[iface].ipv4.address }}" --token {{ token }} --apiserver-cert-extra-sans="{{ ansible_bond0.ipv4.address }}"
 #        kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address="{{ ansible_enp2s0d1.ipv4.address }}" --token {{ token }}
 
     - name: Untaint master
@@ -56,7 +56,8 @@
 #      shell: systemctl restart kubelet
 
     - name: Install network
-      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml
+      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://docs.projectcalico.org/v3.11/manifests/calico.yaml
+#      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml
 #      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://raw.githubusercontent.com/cloudnativelabs/kube-router/master/daemonset/kubeadm-kuberouter.yaml
 #      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml
 #      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl create -f https://raw.githubusercontent.com/cilium/cilium/v1.4/examples/kubernetes/1.13/cilium.yaml

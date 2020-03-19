@@ -22,17 +22,10 @@
 
     - name: Install PMM Client
       apt:
-        name: pmm-client
+        name: pmm2-client
         state: present
 
     - name: Init client
       shell: >
-        pmm-admin config --server "{{ groups['pmm-server'][0] }}" --force
+        pmm-admin config --server-insecure-tls --server-url=https://admin:admin@{{ groups['pmm-server'][0]  }}:443
 
-    - name: Metics system
-      shell: >
-        pmm-admin add linux:metrics --force
-
-    - name: Metics mysql
-      shell: >
-        pmm-admin add mysql:metrics --force
