@@ -1,10 +1,13 @@
-{%- set clusteraddr = hostvars[groups['node'][0]][networkinterface]['ipv4']['address'] if inventory_hostname != groups['node'][0] else '' -%}
+{%- set clusteraddr = hostvars[groups['node'][0]]['ansible_facts'][networkinterface]['ipv4']['address'] if inventory_hostname != groups['node'][0] else '' -%}
 [mysqld]
 
 datadir={{ mountdir }}/{{ mysqldir }}
 user=mysql
 socket=/tmp/mysql.sock
 log-error=error.log
+
+ssl=0
+performance_schema=OFF
 
 #  master_info_repository = TABLE
 #  relay_log_info_repository = TABLE
@@ -43,25 +46,34 @@ server_id = {{ ansible_play_hosts.index(inventory_hostname) + 1 }}
 
 default_storage_engine=InnoDB
 
-innodb_flush_log_at_trx_commit  = 1
-innodb_doublewrite=1
+innodb_flush_log_at_trx_commit  = 0
+innodb_doublewrite=0
 innodb_flush_method             = O_DIRECT
 innodb_file_per_table           = 1
 innodb_autoinc_lock_mode=2
 innodb_io_capacity=2000
 innodb_io_capacity_max=4000
-innodb_monitor_enable=all
 
+loose-innodb-page-cleaners=1
+innodb-flush-log-at-trx-commit=0
+
+innodb_purge_threads=1
+innodb_undo_log_truncate=OFF
+innodb_write_io_threads=2
+innodb_read_io_threads=2
+innodb_adaptive_hash_index=OFF
+innodb_change_buffering=none
+
+#innodb_monitor_enable=all
+max_prepared_stmt_count=1000000 
 
 bind_address = 0.0.0.0
 
 wsrep_slave_threads=16
 
-wsrep_node_address="{{ hostvars[inventory_hostname][networkinterface]['ipv4']['address'] }}"
+wsrep_node_address="{{ hostvars[inventory_hostname]['ansible_facts'][networkinterface]['ipv4']['address'] }}"
 wsrep_cluster_name="{{ cluster_name }}"
 wsrep_cluster_address=gcomm://{{ clusteraddr }}
-
-# ansible_play_hosts[0] | map('extract', hostvars, [networkinterface, 'ipv4', 'address'])|list|join(',') if inventory_hostname != ansible_play_hosts[0] else "" 
 
 
 wsrep_provider="{{ installdir }}/{{ mysqlbin[server] }}/lib/libgalera_smm.so"
@@ -74,10 +86,12 @@ wsrep_provider_options="gcs.fc_limit=16;evs.send_window=4;evs.user_send_window=2
 
 #SET GLOBAL wsrep_provider_options="cert.optimistic_pa=NO";
 #wsrep_certification_rules='OPTIMIZED'
-wsrep_sync_wait=7
+
+#wsrep_sync_wait=7
+wsrep_sync_wait=0
 
 pxc-encrypt-cluster-traffic=OFF
-wsrep_debug=1
+#wsrep_debug=1
 log-error-verbosity=3
 
 

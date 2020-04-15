@@ -9,6 +9,9 @@
 
   tasks:
 
+    - import_tasks: root_tasks.yml
+    - import_tasks: network_tasks.yml      
+
     - name: Add the user MySQL
       user:
         name: mysql
@@ -59,6 +62,7 @@
       apt:
         name: software-properties-common
         state: present
+
 
 
     - name: Download Server
@@ -119,6 +123,18 @@
       shell: >
          "{{ installdir }}/{{ mysqlbin[server] }}/scripts/mysql_install_db"  --no-defaults  --datadir="{{ mountdir }}/{{ mysqldir }}" --user=mysql
       when: server=="mariadb"
+
+    - name: Generate performance scaling file
+      template:
+        src: performance.sh.j2
+        dest: /tmp/performance.sh
+        owner: root
+        group: root
+        mode: "0755"
+        backup: false
+
+    - name: Execute performance scaling
+      shell: bash /tmp/performance.sh
 
     - name: Generate systemctl file
       template:

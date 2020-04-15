@@ -1,5 +1,5 @@
 ---
-osuser: root
+osuser: vadim
 
 #networkinterface: ansible_eno2
 # Credentials
@@ -10,8 +10,8 @@ mysql_repl_user: repl
 mysql_repl_pass: replpassword
 
 
-installdir: /opt/vadim/servers
-mountdir: /mnt/data
+installdir: /mnt/data/vadim/servers
+mountdir: /data
 deploy_user: mysql
 
 #server: "mysql"
@@ -34,15 +34,14 @@ mysqldir: "{{server}}-{{ mysqlminor }}"
 mysqlbin:
     pgr: "Percona-Server-8.0.18-9-Linux.x86_64.ssl100"
     pxc: "Percona-XtraDB-Cluster-5.7.28-rel31-31.41.1.Linux.x86_64.ssl100"
-    pxc8: "Percona-XtraDB-Cluster_8.0.18.9-26.4.3_Linux.x86_64.bionic"
+    pxc8: "Percona-XtraDB-Cluster_8.0.18.9_Linux.x86_64.bionic"
 #    mgr: "mysql-8.0.18-linux-glibc2.12-x86_64"
     mgr: "mysql-8.0.19-linux-glibc2.12-x86_64"
-
 
 downurl:
     pgr: https://www.percona.com/downloads/Percona-Server-LATEST/Percona-Server-8.0.18-9/binary/tarball/Percona-Server-8.0.18-9-Linux.x86_64.ssl100.tar.gz
     pxc: https://www.percona.com/downloads/Percona-XtraDB-Cluster-LATEST/Percona-XtraDB-Cluster-5.7.28-31.41/binary/tarball/Percona-XtraDB-Cluster-5.7.28-rel31-31.41.1.Linux.x86_64.ssl100.tar.gz
-    pxc8: https://www.percona.com/redir/downloads/TESTING/pxc-80/Percona-XtraDB-Cluster_8.0.18.9-26.4.3_Linux.x86_64.bionic.tar.gz
+    pxc8: https://www.percona.com/downloads/Percona-XtraDB-Cluster-80/Percona-XtraDB-Cluster-8.0.18-9.1.rc/binary/tarball/Percona-XtraDB-Cluster_8.0.18.9_Linux.x86_64.bionic.tar.gz
 #    mgr: https://downloads.mysql.com/archives/get/p/23/file/mysql-8.0.18-linux-glibc2.12-x86_64.tar.xz
     mgr: https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.19-linux-glibc2.12-x86_64.tar.xz
 

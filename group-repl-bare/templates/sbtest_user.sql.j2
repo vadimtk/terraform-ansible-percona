@@ -1,5 +1,8 @@
 -- SET SQL_LOG_BIN=0;
 CREATE USER IF NOT EXISTS sbtest@'%' IDENTIFIED WITH 'mysql_native_password' BY 'sbtest';
 GRANT ALL on *.* TO 'sbtest'@'%' WITH GRANT OPTION;
+CREATE USER IF NOT EXISTS 'clustercheckuser'@'localhost' IDENTIFIED BY 'clustercheckpassword!';
+GRANT PROCESS ON *.* TO 'clustercheckuser'@'localhost';
 FLUSH PRIVILEGES;
 -- SET SQL_LOG_BIN=1;
+CREATE DATABASE IF NOT EXISTS  sbtest;

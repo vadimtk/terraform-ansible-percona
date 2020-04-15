@@ -1,9 +1,12 @@
 [mysql-node]
-139.178.69.183
+34.71.5.133 disk="/dev/sdb"
+#beast-node4-ubuntu server="ps"
 [sysbench-node]
-139.178.69.183
+#beast-node4-ubuntu server="ps"
+#139.178.69.183
+34.71.5.133 disk="/dev/sdb"
 [pmm-server]
 147.75.196.81
 
 [all:vars]
-server="ps"
+server="mariadb"

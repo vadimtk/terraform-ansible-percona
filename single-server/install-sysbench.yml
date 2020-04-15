@@ -5,6 +5,18 @@
   become_user: root
   vars_files:
     - mysql_nodes.yml
+
+  pre_tasks:
+
+  - name: Install python2 for Ansible
+    raw: bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qqy python-minimal)"
+    register: output
+    changed_when:
+    - output.stdout != ""
+    - output.stdout != "\r\n"
+  - name: Gathering Facts
+    setup:
+
   tasks:
 
     - import_tasks: network_tasks.yml

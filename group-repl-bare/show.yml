@@ -1,7 +1,7 @@
 - hosts: node
   gather_facts: yes
-  remote_user: root
+  remote_user: vadim
   tasks:
   - name: show 
     debug:
-      msg: "{{ hostvars[inventory_hostname][networkinterface]['ipv4']['address'] }}"
+      msg: "{{ hostvars[inventory_hostname]['ansible_facts'][networkinterface]['ipv4']['address'] }}"

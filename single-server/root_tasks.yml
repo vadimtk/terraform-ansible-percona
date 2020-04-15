@@ -19,4 +19,10 @@
   copy:
     src: limits.conf
     dest: /lib/systemd/system/mysql.service.d/
+  when: server!="mariadb"
 
+- name: Set MariaDB Filehandle Limits
+  copy:
+    src: limits.conf
+    dest: /lib/systemd/system/mariadb.service.d/
+  when: server=="mariadb"

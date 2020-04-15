@@ -1,5 +1,5 @@
-{%- set public_host_ips = ansible_play_hosts | map('extract', hostvars, [networkinterface, 'ipv4', 'address']) | list -%}
-{%- set private_host_ips = ansible_play_hosts | map('extract', hostvars, [networkinterface, 'ipv4', 'address']) | list -%}
+{%- set public_host_ips = ansible_play_hosts | map('extract', hostvars, ['ansible_facts', networkinterface, 'ipv4', 'address']) | list -%}
+{%- set private_host_ips = ansible_play_hosts | map('extract', hostvars, ['ansible_facts', networkinterface, 'ipv4', 'address']) | list -%}
 {%- set uuid = "8b7cabb0-ed41-4986-be1a-acfdc800c8a2" -%}
 
 [mysqld]
@@ -8,28 +8,26 @@ user=mysql
 plugin-load=group_replication=group_replication.so
 plugin-load-add=mysql_clone.so
 
-#plugin-load=rocksdb=ha_rocksdb.so
-#performance-schema-instrument='wait/%=ON'
 
 # general
-  table_open_cache = 200000
-  table_open_cache_instances=64
-  back_log=3500
-  max_connections=4000
+table_open_cache = 200000
+table_open_cache_instances=64
+back_log=3500
+max_connections=4000
 
 # files
-  innodb_file_per_table
-  innodb_log_file_size=10G
-  innodb_log_files_in_group=2
-  innodb_open_files=4000
+innodb_file_per_table
+innodb_log_file_size=10G
+innodb_log_files_in_group=2
+innodb_open_files=4000
 
 # buffers
-  innodb_buffer_pool_size=  {{ bufferpool }}
-  innodb_buffer_pool_instances=8
-  innodb_log_buffer_size=64M
+innodb_buffer_pool_size=  {{ bufferpool }}
+innodb_buffer_pool_instances=8
+innodb_log_buffer_size=64M
 
-  innodb-buffer-pool-load-at-startup=OFF
-  innodb_buffer_pool_dump_at_shutdown=OFF
+innodb-buffer-pool-load-at-startup=OFF
+innodb_buffer_pool_dump_at_shutdown=OFF
 
 innodb_doublewrite=1
 innodb_flush_log_at_trx_commit  = 1
@@ -39,7 +37,11 @@ innodb_io_capacity_max=4000
 innodb_purge_threads=4
 innodb_monitor_enable=all
 
+#performance-schema-instrument='wait/synch/mutex/innodb/%=ON'
+#innodb_monitor_enable = '%'
+
 # General replication settings
+
 gtid_mode = ON
 enforce_gtid_consistency = ON
 master_info_repository = TABLE
@@ -79,8 +81,8 @@ loose-group_replication_enforce_update_everywhere_checks = ON
 
 # Host specific replication configuration
 server_id = {{ ansible_play_hosts.index(inventory_hostname) + 1 }}
-report_host = "{{  hostvars[inventory_hostname][networkinterface]['ipv4']['address']  }}"
-loose-group_replication_local_address = "{{  hostvars[inventory_hostname][networkinterface]['ipv4']['address']  }}:33061"
+report_host = "{{  hostvars[inventory_hostname]['ansible_facts'][networkinterface]['ipv4']['address']  }}"
+loose-group_replication_local_address = "{{  hostvars[inventory_hostname]['ansible_facts'][networkinterface]['ipv4']['address']  }}:33061"
 disabled_storage_engines = MyISAM,BLACKHOLE,FEDERATED,CSV,ARCHIVE
 report_port = 3306
 log-error=error.log

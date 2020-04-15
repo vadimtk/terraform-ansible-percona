@@ -23,7 +23,7 @@
       tags: copyfiles
 
     - name: Copy files
-      shell:  msrsync -p 8 "{{ mountdir }}/{{ mysqldir }}-copy/" "{{ mountdir }}/{{ mysqldir }}"
+      shell:  msrsync -p 8 "{{ mountdir }}/{{ mysqldir }}-copy-{{ backupdir }}/" "{{ mountdir }}/{{ mysqldir }}"
       tags: copyfiles
 #      shell: cp -r "{{ mountdir }}/{{ mysqldir }}-copy" "{{ mountdir }}/{{ mysqldir }}"
 

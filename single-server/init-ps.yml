@@ -15,6 +15,7 @@
         dev: "{{ disk }}"
         force: no
         opts: -E lazy_itable_init=0,lazy_journal_init=0,discard
+      when: disk is defined
 
     - name: Mount FS
       mount:
@@ -23,6 +24,7 @@
         fstype: ext4
         opts: discard
         state: mounted
+      when: disk is defined
 
     - name: Install Percona Repo
       shell: >

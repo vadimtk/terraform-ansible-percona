@@ -38,9 +38,14 @@
         name: percona-xtrabackup-24
         state: present
 
+    - name: Install socat
+      apt:
+        name: socat
+        state: present
+
     - name: Generate global mysql.cnf file for PXC
       template:
-        src: mysql-pxc.cnf.j2
+        src: mysql-{{ server }}.cnf.j2
         dest: "{{ installdir }}/my.cnf"
         owner: root
         group: root

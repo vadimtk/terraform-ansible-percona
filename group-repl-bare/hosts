@@ -1,7 +1,12 @@
 [node]
-10.30.2.5
-10.30.2.7
-10.30.2.8
+beast-node4-ubuntu
+beast-node5-ubuntu
+beast-node6-ubuntu
+#beast-node7-ubuntu
+#beast-node8-ubuntu
+#beast-node2-ubuntu
+#beast-node3-ubuntu
+
 [sysbench-node]
 139.178.82.239
 [pmm-server]
@@ -16,9 +21,12 @@ mysqlminor=8.0.18
 #mysqlver=5.7
 #mysqlminor=pxc-5.7.27
 
-networkinterface=ansible_eno2
+networkinterface=enp94s0f0
+#disk=/dev/nvme0n1
 
-server=pgr
+server=pxc8
+backupdir="tpcc1000"
 
-ansible_ssh_common_args='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -o ConnectTimeout=30 -i /home/vadim/keys/blades/blades'
+#ansible_ssh_common_args='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -o ConnectTimeout=30 -i /home/vadim/keys/blades/blades'
+ansible_ssh_common_args='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -o ConnectTimeout=30'
 
