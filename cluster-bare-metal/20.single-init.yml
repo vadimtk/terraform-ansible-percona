@@ -1,0 +1,64 @@
+---
+- hosts: node
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: false
+  vars_files:
+    - mysql_nodes.yml
+
+  tasks:
+
+    - name: Stop MySQL
+      systemd:
+        name: mysql-cd
+        state: stopped
+
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+
+    - name: Generate global my.cnf file
+      template:
+        src: mysql-{{ server }}.cnf.j2
+        dest: "{{ installdir }}/my-{{ server }}.cnf"
+
+#    - name: Bootstrap PXC 1st Node
+#      lineinfile:
+#        path: "{{ mountdir }}/{{ mysqldir }}/grastate.dat"
+#        regexp: '^safe_to_bootstrap'
+#        line: 'safe_to_bootstrap=1'
+#      when:
+#        - inventory_hostname == ansible_play_hosts[0]
+     
+
+    - name: Start PXC 1st Node
+      systemd:
+        name: mysql-cd
+        state: started
+      when:
+        - inventory_hostname == ansible_play_hosts[0]
+
+    - name: Wait for socket
+      wait_for:
+        path: /tmp/mysql.sock
+        state: present
+      when:
+        - inventory_hostname == ansible_play_hosts[0]
+
+    - name: Start PXC All Nodes
+      systemd:
+        name: mysql-cd
+        state: started
+      when:
+        - inventory_hostname != ansible_play_hosts[0]
+
+    - name: Wait for socket
+      wait_for:
+        path: /tmp/mysql.sock
+        state: present
+      when:
+        - inventory_hostname != ansible_play_hosts[0]
+
+
+# vim: set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab

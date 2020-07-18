@@ -1,5 +1,5 @@
 [mysql-node]
-34.71.5.133 disk="/dev/sdb"
+172.16.0.4 server="ps"
 #beast-node4-ubuntu server="ps"
 [sysbench-node]
 #beast-node4-ubuntu server="ps"

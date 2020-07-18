@@ -56,4 +56,9 @@
         name: mysql-cd
         state: started
 
+    - name: Wait for socket
+      wait_for:
+        path: /tmp/mysql.sock
+        state: present
+
 # vim: set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab

@@ -24,8 +24,12 @@ mysqlminor=8.0.18
 networkinterface=enp94s0f0
 #disk=/dev/nvme0n1
 
+mountdir=/data
+installdir=/mnt/data/vadim/servers
+
 server=pxc8
 backupdir="tpcc1000"
+#pxc8-8.0.18-copy-tpcc1000
 
 #ansible_ssh_common_args='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -o ConnectTimeout=30 -i /home/vadim/keys/blades/blades'
 ansible_ssh_common_args='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -o ConnectTimeout=30'

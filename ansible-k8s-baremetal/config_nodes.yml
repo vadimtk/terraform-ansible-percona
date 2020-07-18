@@ -1,10 +1,10 @@
 ---
-osuser: root
-networkinterface: ansible_eno2
+osuser: ubuntu
+networkinterface: ansible_ens5
 # Credentials
 
 #master_ip: "{{ hostvars[groups['master'][0]].ansible_eno2.ipv4.address | default(groups['master'][0]) }}"
-master_ip: "172.16.0.5"
+master_ip: "172.31.11.158"
 token: b0f7b8.8d1767876297d85c
 
 network: kuberouter

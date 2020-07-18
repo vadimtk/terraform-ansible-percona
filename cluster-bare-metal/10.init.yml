@@ -63,13 +63,19 @@
         name: software-properties-common
         state: present
 
-
-
     - name: Download Server
       get_url:
         url: "{{ downurl[server] }}"
         dest: "{{ installdir }}"
-      when: server=="pxc" or server=="mariadb" or server=="ps" or server=="pgr" or server=="pxc8" or server=="mgr"
+      when: server=="pxc" or 
+            server=="mariadb" or 
+            server=="ps" or 
+            server=="pgr" or 
+            server=="pxc8" or 
+            server=="mgr" or 
+            server=="ps8" or 
+            server=="mysql8" or
+            server=="mysql8galera4"
       tags: download
 
     - name: Install Server
@@ -77,7 +83,13 @@
         src: "{{ installdir }}/{{ mysqlbin[server] }}.tar.gz"
         dest: "{{ installdir }}"
         remote_src: yes
-      when: server=="pxc" or server=="mariadb" or server=="ps" or server=="pgr" or server=="pxc8"
+      when: server=="pxc" or 
+            server=="mariadb" or 
+            server=="ps" or 
+            server=="pgr" or 
+            server=="pxc8" or 
+            server=="ps8" or 
+            server=="mysql8galera4"
       tags: download
 
     - name: Install Server
@@ -85,9 +97,9 @@
         src: "{{ installdir }}/{{ mysqlbin[server] }}.tar.xz"
         dest: "{{ installdir }}"
         remote_src: yes
-      when: server=="mgr"
+      when: server=="mgr" or
+            server=="mysql8"
       tags: download
-
 
     - name: Install packages
       apt:
@@ -117,7 +129,14 @@
     - name: Init datadir
       shell: >
         "{{ installdir }}/{{ mysqlbin[server] }}/bin/mysqld" --no-defaults --initialize-insecure --datadir="{{ mountdir }}/{{ mysqldir }}" --user=mysql
-      when: server=="pxc" or server=="mgr" or server=="ps" or server=="pgr" or server=="pxc8"
+      when: server=="pxc" or 
+            server=="mgr" or 
+            server=="ps" or 
+            server=="pgr" or 
+            server=="pxc8" or 
+            server=="ps8" or 
+            server=="mysql8" or
+            server=="mysql8galera4"
 
     - name: Init datadir
       shell: >

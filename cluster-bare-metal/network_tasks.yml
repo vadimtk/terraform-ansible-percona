@@ -14,7 +14,6 @@
     - { name: 'net.ipv4.tcp_mtu_probing', value: 1 }
     - { name: 'net.ipv4.tcp_timestamps', value: 0 }
     - { name: 'net.ipv4.tcp_sack', value: 0 }
-    - { name: 'net.ipv4.tcp_syncookies', value: 1 }
     - { name: 'net.ipv4.tcp_max_syn_backlog', value: 4096 }
     - { name: 'net.ipv4.tcp_mem', value: '50576   64768   98152' }
     - { name: 'net.ipv4.ip_local_port_range', value: '4000 65000' }

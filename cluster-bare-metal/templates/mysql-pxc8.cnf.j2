@@ -24,6 +24,9 @@ relay_log=relay
 sync_binlog=1000
 binlog_format = ROW
 binlog_row_image=MINIMAL
+gtid-mode=ON
+enforce_gtid_consistency=ON 
+log-slave-updates
 
 server_id = {{ ansible_play_hosts.index(inventory_hostname) + 1 }}
 

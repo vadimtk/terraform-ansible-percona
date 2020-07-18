@@ -22,6 +22,10 @@
       shell: >
         swapoff -a
 
+    - name: systemctl enable docker.service
+      shell: >
+        systemctl enable docker.service
+
     - name: Reset Kubernetes component
       shell: "kubeadm reset --force"
 
