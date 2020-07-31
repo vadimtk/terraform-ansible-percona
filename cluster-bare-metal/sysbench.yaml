@@ -1,0 +1,9 @@
+---
+- hosts: sysbench-client
+  remote_user: "{{ osuser }}"
+  become: yes
+  become_user: root
+  gather_facts: true
+
+  roles:
+    - role: sysbench

@@ -10,7 +10,7 @@ LimitNOFILE = 100000
 Environment=MYSQLD_PARENT_PID=1
 ExecStartPre=/bin/mkdir -p  "{{ mountdir }}/{{ mysqldir }}"
 ExecStartPre=/bin/chown mysql:mysql -R  "{{ mountdir }}/{{ mysqldir }}"
-ExecStart=/usr/bin/numactl --interleave=all "{{ installdir }}/{{ mysqlbin[server] }}/bin/mysqld" --defaults-file="{{ installdir }}/my-{{ server }}.cnf" --basedir="{{ installdir }}/{{ mysqlbin[server] }}" --datadir="{{ mountdir }}/{{ mysqldir }}"
+ExecStart=/usr/bin/numactl --interleave=all "{{ installdir }}/{{ mysqlbin[server] }}/bin/mysqld" --defaults-file="{{ installdir }}/my-{{ server }}.cnf" --basedir="{{ installdir }}/{{ mysqlbin[server] }}" --datadir="{{ mountdir }}/{{ mysqldir }}" $MYSQLD_OPTS
 TimeoutSec=300
 
 [Install]

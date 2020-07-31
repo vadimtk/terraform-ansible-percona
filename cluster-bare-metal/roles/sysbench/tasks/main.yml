@@ -1,0 +1,22 @@
+---
+    - name: Install sysbench-tpcc
+      git:
+        repo: https://github.com/Percona-Lab/sysbench-tpcc.git
+        dest: "{{ tpccdir }}"
+
+    - name: remove oltp lua files
+      file:
+        path: /usr/share/sysbench
+        state: absent
+
+    - name: Install sysbench oltp files
+      git:
+        repo: https://github.com/vadimtk/sysbench-oltp-lua.git
+        force: yes
+        dest: /usr/share/sysbench
+
+    - name: Copy oltp scripts
+      copy: src=prepare.oltp.sh dest="{{ oltpdir }}"
+
+    - name: Copy oltp scripts
+      copy: src=run.oltp.sh dest="{{ oltpdir }}"

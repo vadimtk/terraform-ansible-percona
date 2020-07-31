@@ -31,6 +31,7 @@ mysqlbin:
     pgr: "Percona-Server-8.0.18-9-Linux.x86_64.ssl100"
     pxc: "Percona-XtraDB-Cluster-5.7.28-rel31-31.41.1.Linux.x86_64.ssl100"
     pxc8: "Percona-XtraDB-Cluster_8.0.18.9_Linux.x86_64.bionic"
+    ps8: "Percona-Server-8.0.20-11-Linux.x86_64.glibc2.12-minimal"
     mgr: "mysql-8.0.19-linux-glibc2.12-x86_64"
     mysql8: "mysql-8.0.21-linux-glibc2.12-x86_64"
     mysql8galera4: "galera4-mysql8"
@@ -42,7 +43,7 @@ downurl:
     pxc8: https://www.percona.com/redir/downloads/TESTING/pxc_80_04172020/Percona-XtraDB-Cluster_8.0.18.9_Linux.x86_64.bionic.tar.gz
 #    mgr: https://downloads.mysql.com/archives/get/p/23/file/mysql-8.0.18-linux-glibc2.12-x86_64.tar.xz
     mysql8: https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.21-linux-glibc2.12-x86_64.tar.xz
-    ps8: https://www.percona.com/downloads/Percona-Server-LATEST/Percona-Server-8.0.19-10/binary/tarball/Percona-Server-8.0.19-10-Linux.x86_64.ssl102.deb.tar.gz
+    ps8: https://www.percona.com/downloads/percona-distribution-mysql-ps/percona-distribution-mysql-ps-8.0.20/binary/tarball/Percona-Server-8.0.20-11-Linux.x86_64.glibc2.12-minimal.tar.gz
     mariadb: http://mirror.nodesdirect.com/mariadb//mariadb-10.5.4/bintar-linux-x86_64/mariadb-10.5.4-linux-x86_64.tar.gz
 #server: "mariadb"
 

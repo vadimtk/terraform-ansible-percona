@@ -1,9 +1,10 @@
 [master]
-3.133.79.127
+beast-node4-ubuntu
 [worker]
-3.15.214.99
-3.136.25.129
-18.217.12.56
+beast-node6-ubuntu
+beast-node7-ubuntu
+beast-node8-ubuntu
 
 [all:vars]                                                                                                                                                                                                                                    
-iface=ens5
+iface=enp94s0f0
+ansible_ssh_common_args='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -o ConnectTimeout=30' 

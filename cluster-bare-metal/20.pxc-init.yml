@@ -46,7 +46,7 @@
     - name: Generate global mysql.cnf file for PXC
       template:
         src: mysql-{{ server }}.cnf.j2
-        dest: "{{ installdir }}/my.cnf"
+        dest: "{{ installdir }}/my-{{ server }}.cnf"
         owner: root
         group: root
         mode: "0644"

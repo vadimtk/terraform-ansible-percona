@@ -1,0 +1,28 @@
+[node]
+13.58.157.26 server="ps8" ansible_ssh_user=ubuntu
+[sysbench-client]
+beast-node5-ubuntu
+
+[pmm-server]
+
+[all:vars]
+mysqlver=8.0
+mysqlminor=8.0.19
+
+networkinterface=enp94s0f0
+#disk=/dev/nvme0n1
+
+mountdir=/mnt/data
+installdir=/mnt/data/vadim/servers
+
+server="pxc8"
+backupdir="tpcc1000"
+
+osuser="ubuntu"
+
+#ansible_ssh_common_args='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -o ConnectTimeout=30 -i /home/vadim/keys/blades/blades'
+ansible_ssh_common_args='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -o ConnectTimeout=30 -i /home/vadim/.ssh/vadim-aws-east2.pem'
+
+[sysbench-client:vars]
+tpccdir=/mnt/data/vadim/bench/tpcc1
+oltpdir=/mnt/data/vadim/bench/oltp-100GB/

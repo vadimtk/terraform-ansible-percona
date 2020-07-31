@@ -1,0 +1,37 @@
+[node]
+#beast-node5-ubuntu server="mariadb"
+beast-node5-ubuntu server="mysql8" mountdir="/data" mysqlminor=8.0.21
+#beast-node3-ubuntu server="mariadb" mountdir="/data" mysqlminor=10.5.4
+#beast-node5-ubuntu server="ps8" mountdir="/data"
+#beast-node6-ubuntu
+#beast-node7-ubuntu
+#beast-node1-ubuntu
+#beast-node2-ubuntu
+#beast-node5-ubuntu
+
+[sysbench-client]
+beast-node5-ubuntu
+
+[pmm-server]
+
+[all:vars]
+mysqlver=8.0
+mysqlminor=8.0.19
+
+networkinterface=enp94s0f0
+#disk=/dev/nvme0n1
+
+mountdir=/mnt/data
+installdir=/mnt/data/vadim/servers
+
+server="pxc8"
+backupdir="tpcc1000"
+
+osuser="vadim"
+
+#ansible_ssh_common_args='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -o ConnectTimeout=30 -i /home/vadim/keys/blades/blades'
+ansible_ssh_common_args='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  -o ConnectTimeout=30'
+
+[sysbench-client:vars]
+tpccdir=/mnt/data/vadim/bench/tpcc1
+oltpdir=/mnt/data/vadim/bench/oltp-100GB/
