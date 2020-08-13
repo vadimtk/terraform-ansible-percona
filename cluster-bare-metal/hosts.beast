@@ -1,8 +1,10 @@
 [node]
 #beast-node5-ubuntu server="mariadb"
-beast-node5-ubuntu server="mysql8" mountdir="/data" mysqlminor=8.0.21
-#beast-node3-ubuntu server="mariadb" mountdir="/data" mysqlminor=10.5.4
-#beast-node5-ubuntu server="ps8" mountdir="/data"
+#beast-node3-ubuntu server="mysql8" mountdir="/data" mysqlminor=8.0.21
+#beast-node1-ubuntu server="mysql8" mountdir="/data" mysqlminor=8.0.21
+beast-node1-ubuntu server="mariadb" mountdir="/data" mysqlminor=10.5.5
+#beast-node3-ubuntu server="ps8" mountdir="/data" mysqlminor=8.0.20
+#beast-node1-ubuntu server="ps8" mountdir="/data" mysqlminor=8.0.20
 #beast-node6-ubuntu
 #beast-node7-ubuntu
 #beast-node1-ubuntu
@@ -10,7 +12,7 @@ beast-node5-ubuntu server="mysql8" mountdir="/data" mysqlminor=8.0.21
 #beast-node5-ubuntu
 
 [sysbench-client]
-beast-node5-ubuntu
+beast-node1-ubuntu
 
 [pmm-server]
 
