@@ -40,6 +40,16 @@
       #    - name: Update and upgrade apt packages
       #apt:
       #  update_cache: yes
+      #
+    - name: Remove packages
+      apt:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - kubelet
+        - kubeadm
+        - kubernetes-cni
+        - docker.io
 
     - name: Install docker
       apt:
@@ -82,4 +92,10 @@
 
     - name: Reset Kubernetes component
       shell: "kubeadm reset --force"
+
+    - name: Remove network plugins
+      shell: "rm -f /etc/cni/net.d/*"
+
+      #- name: Reset IPtables
+      #shell: "iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X"
 

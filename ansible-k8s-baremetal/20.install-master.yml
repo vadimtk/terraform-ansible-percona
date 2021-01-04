@@ -24,20 +24,34 @@
     - name: Fix sysctl bridge-nf-call-iptables
       shell: sysctl net.bridge.bridge-nf-call-iptables=1
 
+    - name: Add node-ip line
+      lineinfile:
+        path: /etc/default/kubelet
+        line: KUBELET_EXTRA_ARGS="--node-ip={{ ansible_facts[iface].ipv4.address }}"
+        create: yes
+
     - name: Install kubeadm
       shell: >
-        kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address="{{ ansible_facts[iface].ipv4.address }}" --token {{ token }} --apiserver-cert-extra-sans="{{ ansible_facts[iface].ipv4.address }}"
-      when: network=="kuberouter" or network=="calico" or network=="flanneldef" or network=="flannel" or network=="weave"
+        kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address="{{ ansible_facts[iface].ipv4.address }}" --token {{ token }} --apiserver-cert-extra-sans="{{ ansible_facts[iface].ipv4.address }}" --control-plane-endpoint="{{ ansible_facts[iface].ipv4.address }}"
+      when: network=="kuberouter"  or network=="flanneldef" or network=="flannel" or network=="weave" 
 
     - name: Install kubeadm
       shell: >
         kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-advertise-address="{{ ansible_facts[iface].ipv4.address }}" --token {{ token }} --apiserver-cert-extra-sans="{{ ansible_facts[iface].ipv4.address }}"
-      when: network=="calicodef"
+      when: network=="calicodef" or network=="calico"
 
     - name: Install kubeadm
       shell: >
         kubeadm init --pod-network-cidr=10.217.0.0/16 --apiserver-advertise-address="{{ ansible_facts[iface].ipv4.address }}" --token {{ token }} --apiserver-cert-extra-sans="{{ ansible_facts[iface].ipv4.address }}"
       when: network=="cilium"
+
+      #    - name: Install docker login
+      #shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl create secret docker-registry my-private-repo  --docker-username=vadimtk  --docker-password=GT6oz7vsexR7A  --docker-email=vadim@percona.com      
+
+      #- name: Install kubeadm
+      #shell: >
+      #  kubeadm init --apiserver-advertise-address="{{ ansible_facts[iface].ipv4.address }}" --token {{ token }} --apiserver-cert-extra-sans="{{ ansible_facts[iface].ipv4.address }}"
+      #when: network=="cilium"
 
 #        kubeadm init --apiserver-advertise-address="{{ ansible_facts[iface].ipv4.address }}" --token {{ token }} --apiserver-cert-extra-sans="{{ ansible_facts[iface].ipv4.address }}"
 #        kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address="{{ ansible_facts[iface].ipv4.address }}" --token {{ token }} --apiserver-cert-extra-sans="{{ ansible_facts[iface].ipv4.address }}"
@@ -49,13 +63,27 @@
       shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://raw.githubusercontent.com/cloudnativelabs/kube-router/master/daemonset/kubeadm-kuberouter.yaml
       when: network=="kuberouter"
 
+      #      https://raw.githubusercontent.com/cloudnativelabs/kube-router/master/daemonset/kubeadm-kuberouter.yaml      
+
     - name: Install network
       shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f /home/vadim/calico.yaml
       when: network=="calico"
 
     - name: Install network
+      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+      when: network=="caliconew"
+
+    - name: Install network
+      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl create -f https://docs.projectcalico.org/manifests/custom-resources.yaml
+      when: network=="caliconew"
+
+    - name: Install network
       shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://docs.projectcalico.org/v3.10/manifests/calico.yaml
       when: network=="calicodef"
+
+    - name: Install network
+      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+      when: network=="calicodefnew"
 
     - name: Install network Flannel
       shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
@@ -65,8 +93,12 @@
       shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl apply -f /home/vadim/kube-flannel.yml
       when: network=="flannel"
 
+      #    - name: Install network cilium
+      #      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl create -f https://raw.githubusercontent.com/cilium/cilium/v1.9/install/kubernetes/quick-install.yaml
+      #      when: network=="cilium"
+
     - name: Install network cilium
-      shell: KUBECONFIG=/etc/kubernetes/admin.conf  kubectl create -f https://raw.githubusercontent.com/cilium/cilium/1.6.3/install/kubernetes/quick-install.yaml
+      shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl create -f /home/vadim/quick-install.yaml
       when: network=="cilium"
 
     - name: Install network cilium

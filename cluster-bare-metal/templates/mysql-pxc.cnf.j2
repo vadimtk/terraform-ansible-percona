@@ -1,4 +1,4 @@
-{%- set clusteraddr = hostvars[groups['node'][0]][networkinterface]['ipv4']['address'] if inventory_hostname != groups['node'][0] else '' -%}
+{%- set clusteraddr = hostvars[groups['node'][0]]['ansible_facts'][networkinterface]['ipv4']['address'] if inventory_hostname != groups['node'][0] else '' -%}
 [mysqld]
 
 datadir={{ mountdir }}/{{ mysqldir }}
@@ -57,7 +57,7 @@ bind_address = 0.0.0.0
 
 wsrep_slave_threads=16
 
-wsrep_node_address="{{ hostvars[inventory_hostname][networkinterface]['ipv4']['address'] }}"
+wsrep_node_address="{{ hostvars[inventory_hostname]['ansible_facts'][networkinterface]['ipv4']['address'] }}"
 wsrep_cluster_name="{{ cluster_name }}"
 wsrep_cluster_address=gcomm://{{ clusteraddr }}
 
@@ -69,8 +69,8 @@ wsrep_provider="{{ installdir }}/{{ mysqlbin[server] }}/lib/libgalera_smm.so"
 #wsrep_provider_options="gcs.fc_limit=16;evs.send_window=4;evs.user_send_window=2;gcache.size=150G;cert.optimistic_pa=NO"
 wsrep_provider_options="gcs.fc_limit=16;evs.send_window=4;evs.user_send_window=2;gcache.size=15G;"
 
-#wsrep_sst_method=xtrabackup-v2
-#wsrep_sst_auth="root:"
+wsrep_sst_method=xtrabackup-v2
+wsrep_sst_auth="root:"
 
 #SET GLOBAL wsrep_provider_options="cert.optimistic_pa=NO";
 #wsrep_certification_rules='OPTIMIZED'

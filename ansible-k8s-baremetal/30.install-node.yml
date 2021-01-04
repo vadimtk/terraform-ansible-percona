@@ -32,14 +32,14 @@
     - name: Add node-ip line
       lineinfile:
         path: /etc/default/kubelet
-        line: KUBELET_EXTRA_ARGS="--node-ip={{ inventory_hostname }}"
+        line: KUBELET_EXTRA_ARGS="--node-ip={{ ansible_facts[iface].ipv4.address }}"
         create: yes
 
     - name: Install kubeadm
       shell: |
         kubeadm join --token {{ token }} \
                 --discovery-token-unsafe-skip-ca-verification \
-                {{ master_ip }}:6443
+                {{ master_ip }}:6443 
 
     - name: just force systemd to reread config
       systemd:

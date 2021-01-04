@@ -1,15 +1,15 @@
 [node]
 #beast-node5-ubuntu server="mariadb"
-#beast-node3-ubuntu server="mysql8" mountdir="/data" mysqlminor=8.0.21
+#beast-node3-ubuntu server="mysql8" mountdir="/mnt/data" mysqlminor=8.0.21
 #beast-node1-ubuntu server="mysql8" mountdir="/data" mysqlminor=8.0.21
-beast-node1-ubuntu server="mariadb" mountdir="/data" mysqlminor=10.5.5
+#beast-node1-ubuntu server="mariadb" mountdir="/data" mysqlminor=10.5.5
 #beast-node3-ubuntu server="ps8" mountdir="/data" mysqlminor=8.0.20
 #beast-node1-ubuntu server="ps8" mountdir="/data" mysqlminor=8.0.20
 #beast-node6-ubuntu
 #beast-node7-ubuntu
-#beast-node1-ubuntu
-#beast-node2-ubuntu
-#beast-node5-ubuntu
+beast-node1-ubuntu
+beast-node2-ubuntu
+beast-node3-ubuntu
 
 [sysbench-client]
 beast-node1-ubuntu
@@ -18,7 +18,8 @@ beast-node1-ubuntu
 
 [all:vars]
 mysqlver=8.0
-mysqlminor=8.0.19
+#mysqlminor=8.0.20
+mysqlminor=5.7.31
 
 networkinterface=enp94s0f0
 #disk=/dev/nvme0n1
@@ -26,7 +27,7 @@ networkinterface=enp94s0f0
 mountdir=/mnt/data
 installdir=/mnt/data/vadim/servers
 
-server="pxc8"
+server="pxc"
 backupdir="tpcc1000"
 
 osuser="vadim"

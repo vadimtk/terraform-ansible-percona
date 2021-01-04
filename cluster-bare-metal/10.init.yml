@@ -108,7 +108,7 @@
       with_items:
         - libsystemd0
         - numactl
-        - python-mysqldb
+        - python3-mysqldb
         - mysql-client
 
     - name: Stop MySQL
@@ -154,6 +154,7 @@
 
     - name: Execute performance scaling
       shell: bash /tmp/performance.sh
+      ignore_errors: yes
 
     - name: Generate systemctl file
       template:
